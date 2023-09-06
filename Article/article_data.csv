@@ -1,9 +1,0 @@
-Name,Year,Journal,Innovation
-Robust Control of spacecraft formation flying via virtual structure,2015,Modares Mechanical Engineering,disturbance rejection. Reduce the cost of calculations. faster solve
-A Satellite Formation Flying Approach Providing both Positioning and Tracking,2016,Acta Astronautica, relative navigation system for satel- lites flying in formations or swarms with magnet and coils.ub-micron position resolutions
-Fault-tolerant control of satellites controlled by coordinated flight,2021,SUT AE MSc Thesis,Fault-tolerant control using Neural network
-Algorithm to change the automatic arrangement of co-flying satellites based on the virtual structure method,2009,SUT AE MSc Thesis,Developing an algorithm that can maneuver from any primary state to a secondary state with low cost
-Implementation of virtual structure algorithm in group flight of satellites using image sensors,2010,SUT AE MSc Thesis,Implementation of virtual structure algorithm iusing image sensors
-Robust Trajectory Tracking in Satellite Time-Varying Formation Flying,2020,IEEE Transactions on Cybernetics,robust formation flying control schemefor a team of satellites subject to nonlinearities and uncertainties
-Electromagnetic Formation Flight for Multisatellite Arrays,2004,JOURNAL OF SPACECRAFT AND ROCKETS,electromagnets are shown to provide the centripetal acceleration necessary for array rotation
-Adaptive Bearing-Only Formation Tracking Control for Nonholonomic Multiagent Systems,2021,IEEE TRANSACTIONS ON CYBERNETICS,Bearing-Only Formation Tracking Control for Nonholonomic Multiagent Systems

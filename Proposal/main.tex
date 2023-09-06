@@ -1,0 +1,434 @@
+\documentclass[a4paper]{article}
+%To  colorize table
+\usepackage[table]{xcolor}
+\usepackage[a4paper, total={7in, 11.0in},includefoot, includehead, headsep=24pt, headheight=4cm]{geometry}
+\usepackage{layout}%No need for this package at production.
+\usepackage{setspace}%For switch between line spacing.
+\usepackage{graphicx}
+%For drawing lines and arbitrary shapes:
+\usepackage{tikz}
+%To set fixed length for table: 
+\usepackage{array}
+\usepackage{ifthen}
+%To draw squares:
+\usepackage{amssymb}
+%To trim strings:
+\usepackage{trimspaces}
+\usepackage{ifthen}
+%To draw dynamic multi-column table:
+\usepackage{etoolbox}
+%For references:
+\usepackage[
+    backend=biber,
+    sorting=ydnt,
+    style=ieee
+]{biblatex}
+
+
+\addbibresource{references.bib}
+
+%List of needed counters:
+\newcounter{length}
+\newcounter{itemCount}
+
+
+\title{Proposal}
+\author{Name}
+\date{\today}
+
+\newcommand{\blankField}{ $\ldots\ldots\ldots\ldots\ldots$}
+\makeatletter
+\newcommand{\trim}[1]{\trim@spaces@noexp{#1}}
+\makeatother
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{xepersian}
+\settextfont[Scale=1.2]{Yas}
+\setlatintextfont[Scale=1]{Times New Roman}
+\rhead{
+    \begin{tabular}{c}
+         \includegraphics[width=3cm, height=3cm]{./logo-fa-IR.png}\\
+    \end{tabular}
+}
+\chead{
+    \setstretch{2}
+    بسمه تعالی \\
+    دانشکده مهندسی کامپیوتر \\
+    \textbf{\large فرم تعریف پروژه کارشناسی ارشد}
+}
+
+\lhead{
+    \ifthenelse{\isodd{\value{page}}}
+        {
+            \setstretch{1.5}
+            \begin{tabular}{c c}
+                تاریخ: & \blankField \\
+                شماره: & \blankField\\
+                پیوست: & \blankField
+                
+                % \blankField & تاریخ: \\
+                % \blankField & شماره:\\
+                % \blankField & پیوست:
+            \end{tabular}
+        }
+        {
+            \setstretch{1.5}
+            \begin{tabular}{c c}
+                تاریخ: & \blankField \\
+                شماره: & \blankField\\
+                پیوست: & \blankField
+                
+                % \blankField & تاریخ: \\
+                % \blankField & شماره:\\
+                % \blankField & پیوست:
+            \end{tabular}
+        }
+}
+
+%Improvement: take advantages of the optional parameters! Currently I don't have any time to learn and implement it.
+\newcommand{\Information}[9]{
+{
+    \setstretch{1.5}
+    \small
+    \bfseries
+    \begin{tabular}{r r r}
+         نام و نام خانوادگی : #1
+         &
+         شماره دانشجویی: #2
+         &
+         معدل: #3
+         \\
+         گرایش: #4
+         &
+         تعداد واحدهای گذرانده: #5
+         &
+         استاد راهنما: #6
+         \\
+         استاد راهنمای همکار: #7
+         &
+         تعداد واحد پروژه: #8
+         &
+         استاد ممتحن: #9
+    \end{tabular}
+}
+}
+\usepackage{array} % Add this package to use 'm' column specifier
+
+\newcommand{\Title}[3]{
+	{
+		\setstretch{1.5}
+		\bfseries
+		\noindent
+		عنوان کامل پروژه:
+		
+		فارسی: #1
+		
+		انگلیسی:
+		\lr{#2}\\
+		
+		\noindent
+		نوع پروژه:\;
+		\begin{tabular}{m{10em} m{10em} m{10em}}
+			کاربردی:
+			\ifthenelse{#3 = 0 \or #3 = 3}{
+				$\blacksquare$
+			}{
+				$\square$
+			}
+			&
+			بنیادی:
+			\ifthenelse{#3 = 1 \or #3 = 3}{
+				$\blacksquare$
+			}{
+				$\square$
+			}
+			&
+			توسعه‌ای:
+			\ifthenelse{#3 = 2 \or #3 = 3}{
+				$\blacksquare$
+			}{
+				$\square$
+			} \\
+		\end{tabular}
+	}
+}
+
+\newcommand{\Description}[2]{
+    {
+        \setstretch{1.5}
+        \noindent
+        \textbf{شرح مختصر پروژه:}
+        \textbf{
+        (با تأکيد بر اهمیت موضوع، مشکلات موجود، تعریف مسئله، کاربردها، دادگان مورد استفاده (در صورت نیاز) و نحوه ارزیابی در حدود 250 کلمه)
+        }
+        \noindent
+        
+        #1
+        
+        \vspace{20pt}
+        
+        \setcounter{length}{0}
+        \setcounter{itemCount}{0}
+        %First obtain the length of field
+        \foreach\x in#2{%
+            \addtocounter{length}{1}
+        }
+        
+        \textbf{کلمات کلیدی:}\;
+        \foreach\x in#2{%
+            \addtocounter{itemCount}{1}
+            \trim{\x}
+            \ifthenelse{\thelength = \theitemCount}{}{-}
+        }
+        \vspace{1em}
+    }
+}
+
+\makeatletter
+\newcommand{\ProgressTable}[1]{
+{
+    \noindent
+    \textbf{مراحل انجام پروژه و زمان‌بندی آن:}
+    \\
+    
+    \def\tableData{}
+    
+    \foreach \x\y\z in #1{
+        \protected@xappto\tabledata{ \x & \y & \z\\ \noexpand\hline}
+    }
+    
+    %Add space to each row in table:
+    \renewcommand{\arraystretch}{1.5}
+    \begin{center}
+    \begin{tabular}{| c | m{0.8\textwidth} | c |}
+        \hline
+        \tabledata
+    \end{tabular}
+    %Add space to each row in table:
+        
+    \end{center}
+    \renewcommand{\arraystretch}{1}
+}
+    
+}
+\makeatother
+
+\newcommand{\References}{
+{
+    \noindent
+    \nocite{*}
+    \textbf{مراجع:}
+    \begin{latin}
+        \printbibliography[heading=none]
+    \end{latin}
+}
+}
+\newcommand{\Courses}[1]{
+{
+    \noindent
+    \textbf{دروس مورد نیاز:}\\
+    
+    %Not completed yet.
+    \centering
+    %Add space to each row in table:
+    \renewcommand{\arraystretch}{1.5}
+    \begin{center}
+    \begin{tabular}{| >{\centering}m{6em} | >{\centering}m{3em} | >{\centering}m{6em} | >{\centering}m{6em} | >{\centering}m{3em} | >{\centering\arraybackslash}m{6em} |}
+         \hline
+         \rowcolor{lightgray}
+         \multicolumn{3}{|c|}{جبرانی}
+         &
+         \multicolumn{3}{|c|}{تخصصی
+            \tiny
+            (ارتباط موضوع پروژه با دروسی که دانشجو گذرانده یا باید بگذراند)
+         }
+         \\
+         \hline
+         \rowcolor{lightgray}
+         گذرانده
+         &
+         نمره
+         &
+         باید بگذراند
+         &
+         گذرانده
+         &
+         نمره
+         &
+         باید بگذراند
+         \\
+         \hline
+         &
+         &
+         &
+         &
+         &
+         \\
+         \hline
+         &
+         &
+         &
+         &
+         &
+         \\
+         \hline
+         &
+         &
+         &
+         &
+         &
+         \\
+         \hline
+    \end{tabular}
+    \end{center}
+    %Add space to each row in table:
+    \renewcommand{\arraystretch}{1}
+}
+}
+\newcommand{\Signatures}{
+{
+    %Add space to each row in table:
+    \renewcommand{\arraystretch}{1.5}
+    
+    \begin{center}
+        \scriptsize
+        \begin{tabular}{|m{15em}|m{15em}|m{15em}|}
+            \hline
+            استاد راهنما:
+            &
+            نظر گروه:
+            &
+            نظر کمیته تحصیلات تکمیلی دانشکده:
+            \\
+            تاریخ تحویل فرم به مدیر گروه:
+            &
+            &
+            \\
+            امضای استاد راهنما:
+            &
+            تاریخ جلسه گروه:
+            &
+            تاریخ جلسه کمیته:
+            \\ 
+            &
+            امضای مدیر گروه:
+            &
+            امضای معاون تحصیلات تکمیلی:
+            \\
+            &
+            &
+            \\
+            &
+            &
+            \\
+            & &\\
+            & &\\
+            \hline
+        \end{tabular}
+    \end{center}
+    \footnotesize
+    توجه: فرم تعریف پروژه بایستی یک روز قبل از جلسه گروه توسط استاد راهنما تحویل مدیر گروه شود.
+    %Add space to each row in table:
+    \renewcommand{\arraystretch}{1}
+}
+}
+
+%\renewcommand{\headrulewidth}{0pt}
+%\renewcommand{\footrulewidth}{0pt}
+
+
+\begin{document}
+
+%First parameter: Name of student(Your name)
+%Second parameter: Student Number
+%Third parameter: Student's GPA
+%Fourth parameter: Student's Major
+%Fifth parameter: Student's passed courses credits.
+%Sixth parameter: Project Supervisor.
+%Seventh parameter: Project Co-Supervisor
+%Eighth parameter: Project Credits.
+%Ninth parameter: Project Examiner
+\Information{
+    علی بنی‌اسد
+}{
+    401209244
+}{
+    20
+}{
+    فضا
+}{
+    15
+}{
+    دکتر نوبهاری
+}{}{
+    6
+}{
+    نام استاد ممتحن
+}
+
+\noindent
+
+%First parameter: Title of your project in Persian.
+%Second parameter: Title of your project in English.
+%Third parameter: Type of your project =>
+%   0: Theoretical.
+%   1: Practical.
+%   2: Both practical & theoretical
+\Title{
+    عنوان پیشنهاده
+}{
+    Proposal Title
+}{
+    0
+}
+
+\noindent
+
+\Description{
+‫    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+‫
+}{
+    {
+        کلمه کلیدی نمونه
+        ,
+        کلمه کلیدی نمونه
+        ,
+        کلمه کلیدی نمونه
+    }
+}
+
+%Table of progress:
+%   Pass line number, works and their duration in a comma delimited list.
+%   line number / work / duration ,
+%   example: 1 / read X / 1 year ,
+
+\ProgressTable{
+    {
+    میسا/پایداری و کنترل: برقراری پایداری و کنترل مناسب در حین ناوبری گروهی از پرندهها بسیاراهمیت دارد. هماهنگی در حرکت و جهتدهی به پرندهها بهمنظور جلوگیری از تصادف و تضاد در  حرکت ضروری است.
+    \newline
+    علی
+    /۴ ماه,
+    ۲/مرحله دوم/۳ ماه,
+    ۳/مرحله سوم/۲ ماه,
+    ۳/مرحله چهارم/۵ ماه,
+    ۵/مرحله پنجم/۲ ماه
+    }
+}
+
+\noindent
+
+% Add our references in references,bib
+\References{}
+
+\noindent
+
+% Change \newcommand{\Courses} in the previous lines
+\Courses{}
+
+\noindent
+
+\Signatures{}
+
+\end{document}
