@@ -17,8 +17,9 @@
 \usepackage{ifthen}
 %To draw dynamic multi-column table:
 \usepackage{etoolbox}
-\usepackage{biblatex}
-
+%\usepackage{biblatex}
+%\addbibresource{refs.bib} % with extension
+%\setcitestyle{authoryear,open={(},close={)}}
 %\bibliographystyle{ieeetr-fa.bst}
 %For references:
 %\usepackage{biblatex}
@@ -42,6 +43,7 @@
 \makeatletter
 \newcommand{\trim}[1]{\trim@spaces@noexp{#1}}
 \makeatother
+
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -494,8 +496,9 @@
 	 را از کامپیوتر ایستگاه زمینی به کامپیوتر پرواز منتقل می‌کنند. 
 در حالی که در طراحی مسیر از افزایش قدرت سخت‌افزارهای کامپیوتر بهره‌برداری می‌کنند، تعداد کمی از آن‌ها برای اجرای خودکار درون‌سفینه عملی هستند. این به دلیل محدودیت‌های منابع محاسباتی است که در فضاپیماها وجود دارد.
 
-در فرآیند طراحی مسیر، معمولاً یک مسیر بهینه و تاریخچه فرمان کنترلی طراحی می‌شود که با معیارهای ماموریت، مصرف سوخت و زمان پرواز، مطابقت داشته باشد. این روش قبل از پرواز انجام می‌شود و می‌تواند از استراتژی‌های متعددی برای هدایت بهینه با پیشران کم استفاده کند، از جمله تکنیک‌های بهینه‌سازی جهانی \cite{vavrina2017global} و برنامه‌نویسی غیرخطی \cite{article}.
+در فرآیند طراحی مسیر، معمولاً یک مسیر بهینه و تاریخچه فرمان کنترلی طراحی می‌شود که با معیارهای ماموریت، مصرف سوخت و زمان پرواز، مطابقت داشته باشد. این روش قبل از پرواز انجام می‌شود و می‌تواند از استراتژی‌های متعددی برای هدایت بهینه با پیشران کم استفاده کند، از جمله تکنیک‌های بهینه‌سازی جهانی \cite{vavrina2017global} و برنامه‌نویسی غیرخطی \cite{ocampo2004finite}.
 }{0}{{}}
+\cite{vavrina2017global} 
 
 
 %\Description{پژوهش‌های داخلی}{
@@ -529,8 +532,9 @@
 
 
 
-%\input{bibs/bibs.tex}
+%\printbibliography
 
+%\bibliography{refs}
 
 
 \noindent
@@ -538,6 +542,27 @@
 % Add our references in references,bib
 %\References{}
 %\input{bibs/bibs.tex}
+
+%\begin{thebibliography}{1}
+%	\input{bibs/bibs.tex}
+%\end{thebibliography}
+
+\begin{latin}
+	\begin{thebibliography}{1}
+		
+		\bibitem{vavrina2017global}
+		Vavrina, Matthew A, Jacob A Englander, Sean M Phillips, and Kyle M Hughes.
+		"Global, multi-objective trajectory optimization with parametric spreading."
+		In AAS AIAA Astrodynamics Specialist Conference 2017, Tech. No. GSFC-E-DAA-TN45282, 2017.
+		
+		\bibitem{ocampo2004finite}
+		Ocampo, Cesar.
+		"Finite Burn Maneuver Modeling for a Generalized Spacecraft Trajectory Design and Optimization System."
+		Annals of the New York Academy of Sciences 1017 (2004): 210-233.
+		doi: 10.1196/annals.1311.013.
+		
+	\end{thebibliography}
+\end{latin}
 
 
 \noindent
