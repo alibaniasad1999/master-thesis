@@ -5,6 +5,7 @@
 \usepackage{layout}%No need for this package at production.
 \usepackage{setspace}%For switch between line spacing.
 \usepackage{graphicx}
+\usepackage{multirow}
 %For drawing lines and arbitrary shapes:
 \usepackage{tikz}
 %To set fixed length for table: 
@@ -43,6 +44,7 @@
 \makeatletter
 \newcommand{\trim}[1]{\trim@spaces@noexp{#1}}
 \makeatother
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 
 \usepackage{fancyhdr}
@@ -497,25 +499,49 @@
 در حالی که در طراحی مسیر از افزایش قدرت سخت‌افزارهای کامپیوتر بهره‌برداری می‌کنند، تعداد کمی از آن‌ها برای اجرای خودکار درون‌سفینه عملی هستند. این به دلیل محدودیت‌های منابع محاسباتی است که در فضاپیماها وجود دارد.
 
 در فرآیند طراحی مسیر، معمولاً یک مسیر بهینه و تاریخچه فرمان کنترلی طراحی می‌شود که با معیارهای ماموریت، مصرف سوخت و زمان پرواز، مطابقت داشته باشد. این روش قبل از پرواز انجام می‌شود و می‌تواند از استراتژی‌های متعددی برای هدایت بهینه با پیشران کم استفاده کند، از جمله تکنیک‌های بهینه‌سازی جهانی \cite{vavrina2017global} و برنامه‌نویسی غیرخطی \cite{ocampo2004finite}.
+با این حال، توانایی سریع محاسبه مجدد مسیر مرجع و تاریخچه فرمان کنترلی در داخل فضاپیما در هنگام پرواز بسیار مهم است. برخی از پژوهش‌ها تلاش می‌کنند که روش‌های بهینه‌سازی را در کامپیوتر سفینه اجرا کنند، برای مثال از دینامیک‌های ساده‌تری که جسم سوم در آن نیست، استفاده می‌شود. با نگاه به هدایت درون‌سفینه از دیدگاه یادگیری ماشین، یک کنترل‌کننده شبکه عصبی حلقه بسته، امکان محاسبه سریع و خودکار تاریخچه کنترل را برای یک فضاپیما فراهم می‌کند. به علاوه، یادگیری تقویتی\LTRfootnote{Reinforcement Learning (RL)}
+ یادگیری پیش از پرواز واقعی است و می‌تواند از سخت‌افزارهای سریع و قدرتمند و ارزان قیمت زمینی جهت یادگیری استفاده کند.
+روش‌های هدایت و بهینه‌سازی مسیر فضاپیماها به طور کلی به راه‌حل‌های اولیه مناسب نیاز دارند. در مسائل چندجسمی، طراحان مسیر اغلب حدس‌های اولیه کم‌هزینه‌ای برای انتقال‌ها با استفاده از نظریه سیستم‌های دینامیکی و صفحات نامتعیض
+\cite{2013AcAau, Haapala}
+ ایجاد می‌کنند. 
+روش‌های مبتنی بر سیستم‌های دینامیکی در بسیاری از کاربردهای گذشته مفید بوده‌اند و در ترکیب با اصلاحات دیفرانسیل و یا تکنیک‌های بهینه‌سازی، برای بسیاری از کاربردها راه‌حل‌های بهینه تولید می‌کنند. با این حال، این رویکرد محاسباتی فشرده است و اغلب به تعاملات انسان در حلقه نیاز دارد. به عنوان یک جایگزین، تکنیک‌های بهینه‌سازی جهانی ابتکاری مانند جستجوی حوضچه و الگوریتم‌های تکاملی، نیاز به راه‌حل‌های راه‌اندازی دقیق را کاهش می‌دهند \cite{vavrina2017global}، اما پیچیدگی محاسباتی مربوطه آنها را برای استفاده درون‌سفینه ناممکن می‌سازد.
+
+
+شبکه‌های عصبی ویژگی‌های جذابی را برای فعال‌سازی \lr{automatic guidance} دارند. به عنوان مثال، شبکه‌های عصبی می‌توانند به‌طور مستقیم از تخمین‌های وضعیت به دستورهای پیشران کنترلی که با محدودیت‌های مأموریت سازگار است، برسند. عملکرد هدایت شبکه‌های عصبی در مطالعاتی مانند فرود بر سیارات \cite{gaudet2020six}، عملیات نزدیکی به سیارات \cite{gaudet2020terminal} و کنترل فضاپیما با پیشران ازدست رفت \cite{rubinsztejn2020neural} نشان داده شده است.
+
+تازه‌ترین پیشرفت‌های تکنیک‌های یادگیری ماشینی در مسائل \lr{onboard automation} به‌طور گسترده‌ای مورد مطالعه قرار گرفته‌اند، از پژوهش‌های اولیه تا توانایی‌های پیاده‌سازی.
+
+به‌عنوان مثال، الگوریتم‌های یادگیری ماشینی ابتدایی در فضاپیماهای مریخی برای کمک به شناسایی ویژگی‌های زمین‌شناسی تعبیه شده‌اند. الگوریتم (AEGIS) توانایی انتخاب خودکار هدف \lr{ChemCam} در داخل فضاپیماهای \lr{Spirit}، \lr{Opportunity} و \lr{Curiosity} را فعال می‌کند
+\cite{estlin2012aegis}.
+  در کامپیوتر پرواز اصلی \lr{Curiosity}، فرآیند بهبود نقطه‌گیری \lr{(refinement process) } نیاز به 94 تا 96 ثانیه دارد 
+  \lr{francis2017aegis},
+   که به طور قابل توجهی کمتر از زمان مورد نیاز برای ارسال تصاویر به زمین و انتظار برای انتخاب دستی توسط دانشمندان است.
+   برنامه‌های آینده برای کاربردهای یادگیری ماشینی درون‌سفینه شامل توانایی‌های رباتیکی درون‌سفینه برای فضاپیمای \lr{Perseverance}
+\cite{higa2019vision, rothrock2016spoc}
+     و شناسایی عیب برای 
+   \lr{Europa Clipper}
+\cite{wagstaff2019enabling} می‌شوند. الگوریتم‌های یادگیری ماشینی پتانسیلی برای سهم مهمی در مأموریت‌های اتوماسیون آینده دارند.
+
+
+علاوه بر رباتیک سیاره‌ای، تحقیقات مختلفی به تکنیک‌های مختلف یادگیری ماشینی برای مسائل astrodynamics اختصاص داده‌اند. در طراحی مسیر، وظایف رگرسیون معمولاً مؤثرتر هستند. به عنوان مثال، Dachwald در سال 2004 از یک شبکه عصبی کم‌عمق (NN) در بهینه‌سازی مسیرهای رانشگر کم پیشران استفاده کرد .\cite{dachwald2004evolutionary} تحقیقات به تازگی شامل شناسایی انتقال‌های هتروکلینیک \cite{desmet2019identifying}، اصلاح مسیر رانشگر کم پیشران\cite{parrish2018lowthrust} و تجزیه و تحلیل مشکلات ازدست رفتن رانشگر\cite{rubinsztejn2020neural} شده‌اند.
+تکنیک‌های یادگیری نظارتی می‌توانند نتایج مطلوبی تولید کنند، اما دارای محدودیت‌های قابل توجهی هستند. ابتدا، چنین رویکردها فرآیند تصمیم‌گیری را فرض می‌کنند. با انتخاب نتایج مطلوب، کاربر فرض می‌کند که دانش از پیش از فرآیند تصمیم‌گیری را دارد. این فرضیه به معنای دقیق بودن داده‌های تولید‌شده توسط کاربر برای نتایج مطلوب است و همچنین به تکنیک‌های موجود برای حل مشکل کنونی و تولید داده نیاز دارد. در دامنه‌هایی که چنین دانشی وجود ندارد، تکنیک‌های یادگیری نظارتی قابل استفاده نیستند.
+در سال‌های اخیر، RL به اثبات مفید بودن خود در دستیابی به عملکرد بهترین حالت در دامنه‌هایی با ابهام محیطی قابل توجه رسیده است
+ \cite{heess2017emergence, silver2017mastering}. هدایت فعال‌سازی‌شده توسط RL به صورت گسترده‌ای بر اساس فاز پرواز دسته‌بندی می‌شوند. مسائل فرود \cite{furfaro2020adaptive, gaudet2020deep} و عملیات در نزدیکی به اجسام کوچک
+\cite{gaudet2020terminal, gaudet2020six}
+از حوزه‌های مطالعاتی بهره‌برداری‌شده‌ای هستند. تحقیقات دیگر شامل مواجهه ،\cite{broida2019spacecraft} تداخل خارجی‌جوی
+\cite{gaudet2020reinforcement}
+، نگهداری ایستگاهی \cite{guzzetti2019reinforcement} و اجتناب از تشخیص \cite{reiter2020augmenting} هستند. مطالعاتی که فضاپیماهای رانشگر کم پیشرانرا در یک چارچوب دینامیکی چندبدنی با استفاده از \lr{RL} شامل طراحی انتقال با استفاده از
+ \lr{Q-Learning}
+ \cite{dasstuart2020rapid} و \lr{Proximal Policy Optimization }
+  \cite{miller2019lowthrust}، و همچنین هدایت نزدیکی مدار
+  \cite{sullivan2020using}، شده‌اند.
 }{0}{{}}
-\cite{vavrina2017global} 
-
-
-%\Description{پژوهش‌های داخلی}{
-%}{0}{{}}
-%
-%
-%\Description{پژوهش‌های داخل دانشگاه و دانشکده}{
-%}{0}{{}}
 
 
 
-
-
-%Table of progress:
-%   Pass line number, works and their duration in a comma delimited list.
-%   line number / work / duration ,
-%   example: 1 / read X / 1 year ,
+\Description{اهداف پژوهش} {
+های
+}{0}{{}}
 
 \ProgressTable{
     {
@@ -529,6 +555,46 @@
     ۵/مرحله پنجم/۲ ماه
     }
 }
+
+
+
+
+
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[htbp]
+	\centering
+	\caption{جدول برنامه‌ریزی پروژه ناوبری اینرسی مشارکتی مبتنی بر هوش مصنوعی}
+	\begin{tabular}{|P{3cm}|P{10cm}|}
+		\hline
+		\textbf{فصل} & \textbf{فعالیت‌ها} \\
+		\hline
+		\multirow{3}{*}{\textbf{تابستان سال اول}} & تست \\
+		\cline{2-2}
+		& \\
+		\cline{2-2}
+		&  \\
+		\hline
+		\multirow{3}{*}{\textbf{نیمسال اول سال دوم}} & \textbf{الف) طراحی و توسعه سیستم ناوبری مشارکتی و تکنیک‌های ترازیابی در حین پرواز} \\
+		\cline{2-2}
+		& \\
+		\cline{2-2}
+		& \textbf{ج) شبیه‌سازی عملکرد سیستم ناوبری اینرسی مشارکتی در شرایط مختلف و ارزیابی عملکرد آن} \\
+		\hline
+		\multirow{3}{*}{\textbf{نیمسال دوم سال دوم}} & \textbf{الف) آموزش الگوریتم‌های هوش مصنوعی برای رهبر گروه و اعضای گروه با استفاده از داده‌های جمع‌آوری‌شده} \\
+		\cline{2-2}
+		& \textbf{ب) ارزیابی و تحلیل نتایج شبیه‌سازی‌ها و آزمایش‌ها در مورد دقت و قابلیت اطمینان سیستم ناوبری} \\
+		\cline{2-2}
+		& \textbf{ج) اصلاح و بهبود عملکرد سیستم ناوبری بر اساس نتایج به دست‌آمده} \\
+		\cline{2-2}
+		& \textbf{د) انجام پیاده‌سازی سخت‌افزاری سیستم ناوبری مشارکتی بر روی میکروپروسسورها و ارتباط با مدل‌های ریاضی پرنده‌ها} \\
+		\cline{2-2}
+		& \textbf{ه) نتیجه‌گیری از تحقیقات و ارائه گزارش نهایی شامل معرفی مسئله، روش‌های استفاده‌شده، نتایج حاصل و پیشنهادات برای تحقیقات آتی} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
 
 
 
@@ -550,6 +616,54 @@
 \begin{latin}
 	\begin{thebibliography}{1}
 		
+		\bibitem{broida2019spacecraft}
+		J. Broida, R. Linares,
+		"Spacecraft rendezvous guidance in cluttered environments via reinforcement learning,"
+		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Ka’anapali, Hawaii, 2019, pp. 1–15.
+		
+		\bibitem{gaudet2020reinforcement}
+		B. Gaudet, R. Furfaro, R. Linares,
+		"Reinforcement learning for angle-only intercept guidance of maneuvering targets,"
+		\textit{Aerosp. Sci. Technol.} 99 (2020).
+		
+		\bibitem{guzzetti2019reinforcement}
+		D. Guzzetti,
+		"Reinforcement learning and topology of orbit manifolds for station-keeping of unstable symmetric periodic orbits,"
+		in: \textit{AAS/AIAA Astrodynamics Specialist Conference}, American Astronautical Society, Portland, Maine, 2019, pp. 1–20.
+		
+		\bibitem{reiter2020augmenting}
+		J.A. Reiter, D.B. Spencer,
+		"Augmenting spacecraft maneuver strategy optimization for detection avoidance with competitive coevolution,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–11.
+		
+		\bibitem{dasstuart2020rapid}
+		A. Das-Stuart, K.C. Howell, D.C. Folta,
+		"Rapid trajectory design in complex environments enabled by reinforcement learning and graph search strategies,"
+		\textit{Acta Astronaut.} 171 (2020) 172–195.
+		
+		\bibitem{miller2019lowthrust}
+		D. Miller, R. Linares,
+		"Low-thrust optimal control via reinforcement learning,"
+		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Ka’anapali, Hawaii, 2019, pp. 1–18.
+		
+		\bibitem{sullivan2020using}
+		C.J. Sullivan, N. Bosanac,
+		"Using reinforcement learning to design a low-thrust approach into a periodic orbit in a multi-body system,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–19.
+		
+		
+		\bibitem{gaudet2020terminal}
+		B. Gaudet, R. Linares, R. Furfaro,
+		"Terminal adaptive guidance via reinforcement meta-learning: Applications to autonomous asteroid close-proximity operations,"
+		\textit{Acta Astronaut.} 171 (2020) 1–13.
+		
+		
+		\bibitem{gaudet2020six}
+		B. Gaudet, R. Linares, R. Furfaro,
+		"Six degree-of-freedom hovering over an asteroid with unknown environmental dynamics via reinforcement learning,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–15.
+		
+		
 		\bibitem{vavrina2017global}
 		Vavrina, Matthew A, Jacob A Englander, Sean M Phillips, and Kyle M Hughes.
 		"Global, multi-objective trajectory optimization with parametric spreading."
@@ -560,6 +674,91 @@
 		"Finite Burn Maneuver Modeling for a Generalized Spacecraft Trajectory Design and Optimization System."
 		Annals of the New York Academy of Sciences 1017 (2004): 210-233.
 		doi: 10.1196/annals.1311.013.
+		
+		\bibitem{Haapala}
+		Haapala, A. F., \& Howell, K. C. (2016).
+		"A framework for constructing transfers linking periodic libration point orbits in the spatial circular restricted three-body problem."
+		International Journal of Bifurcation and Chaos, 26(05), 1630013.
+		
+		
+		\bibitem{2013AcAau}
+		Marchand, B.~G. and Scarritt, S.~K. and Pavlak, T.~A. and Howell, K.~C.
+		``A dynamical approach to precision entry in multi-body regimes: Dispersion manifolds.''
+		Acta Astronautica 89 (2013): 107-120.
+		doi: 10.1016/j.actaastro.2013.02.015.
+		
+		\bibitem{estlin2012aegis}
+		T.A. Estlin, B.J. Bornstein, D.M. Gaines, R.C. Anderson, D.R. Thompson, M. Burl, R. Castaño, M. Judd.
+		"Aegis automated science targeting for the MER Opportunity rover."
+		ACM Trans. Intell. Syst. Technol. (TIST), 3, 1-19, 2012.
+		
+		\bibitem{francis2017aegis}
+		R. Francis, T. Estlin, G. Doran, S. Johnstone, D. Gaines, V. Verma, M. Burl, J. Frydenvang, S. Montano, R. Wiens, S. Schaffer, O. Gasnault, L. Deflores, D. Blaney, B. Bornstein.
+		"Aegis autonomous targeting for ChemCam on Mars Science Laboratory: Deployment and results of initial science team use."
+		Science Robotics, 2, 2017.
+		
+		\bibitem{wagstaff2019enabling}
+		K.L. Wagstaff, G. Doran, A. Davies, S. Anwar, S. Chakraborty, M. Cameron, I. Daubar, C. Phillips.
+		"Enabling onboard detection of events of scientific interest for the Europa Clipper spacecraft,"
+		in: 25th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining,
+		Association for Computing Machinery, Anchorage, Alaska, 2019, pp. 2191--2201,
+		doi: 10.1145/3292500.3330656.
+		
+		\bibitem{higa2019vision}
+		S. Higa, Y. Iwashita, K. Otsu, M. Ono, O. Lamarre, A. Didier, M. Hoffmann.
+		"Vision-based estimation of driving energy for planetary rovers using deep learning and terramechanics,"
+		IEEE Robot. Autom. Lett. 4 (2019) 3876–3883.
+		
+		\bibitem{rothrock2016spoc}
+		B. Rothrock, J. Papon, R. Kennedy, M. Ono, M. Heverly, C. Cunningham.
+		"Spoc: Deep learning-based terrain classification for Mars rover missions,"
+		in: AIAA Space and Astronautics Forum and Exposition, SPACE 2016,
+		American Institute of Aeronautics and Astronautics Inc, AIAA, 2016, pp. 1–12.
+		
+		\bibitem{dachwald2004evolutionary}
+		B. Dachwald.
+		"Evolutionary neurocontrol: A smart method for global optimization of low-thrust trajectories,"
+		in: AIAA/AAS Astrodynamics Specialist Conference and Exhibit,
+		Providence, Rhode Island, 2004, pp. 1–16.
+		
+		\bibitem{desmet2019identifying}
+		S. De Smet, D.J. Scheeres.
+		"Identifying heteroclinic connections using artificial neural networks,"
+		Acta Astronaut. 161 (2019) 192–199.
+		
+		\bibitem{parrish2018lowthrust}
+		N.L.O. Parrish.
+		"Low Thrust Trajectory Optimization in Cislunar and Translunar Space (Ph.D. thesis),"
+		University of Colorado Boulder, 2018.
+		
+		\bibitem{rubinsztejn2020neural}
+		A. Rubinsztejn, R. Sood, F.E. Laipert.
+		"Neural network optimal control in astrodynamics: Application to the missed thrust problem,"
+		Acta Astronaut. 176 (2020) 192–203.
+		
+		\bibitem{heess2017emergence}
+		N. Heess, D. TB, S. Sriram, J. Lemmon, J. Merel, G. Wayne, Y. Tassa, T. Erez, Z. Wang, S.M.A. Eslami, M.A. Riedmiller, D. Silver.
+		"Emergence of locomotion behaviours in rich environments," 2017.
+		CoRR abs/1707.02286.
+		arXiv:1707.02286.
+		
+		\bibitem{silver2017mastering}
+		D. Silver, J. Schrittwieser, K. Simonyan, I. Antonoglou, A. Huang, A. Guez, T. Hubert, L. Baker, M. Lai, A. Bolton, Y. Chen, T. Lillicrap, F. Hui, L. Sifre, G. van den Driessche, T. Graepel, D. Hassabis.
+		"Mastering the game of Go without human knowledge," Nature 550 (2017) Article.
+		
+		\bibitem{furfaro2020adaptive}
+		R. Furfaro, A. Scorsoglio, R. Linares, M. Massari,
+		"Adaptive generalized ZEM-ZEV feedback guidance for planetary landing via a deep reinforcement learning approach,"
+		Acta Astronaut. 171 (2020) 156–171.
+		
+		\bibitem{gaudet2020deep}
+		B. Gaudet, R. Linares, R. Furfaro,
+		"Deep reinforcement learning for six degrees of freedom planetary landing,"
+		Adv. Space Res. 65 (2020) 1723–1741.
+		
+		
+		
+		
 		
 	\end{thebibliography}
 \end{latin}
