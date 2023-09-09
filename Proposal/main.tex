@@ -18,12 +18,24 @@
 \usepackage{ifthen}
 %To draw dynamic multi-column table:
 \usepackage{etoolbox}
+\usepackage{float}
+
 %\usepackage{biblatex}
 %\addbibresource{refs.bib} % with extension
 %\setcitestyle{authoryear,open={(},close={)}}
 %\bibliographystyle{ieeetr-fa.bst}
 %For references:
-%\usepackage{biblatex}
+% \usepackage[style=plain]{biblatex}
+%\bibliographystyle{ieeetr}
+
+
+
+% \usepackage{biblatex}
+% \addbibresource{references.bib}
+%\usepackage[style=numeric]{biblatex}
+
+
+
 
 %\renewcommand{\bibsection}{}{\rl{{مراجع}\hfill}} 
 
@@ -95,6 +107,7 @@
             \end{tabular}
         }
 }
+% cite
 
 %Improvement: take advantages of the optional parameters! Currently I don't have any time to learn and implement it.
 \newcommand{\Information}[9]{
@@ -232,7 +245,7 @@
 %\newcommand{\References}{
 %{
 %    \noindent
-%    \nocite{*}
+%    \nocitep*}
 %    \textbf{مراجع:}
 %    \begin{latin}
 %        \printbibliography[heading=none]
@@ -369,7 +382,7 @@
 }{
     401209244
 }{
-    20
+    16/34
 }{
     فضا
 }{
@@ -379,7 +392,7 @@
 }{}{
     6
 }{
-    نام استاد ممتحن
+%    نام استاد ممتحن
 }
 
 \noindent
@@ -404,7 +417,7 @@
 \LTRfootnote{Differential Game Reinforcement Learning (DGRL)}
  را ارائه می‌دهد. این منطق هدایت در بستر شبکه عصبی
  \LTRfootnote{Neural Network (NN)}
-  برای راهنمایی خودکار و حلقه بسته فضاپیماهایی با رانشگر کم‌پیشران در محیط‌های چند جسمی متغیر چالش‌برانگیز مانند منظومه زمین-ماه، ارائه می‌شود.
+  برای راهنمایی خودکار و حلقه بسته فضاپیماهایی با پیشران کم در محیط‌های چند جسمی متغیر مانند منظومه زمین-ماه، ارائه می‌شود.
 }{0}{
     {
         کلمه کلیدی نمونه
@@ -416,9 +429,9 @@
 }
 
 \Description{اهمیت موضوع}{
-مطالعه و توسعه این الگوریتم هدایت جدید با استفاده از الگوریتم‌های یادگیری تقویتی و یادگیری بازی‌های دیفرانسیلی دارای اهمیت ویژه‌ای است. این الگوریتم هدایت، به عنوان یک مدل مقاوم، قابلیت مقابله با نوسانات و متغیرهای محیطی را داراست. علاوه بر این، ساختار جدید پردازنده‌های کامپیوتر پرواز، با امکانات به‌روز و محاسبات ماتریسی بهبود یافته، اجرای بهینه‌تر الگوریتم‌های یادگیری ماتریسی را آسان کرده و توانایی اجرای موثر آنها را فراهم کرده است.
+مطالعه و توسعه این الگوریتم هدایت جدید با استفاده از الگوریتم‌های یادگیری تقویتی و یادگیری بازی‌های دیفرانسیلی دارای اهمیت ویژه‌ای است. این الگوریتم هدایت، به عنوان یک مدل مقاوم، قابلیت مقابله با نوسانات و متغیرهای محیطی را داراست. علاوه بر این، ساختار جدید پردازنده‌های کامپیوتر پرواز، با امکانات به‌روز و محاسبات ماتریسی بهبود یافته، اجرای بهینه‌تر الگوریتم‌های یادگیری ماتریسی را آسان کرده و امکان اجرای موثر آنها را فراهم کرده است.
 
-با توجه به اینکه ایستگاه زمینی در بیشتر زمان ماموریت فاصله زمانی قابل توجهی از محل اجرای دستورات تا مکان اعمال واقعی دستورات دارد، استفاده از این الگوریتم هدایت می‌تواند به عنوان یک تکنولوژی بسیار مهم در کاهش تاخیرهای ناشی از این فواصل زمانی و افزایش پایداری و دقت سیستم‌های کامپیوتر پرواز تلقی شود. توانایی این الگوریتم هدایت در انجام محاسبات پیچیده و تصمیم‌گیری‌های برنامه‌ریزی در زمان واقعی، اهمیت ویژه‌ای برای امنیت و پایداری پروازهای فضایی دارد و می‌تواند تاثیر مثبتی در اجرای موثر ماموریت‌های فضایی آینده داشته باشد.
+با توجه به اینکه ایستگاه زمینی در بیشتر زمان ماموریت فاصله زمانی قابل توجهی از محل اجرای دستورات و مکان اعمال دستورات دارد، استفاده از این الگوریتم هدایت می‌تواند به عنوان یک تکنولوژی بسیار مهم در کاهش تاخیرهای ناشی از این فواصل زمانی و افزایش پایداری و دقت سیستم‌های کامپیوتر پرواز تلقی شود. توانایی این الگوریتم هدایت در انجام محاسبات پیچیده و تصمیم‌گیری‌های برنامه‌ریزی در زمان واقعی، اهمیت ویژه‌ای برای امنیت و پایداری پروازهای فضایی دارد و می‌تواند تاثیر مثبتی در اجرای موثر ماموریت‌های فضایی آینده داشته باشد.
 }{0}{{}}
 
 \Description{کاربردها}{
@@ -459,7 +472,7 @@
 	 انجام می‌شود.
 	\item تابع پاداش به صورت بازی دیفرانسیلی طراحی شده  است که فضاپیما در مسیر نزدیک به مرجع با فرض بدترین اغتشاش  بماند و به مدار مقصد برسد.
 	\item هدف اصلی تنها  اجرا پذیری مسأله   نیست و دیگر اهداف مانند مصرف کمتر سوخت یا زمان انتقال با استفاده از نظریه بازی در نظر گرفته می‌شوند.
-	\item این رویکرد نیاز به دسترسی به منابع محاسباتی با عملکرد بالا برای آموزش یادگیری تقویتی دارد قبل از اجرای آن در رایانه پرواز فضاپیما.
+	\item این رویکرد نیاز به دسترسی به منابع محاسباتی با عملکرد بالا برای آموزش یادگیری تقویتی قبل از اجرای آن در رایانه پرواز فضاپیما را دارد.
 \end{itemize}
 
 	
@@ -472,8 +485,8 @@
 \begin{itemize}
 	\item \textbf{مرحله 1: ایجاد محیط دینامیکی}
 	\begin{itemize}
-		\item پیاده‌سازی مدل دینامیکی محیط مورد نظر انجام می‌شود. این مدل باید شامل تمام جوانب مهم محیط رباشد، از جمله قوانین حرکت، ابعاد فضایی، و وضعیت اولیه.
-		\item در صورت پیچیدگی مدل دینامیکی محیط، از کتابخانه‌ها و ابزارهای مهندسی نرم‌افزاری مانند NumPy و SciPy در پایتون برای پیاده‌سازی آن استفاده کرد.
+		\item پیاده‌سازی مدل دینامیکی محیط مورد نظر انجام می‌شود. این مدل باید شامل تمام جوانب مهم محیط از جمله قوانین حرکت، ابعاد فضایی، و وضعیت اولیه باشد.
+		\item در صورت پیچیدگی مدل دینامیکی محیط، از کتابخانه‌ها و ابزارهای مهندسی نرم‌افزاری مانند NumPy و SciPy در پایتون برای پیاده‌سازی آن استفاده می‌شود.
 		\item مدل دینامیکی محیط  با ویژگی اینکه به درستی کار کند و اطلاعات مورد نیاز برای یادگیری تقویتی (مانند وضعیت فعلی) در دسترس باشند، ایجاد می‌شود.
 	\end{itemize}
 	
@@ -486,7 +499,7 @@
 	\item \textbf{مرحله 3: استفاده از منابع \lr{GPU} در \lr{Google Colab}}
 	\begin{itemize}
 		\item \lr{Google Colab} به عنوان یک محیط آموزش آنلاین به کار می‌رود که اجازه می‌دهد کدهای پایتون در یک محیط مبتنی بر مرورگر اجرا شوند. از این مزیت این محیط می‌توان به دسترسی به منابع \lr{GPU} برای آموزش مدل‌های عمیق اشاره کرد.
-		\item برای استفاده از \lr{GPU} در \lr{Google Colab}، می‌توانید از کتابخانه‌های معروفی مانند \lr{TensorFlow} یا \lr{PyTorch} که از \lr{GPU} پشتیبانی می‌کنند، استفاده می‌شود. به این ترتیب، آموزش مدل‌های یادگیری تقویتی بسیار سریع‌تر و رایگان انجام می‌شود.
+		\item برای استفاده از \lr{GPU} در \lr{Google Colab}، می‌توان از کتابخانه‌های معروفی مانند \lr{TensorFlow} یا \lr{PyTorch} که از \lr{GPU} پشتیبانی می‌کنند، استفاده می‌شود. به این ترتیب، آموزش مدل‌های یادگیری تقویتی بسیار سریع‌تر و رایگان انجام می‌شود.
 	\end{itemize}
 \end{itemize}
 
@@ -499,22 +512,20 @@
 در حالی که در طراحی مسیر از افزایش قدرت سخت‌افزارهای کامپیوتر بهره‌برداری می‌کنند، تعداد کمی از آن‌ها برای اجرای خودکار درون‌سفینه عملی هستند. این به دلیل محدودیت‌های منابع محاسباتی است که در فضاپیماها وجود دارد.
 
 در فرآیند طراحی مسیر، معمولاً یک مسیر بهینه و تاریخچه فرمان کنترلی طراحی می‌شود که با معیارهای ماموریت، مصرف سوخت و زمان پرواز، مطابقت داشته باشد. این روش قبل از پرواز انجام می‌شود و می‌تواند از استراتژی‌های متعددی برای هدایت بهینه با پیشران کم استفاده کند، از جمله تکنیک‌های بهینه‌سازی جهانی \cite{vavrina2017global} و برنامه‌نویسی غیرخطی \cite{ocampo2004finite}.
-با این حال، توانایی سریع محاسبه مجدد مسیر مرجع و تاریخچه فرمان کنترلی در داخل فضاپیما در هنگام پرواز بسیار مهم است. برخی از پژوهش‌ها تلاش می‌کنند که روش‌های بهینه‌سازی را در کامپیوتر سفینه اجرا کنند، برای مثال از دینامیک‌های ساده‌تری که جسم سوم در آن نیست، استفاده می‌شود. با نگاه به هدایت درون‌سفینه از دیدگاه یادگیری ماشین، یک کنترل‌کننده شبکه عصبی حلقه بسته، امکان محاسبه سریع و خودکار تاریخچه کنترل را برای یک فضاپیما فراهم می‌کند. به علاوه، یادگیری تقویتی\LTRfootnote{Reinforcement Learning (RL)}
+با این حال، توانایی سریع محاسبه مجدد مسیر مرجع و تاریخچه فرمان کنترلی در داخل فضاپیما در هنگام پرواز بسیار مهم است. برخی از پژوهش‌ها تلاش می‌کنند که روش‌های بهینه‌سازی را در کامپیوتر سفینه اجرا کنند، برای مثال از دینامیک‌های ساده‌تری که جسم سوم در آن نیست، استفاده می‌شود. با نگاه به هدایت درون‌سفینه‌ای از دیدگاه یادگیری ماشین، یک کنترل‌کننده شبکه عصبی حلقه بسته، امکان محاسبه سریع و خودکار تاریخچه کنترل را برای یک فضاپیما فراهم می‌کند. به علاوه، یادگیری تقویتی\LTRfootnote{Reinforcement Learning (RL)}
  یادگیری پیش از پرواز واقعی است و می‌تواند از سخت‌افزارهای سریع و قدرتمند و ارزان قیمت زمینی جهت یادگیری استفاده کند.
 روش‌های هدایت و بهینه‌سازی مسیر فضاپیماها به طور کلی به راه‌حل‌های اولیه مناسب نیاز دارند. در مسائل چندجسمی، طراحان مسیر اغلب حدس‌های اولیه کم‌هزینه‌ای برای انتقال‌ها با استفاده از نظریه سیستم‌های دینامیکی و صفحات نامتعیض
 \cite{2013AcAau, Haapala}
  ایجاد می‌کنند. 
-روش‌های مبتنی بر سیستم‌های دینامیکی در بسیاری از کاربردهای گذشته مفید بوده‌اند و در ترکیب با اصلاحات دیفرانسیل و یا تکنیک‌های بهینه‌سازی، برای بسیاری از کاربردها راه‌حل‌های بهینه تولید می‌کنند. با این حال، این رویکرد محاسباتی فشرده است و اغلب به تعاملات انسان در حلقه نیاز دارد. به عنوان یک جایگزین، تکنیک‌های بهینه‌سازی جهانی ابتکاری مانند جستجوی حوضچه و الگوریتم‌های تکاملی، نیاز به راه‌حل‌های راه‌اندازی دقیق را کاهش می‌دهند \cite{vavrina2017global}، اما پیچیدگی محاسباتی مربوطه آنها را برای استفاده درون‌سفینه ناممکن می‌سازد.
+روش‌های مبتنی بر سیستم‌های دینامیکی در بسیاری از کاربردهای گذشته مفید بوده‌اند و در ترکیب با اصلاحات دیفرانسیل و یا تکنیک‌های بهینه‌سازی، برای بسیاری از کاربردها راه‌حل‌های بهینه تولید می‌کنند. با این حال، این رویکرد محاسباتی، فشرده است و اغلب به تعاملات انسان در حلقه نیاز دارد. به عنوان یک جایگزین، تکنیک‌های بهینه‌سازی جهانی ابتکاری مانند جستجوی حوضچه و الگوریتم‌های تکاملی، نیاز به راه‌حل‌های راه‌اندازی دقیق را کاهش می‌دهند \cite{vavrina2017global}، اما پیچیدگی محاسباتی مربوطه آنها را برای استفاده درون‌سفینه ناممکن می‌سازد.
 
 
-شبکه‌های عصبی ویژگی‌های جذابی را برای فعال‌سازی \lr{automatic guidance} دارند. به عنوان مثال، شبکه‌های عصبی می‌توانند به‌طور مستقیم از تخمین‌های وضعیت به دستورهای پیشران کنترلی که با محدودیت‌های مأموریت سازگار است، برسند. عملکرد هدایت شبکه‌های عصبی در مطالعاتی مانند فرود بر سیارات \cite{gaudet2020six}، عملیات نزدیکی به سیارات \cite{gaudet2020terminal} و کنترل فضاپیما با پیشران ازدست رفت \cite{rubinsztejn2020neural} نشان داده شده است.
-
+شبکه‌های عصبی ویژگی‌های جذابی را برای فعال‌سازی \lr{automatic guidance} در فضاپیما دارند. به عنوان مثال، شبکه‌های عصبی می‌توانند به‌طور مستقیم از تخمین‌های وضعیت به دستورهای پیشران کنترلی که با محدودیت‌های مأموریت سازگار است، برسند. عملکرد هدایت شبکه‌های عصبی در مطالعاتی مانند فرود بر سیارات \cite{gaudet2020six}، عملیات نزدیکی به سیارات \cite{gaudet2020terminal} و کنترل فضاپیما با پیشران ازدست رفته \cite{rubinsztejn2020neural} نشان داده شده است.
 تازه‌ترین پیشرفت‌های تکنیک‌های یادگیری ماشینی در مسائل \lr{onboard automation} به‌طور گسترده‌ای مورد مطالعه قرار گرفته‌اند، از پژوهش‌های اولیه تا توانایی‌های پیاده‌سازی.
-
-به‌عنوان مثال، الگوریتم‌های یادگیری ماشینی ابتدایی در فضاپیماهای مریخی برای کمک به شناسایی ویژگی‌های زمین‌شناسی تعبیه شده‌اند. الگوریتم (AEGIS) توانایی انتخاب خودکار هدف \lr{ChemCam} در داخل فضاپیماهای \lr{Spirit}، \lr{Opportunity} و \lr{Curiosity} را فعال می‌کند
+به‌عنوان مثال، الگوریتم‌های یادگیری ماشینی ابتدایی در فضاپیماهای مریخی برای کمک به شناسایی ویژگی‌های زمین‌شناسی تعبیه شده‌اند. الگوریتم \lr{AEGIS} توانایی انتخاب خودکار هدف \lr{ChemCam} در داخل فضاپیماهای \lr{Spirit}، \lr{Opportunity} و \lr{Curiosity} را فعال می‌کند
 \cite{estlin2012aegis}.
-  در کامپیوتر پرواز اصلی \lr{Curiosity}، فرآیند بهبود نقطه‌گیری \lr{(refinement process) } نیاز به 94 تا 96 ثانیه دارد 
-  \lr{francis2017aegis},
+  در کامپیوتر پرواز اصلی \lr{Curiosity}، فرآیند بهبود نقطه‌گیری\LTRfootnote{(refinement process) } نیاز به 94 تا 96 ثانیه دارد 
+  \cite{francis2017aegis},
    که به طور قابل توجهی کمتر از زمان مورد نیاز برای ارسال تصاویر به زمین و انتظار برای انتخاب دستی توسط دانشمندان است.
    برنامه‌های آینده برای کاربردهای یادگیری ماشینی درون‌سفینه شامل توانایی‌های رباتیکی درون‌سفینه برای فضاپیمای \lr{Perseverance}
 \cite{higa2019vision, rothrock2016spoc}
@@ -523,79 +534,130 @@
 \cite{wagstaff2019enabling} می‌شوند. الگوریتم‌های یادگیری ماشینی پتانسیلی برای سهم مهمی در مأموریت‌های اتوماسیون آینده دارند.
 
 
-علاوه بر رباتیک سیاره‌ای، تحقیقات مختلفی به تکنیک‌های مختلف یادگیری ماشینی برای مسائل astrodynamics اختصاص داده‌اند. در طراحی مسیر، وظایف رگرسیون معمولاً مؤثرتر هستند. به عنوان مثال، Dachwald در سال 2004 از یک شبکه عصبی کم‌عمق (NN) در بهینه‌سازی مسیرهای رانشگر کم پیشران استفاده کرد .\cite{dachwald2004evolutionary} تحقیقات به تازگی شامل شناسایی انتقال‌های هتروکلینیک \cite{desmet2019identifying}، اصلاح مسیر رانشگر کم پیشران\cite{parrish2018lowthrust} و تجزیه و تحلیل مشکلات ازدست رفتن رانشگر\cite{rubinsztejn2020neural} شده‌اند.
-تکنیک‌های یادگیری نظارتی می‌توانند نتایج مطلوبی تولید کنند، اما دارای محدودیت‌های قابل توجهی هستند. ابتدا، چنین رویکردها فرآیند تصمیم‌گیری را فرض می‌کنند. با انتخاب نتایج مطلوب، کاربر فرض می‌کند که دانش از پیش از فرآیند تصمیم‌گیری را دارد. این فرضیه به معنای دقیق بودن داده‌های تولید‌شده توسط کاربر برای نتایج مطلوب است و همچنین به تکنیک‌های موجود برای حل مشکل کنونی و تولید داده نیاز دارد. در دامنه‌هایی که چنین دانشی وجود ندارد، تکنیک‌های یادگیری نظارتی قابل استفاده نیستند.
-در سال‌های اخیر، RL به اثبات مفید بودن خود در دستیابی به عملکرد بهترین حالت در دامنه‌هایی با ابهام محیطی قابل توجه رسیده است
- \cite{heess2017emergence, silver2017mastering}. هدایت فعال‌سازی‌شده توسط RL به صورت گسترده‌ای بر اساس فاز پرواز دسته‌بندی می‌شوند. مسائل فرود \cite{furfaro2020adaptive, gaudet2020deep} و عملیات در نزدیکی به اجسام کوچک
-\cite{gaudet2020terminal, gaudet2020six}
-از حوزه‌های مطالعاتی بهره‌برداری‌شده‌ای هستند. تحقیقات دیگر شامل مواجهه ،\cite{broida2019spacecraft} تداخل خارجی‌جوی
-\cite{gaudet2020reinforcement}
-، نگهداری ایستگاهی \cite{guzzetti2019reinforcement} و اجتناب از تشخیص \cite{reiter2020augmenting} هستند. مطالعاتی که فضاپیماهای رانشگر کم پیشرانرا در یک چارچوب دینامیکی چندبدنی با استفاده از \lr{RL} شامل طراحی انتقال با استفاده از
- \lr{Q-Learning}
- \cite{dasstuart2020rapid} و \lr{Proximal Policy Optimization }
-  \cite{miller2019lowthrust}، و همچنین هدایت نزدیکی مدار
-  \cite{sullivan2020using}، شده‌اند.
+علاوه بر رباتیک سیاره‌ای، تحقیقات مختلفی به تکنیک‌های مختلف یادگیری ماشینی برای مسائل \lr{astrodynamics} اختصاص داده‌اند. در طراحی مسیر، وظایف رگرسیون معمولاً مؤثرتر هستند. به عنوان مثال، \lr{Dachwald} در سال 2004 از یک شبکه عصبی کم‌عمق (\lr{NN}) در بهینه‌سازی مسیرهای رانشگر کم پیشران استفاده کرد 
+\cite{dachwald2004evolutionary}.
+ تحقیقات جدید شامل شناسایی انتقال‌های هتروکلینیک \cite{desmet2019identifying}، اصلاح مسیر رانشگر کم پیشران\cite{parrish2018lowthrust} و تجزیه و تحلیل مشکلات ازدست رفتن رانشگر\cite{rubinsztejn2020neural} می‌شوند.
+ 
+تکنیک‌های یادگیری نظارتی می‌توانند نتایج مطلوبی تولید کنند، اما دارای محدودیت‌های قابل توجهی هستند. ابتدا، این رویکردها بر وجود دانش از پیش از فرآیند تصمیم‌گیری متکی هستند. کاربر با انتخاب نتایج مطلوب، فرض می‌کند که این دانش را دارد. این امر مستلزم دقیق بودن داده‌های تولید‌شده توسط کاربر برای نتایج مطلوب و همچنین وجود تکنیک‌های موجود برای حل مشکل کنونی و تولید داده است. در بخش‌هایی که چنین دانشی وجود ندارد، تکنیک‌های یادگیری نظارتی قابل استفاده نیستند.
+
+%در سال‌های اخیر، \lr{RL} به اثبات مفید بودن خود در دستیابی به عملکرد بهترین حالت در دامنه‌هایی با ابهام محیطی قابل توجه رسیده است
+%. هدایت فعال‌سازی‌شده توسط \lr{RL} به صورت گسترده‌ای بر اساس فاز پرواز دسته‌بندی می‌شوند. مسائل فرود \cite{furfaro2020adaptive, gaudet2020deep} 
+%و عملیات در نزدیکی به اجسام کوچک
+%\cite{gaudet2020terminal, gaudet2020six}
+%از حوزه‌های مطالعاتی بهره‌برداری‌شده‌ای هستند. تحقیقات دیگر شامل مواجهه ،\cite{broida2019spacecraft} تداخل خارجی‌جوی
+%\cite{gaudet2020reinforcement}
+%، نگهداری ایستگاهی \cite{guzzetti2019reinforcement} و اجتناب از تشخیص \cite{reiter2020augmenting} هستند. مطالعاتی که فضاپیماهای رانشگر کم پیشرانرا در یک چارچوب دینامیکی چندبدنی با استفاده از \lr{RL} شامل طراحی انتقال با استفاده از
+% \lr{Q-Learning}
+% \cite{dasstuart2020rapid} و \lr{Proximal Policy Optimization }
+%  \cite{miller2019lowthrust}، و همچنین هدایت نزدیکی مدار
+%  \cite{sullivan2020using}، شده‌اند.
+  
+  در سال‌های اخیر، یادگیری تقویتی (\lr{RL}) در دستیابی به عملکرد بهینه در دامنه‌هایی با ابهام محیطی قابل توجه، به اثبات رسیده است  \cite{heess2017emergence, silver2017mastering}.
+  هدایت انجام‌شده توسط \lr{RL} را می‌توان به صورت گسترده بر اساس فاز پرواز دسته‌بندی کرد.
+  مسائل فرود \cite{furfaro2020adaptive, gaudet2020deep} 
+   و عملیات در نزدیکی اجسام کوچک
+   \cite{gaudet2020terminal, gaudet2020six}،
+    از حوزه‌های پژوهشی هستند که از \lr{RL} استفاده می‌کنند.
+  تحقیقات دیگر شامل مواجهه تداخل خارجی جوی \cite{gaudet2020reinforcement}،
+   نگهداری ایستگاهی \cite{guzzetti2019reinforcement}  و جلوگیری از شناسایی \cite{reiter2020augmenting} است.
+  مطالعاتی که فضاپیماهای رانشگر کم پیشران را در یک چارچوب دینامیکی چندبدنی با استفاده از RL اجام شده است شامل طراحی انتقال با استفاده از \lr{Q-learning} 
+   \cite{dasstuart2020rapid}، \lr{Proximal Policy Optimization}
+     \cite{miller2019lowthrust}
+      و  هدایت نزدیکی مدار  \cite{sullivan2020using} است.
+  
+
 }{0}{{}}
 
 
 
 \Description{اهداف پژوهش} {
-های
-}{0}{{}}
+\begin{itemize}
+	\item  طراحی یک بازیکن حهت هدایت به کمک یادگیری تقویتی
+	\item طراحی یک الگوریتم هدایت مقاوم به کمک بازی دیفرانسیلی
+	\item بهبود عملکرد فضاپیما در محیط سه جسم
+	\item عدم نیاز به ایستگاه زمینی جهت صدور فرمان هدایت 
 
-\ProgressTable{
-    {
-    1/پایداری و کنترل: برقراری پایداری و کنترل مناسب در حین ناوبری گروهی از پرندهها بسیاراهمیت دارد. هماهنگی در حرکت و جهتدهی به پرندهها بهمنظور جلوگیری از تصادف و تضاد در  حرکت ضروری است.
-    \newline
-    علی
-    /۴ ماه,
-    ۲/مرحله دوم/۳ ماه,
-    ۳/مرحله سوم/۲ ماه,
-    ۳/مرحله چهارم/۵ ماه,
-    ۵/مرحله پنجم/۲ ماه
-    }
-}
+\end{itemize}}{0}{{}}
 
 
-
-
-
-
-\renewcommand{\arraystretch}{1.5}
-\begin{table}[htbp]
+\renewcommand{\arraystretch}{2.5}
+\begin{table}[H]
 	\centering
 	\caption{جدول برنامه‌ریزی پروژه ناوبری اینرسی مشارکتی مبتنی بر هوش مصنوعی}
+	\vspace{.2cm}
 	\begin{tabular}{|P{3cm}|P{10cm}|}
 		\hline
 		\textbf{فصل} & \textbf{فعالیت‌ها} \\
 		\hline
-		\multirow{3}{*}{\textbf{تابستان سال اول}} & تست \\
+		\multirow{4}{*}{\textbf{تابستان سال اول}} & انجام مطالعه و مروری جامع در زمینه بازی دیفرانسیلی و یادگیری . \\
 		\cline{2-2}
-		& \\
+		&
+        بررسی و تعریف دقیق مسأله یادگیری تقویتی و هدایت به وسیله یادگیری تقویتی در فصای سه‌جسم.
+          \\
 		\cline{2-2}
-		&  \\
+		& طراحی ساختار محیط سه‌جسم و بازیکن یادگیری تقویتی و ارتباط بین محیط و بازیکن. \\
 		\hline
-		\multirow{3}{*}{\textbf{نیمسال اول سال دوم}} & \textbf{الف) طراحی و توسعه سیستم ناوبری مشارکتی و تکنیک‌های ترازیابی در حین پرواز} \\
+		\multirow{3}{*}{\textbf{نیمسال اول سال دوم}} & طراحی مسیر انتقالی بهینه بین دو مدار \\
 		\cline{2-2}
-		& \\
+		& شبیه‌سازی دقیق محیط مسأله سه‌جسم جهت آموزش بازیکن یادگیری تقویتی \\
 		\cline{2-2}
-		& \textbf{ج) شبیه‌سازی عملکرد سیستم ناوبری اینرسی مشارکتی در شرایط مختلف و ارزیابی عملکرد آن} \\
+		&  طراحی و توسعه سیستم یادگیری تقویتی جهت محاسبه دستور \\
 		\hline
-		\multirow{3}{*}{\textbf{نیمسال دوم سال دوم}} & \textbf{الف) آموزش الگوریتم‌های هوش مصنوعی برای رهبر گروه و اعضای گروه با استفاده از داده‌های جمع‌آوری‌شده} \\
+		\multirow{2}{*}{\textbf{نیمسال دوم سال دوم}} & پیاده‌سازی هدایت فضاپیما با استفاده از الگوریتم‌های کلاسیک \\
 		\cline{2-2}
-		& \textbf{ب) ارزیابی و تحلیل نتایج شبیه‌سازی‌ها و آزمایش‌ها در مورد دقت و قابلیت اطمینان سیستم ناوبری} \\
+		& آموزش الگوریتم‌های یادگیری تقویتی در محیط‌های شبیه‌سازی شده\\
+		\hline
+		\multirow{2}{*}{\textbf{تابستان سال دوم}}  
+		&  اصلاح و بهبود عملکرد یادگیری تقویتی در هدایت فضاپیما \\ 
 		\cline{2-2}
-		& \textbf{ج) اصلاح و بهبود عملکرد سیستم ناوبری بر اساس نتایج به دست‌آمده} \\
 		\cline{2-2}
-		& \textbf{د) انجام پیاده‌سازی سخت‌افزاری سیستم ناوبری مشارکتی بر روی میکروپروسسورها و ارتباط با مدل‌های ریاضی پرنده‌ها} \\
-		\cline{2-2}
-		& \textbf{ه) نتیجه‌گیری از تحقیقات و ارائه گزارش نهایی شامل معرفی مسئله، روش‌های استفاده‌شده، نتایج حاصل و پیشنهادات برای تحقیقات آتی} \\
+		& نتیجه‌گیری از تحقیقات و ارائه گزارش نهایی شامل معرفی مسئله، روش‌های استفاده‌شده، نتایج حاصل و پیشنهادات برای تحقیقات آتی \\
 		\hline
 	\end{tabular}
 \end{table}
 
 
 
+
+
+\Description{نتایج مورد انتظار} {
+	\begin{itemize}
+		\item  هدایت فضاپیما بدون نیاز به ایستگاه زمینی
+		\item کاهش هزینه ساخت به دلیل عدم نیاز به سیستم‌های ارتباطی قوی
+		\item  افزایش ایمنی ماموریت به دلیل استفاده از بازی دیفرانسیلی
+		\item  کاهش مصرف سوخت و هزینه به دلیل بهینه بودن الگوریتم هدایت
+		
+\end{itemize}}{0}{{}}
+
+\Description{روش صحت‌سنجی نتایج} {
+	\begin{itemize}
+		\item  مقایسه با سایر روشهای معتبر
+		\item مدلسازی و شبیهسازی سیستم محیط و بازیگر
+		
+\end{itemize}}{0}{{}}
+
+\Description{گلوگاه‌های پیش‌بینی‌‌شده} {
+	\begin{itemize}
+		\item  آموزش شبکه: به علت پیچیده بودن شبکه و محطی که طراحی شده است، محاسبات سنگین می‌شود.
+		\item پایداری و کنترل: به علت غیرخطی بودن دینامیک سیسیتم و ناپایداری ذاتی سیستم، کنترل و پایداری آن مشکل است.
+		
+\end{itemize}}{0}{{}}
+
+
+\Description{‌‌نوآوری‌ها} {
+	\begin{itemize}
+		\item  طراحی الگوریتم هدایت بهینه درون‌سفینه‌ای
+		\item  طراحی الگوریتم هدایت مقاوم درون‌سفینه‌ای
+		\item طراحی الگوریتم هدایت یادگیری تقویتی بر مبنای بازی دیفرانسیلی
+		
+\end{itemize}}{0}{{}}
+
+
+
+%\bibliography{refs.bib}
+%\input{refs.bib}
+%%\bibliography{refs.bib}
+%\bibliographystyle{unsrt}
 
 
 %\printbibliography
@@ -616,64 +678,19 @@
 \begin{latin}
 	\begin{thebibliography}{1}
 		
-		\bibitem{broida2019spacecraft}
-		J. Broida, R. Linares,
-		"Spacecraft rendezvous guidance in cluttered environments via reinforcement learning,"
-		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Ka’anapali, Hawaii, 2019, pp. 1–15.
-		
-		\bibitem{gaudet2020reinforcement}
-		B. Gaudet, R. Furfaro, R. Linares,
-		"Reinforcement learning for angle-only intercept guidance of maneuvering targets,"
-		\textit{Aerosp. Sci. Technol.} 99 (2020).
-		
-		\bibitem{guzzetti2019reinforcement}
-		D. Guzzetti,
-		"Reinforcement learning and topology of orbit manifolds for station-keeping of unstable symmetric periodic orbits,"
-		in: \textit{AAS/AIAA Astrodynamics Specialist Conference}, American Astronautical Society, Portland, Maine, 2019, pp. 1–20.
-		
-		\bibitem{reiter2020augmenting}
-		J.A. Reiter, D.B. Spencer,
-		"Augmenting spacecraft maneuver strategy optimization for detection avoidance with competitive coevolution,"
-		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–11.
-		
-		\bibitem{dasstuart2020rapid}
-		A. Das-Stuart, K.C. Howell, D.C. Folta,
-		"Rapid trajectory design in complex environments enabled by reinforcement learning and graph search strategies,"
-		\textit{Acta Astronaut.} 171 (2020) 172–195.
-		
-		\bibitem{miller2019lowthrust}
-		D. Miller, R. Linares,
-		"Low-thrust optimal control via reinforcement learning,"
-		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Ka’anapali, Hawaii, 2019, pp. 1–18.
-		
-		\bibitem{sullivan2020using}
-		C.J. Sullivan, N. Bosanac,
-		"Using reinforcement learning to design a low-thrust approach into a periodic orbit in a multi-body system,"
-		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–19.
-		
-		
-		\bibitem{gaudet2020terminal}
-		B. Gaudet, R. Linares, R. Furfaro,
-		"Terminal adaptive guidance via reinforcement meta-learning: Applications to autonomous asteroid close-proximity operations,"
-		\textit{Acta Astronaut.} 171 (2020) 1–13.
-		
-		
-		\bibitem{gaudet2020six}
-		B. Gaudet, R. Linares, R. Furfaro,
-		"Six degree-of-freedom hovering over an asteroid with unknown environmental dynamics via reinforcement learning,"
-		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–15.
-		
 		
 		\bibitem{vavrina2017global}
 		Vavrina, Matthew A, Jacob A Englander, Sean M Phillips, and Kyle M Hughes.
 		"Global, multi-objective trajectory optimization with parametric spreading."
-		In AAS AIAA Astrodynamics Specialist Conference 2017, Tech. No. GSFC-E-DAA-TN45282, 2017.
+		In AAS AIAA Astrodynamics Specialist Conference 2017, Tech. No. GSFC-E-DAA-TN45282, 2017.	
+		
 		
 		\bibitem{ocampo2004finite}
 		Ocampo, Cesar.
 		"Finite Burn Maneuver Modeling for a Generalized Spacecraft Trajectory Design and Optimization System."
 		Annals of the New York Academy of Sciences 1017 (2004): 210-233.
 		doi: 10.1196/annals.1311.013.
+		
 		
 		\bibitem{Haapala}
 		Haapala, A. F., \& Howell, K. C. (2016).
@@ -756,7 +773,54 @@
 		"Deep reinforcement learning for six degrees of freedom planetary landing,"
 		Adv. Space Res. 65 (2020) 1723–1741.
 		
+        \bibitem{broida2019spacecraft}
+		J. Broida, R. Linares,
+		"Spacecraft rendezvous guidance in cluttered environments via reinforcement learning,"
+		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Ka’anapali, Hawaii, 2019, pp. 1–15.
 		
+		\bibitem{gaudet2020reinforcement}
+		B. Gaudet, R. Furfaro, R. Linares,
+		"Reinforcement learning for angle-only intercept guidance of maneuvering targets,"
+		\textit{Aerosp. Sci. Technol.} 99 (2020).
+		
+		\bibitem{guzzetti2019reinforcement}
+		D. Guzzetti,
+		"Reinforcement learning and topology of orbit manifolds for station-keeping of unstable symmetric periodic orbits,"
+		in: \textit{AAS/AIAA Astrodynamics Specialist Conference}, American Astronautical Society, Portland, Maine, 2019, pp. 1–20.
+		
+		\bibitem{reiter2020augmenting}
+		J.A. Reiter, D.B. Spencer,
+		"Augmenting spacecraft maneuver strategy optimization for detection avoidance with competitive coevolution,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–11.
+		
+		\bibitem{dasstuart2020rapid}
+		A. Das-Stuart, K.C. Howell, D.C. Folta,
+		"Rapid trajectory design in complex environments enabled by reinforcement learning and graph search strategies,"
+		\textit{Acta Astronaut.} 171 (2020) 172–195.
+		
+		\bibitem{miller2019lowthrust}
+		D. Miller, R. Linares,
+		"Low-thrust optimal control via reinforcement learning,"
+		in: \textit{29th AAS/AIAA Space Flight Mechanics Meeting}, American Astronautical Society, Kaanapali, Hawaii, 2019, pp. 1–18.
+		
+		\bibitem{sullivan2020using}
+		C.J. Sullivan, N. Bosanac,
+		"Using reinforcement learning to design a low-thrust approach into a periodic orbit in a multi-body system,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–19.
+		
+		
+		\bibitem{gaudet2020terminal}
+		B. Gaudet, R. Linares, R. Furfaro,
+		"Terminal adaptive guidance via reinforcement meta-learning: Applications to autonomous asteroid close-proximity operations,"
+		\textit{Acta Astronaut.} 171 (2020) 1–13.
+		
+		
+		\bibitem{gaudet2020six}
+		B. Gaudet, R. Linares, R. Furfaro,
+		"Six degree-of-freedom hovering over an asteroid with unknown environmental dynamics via reinforcement learning,"
+		in: \textit{20th AIAA Scitech Forum}, AIAA, Orlando, Florida, 2020, pp. 1–15.
+		
+	
 		
 		
 		
@@ -767,10 +831,10 @@
 \noindent
 
 % Change \newcommand{\Courses} in the previous lines
-\Courses{}
+%\Courses{}
 
-\noindent
+%\noindent
 
-\Signatures{}
+%\Signatures{}
 
 \end{document}
