@@ -12,6 +12,7 @@
 *.cb2
 .*.lb
 .env/
+slprj/
 
 ## Intermediate documents:
 *.dvi
