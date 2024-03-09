@@ -40,7 +40,7 @@ class MassSpringDamperEnv(gym.Env):
 
         # State and action spaces
         self.action_space = gym.spaces.Box(low=-100.0, high=100.0, shape=(1,))
-        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(3,))
+        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(2,))
         self.desired = None
 
         # Initial state
@@ -55,11 +55,11 @@ class MassSpringDamperEnv(gym.Env):
         self.desired = np.random.uniform(low=-10, high=10, size=(1,))
         self.state = np.random.uniform(low=-10, high=10, size=(2,))
         self.current_step = 0
-        return np.concatenate([self.state, self.desired])
+        return np.concatenate([self.desired, np.array([0])]) - self.state
 
     def step(self, action):
         # Apply control action and simulate one time step using Euler integration
-        force = action[0]
+        force = action[0]*100
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
@@ -68,7 +68,7 @@ class MassSpringDamperEnv(gym.Env):
 
         self.state = np.array([position, velocity])
         # add noise to state
-        self.state += np.random.uniform(low=-0.1, high=0.1, size=(2,))
+        # self.state += np.random.uniform(low=-0.1, high=0.1, size=(2,))
         self.current_step += 1
 
         # Calculate the reward (e.g., minimize position error)
@@ -77,7 +77,7 @@ class MassSpringDamperEnv(gym.Env):
         # Check if the episode is done
         done = self.current_step >= self.max_steps
 
-        return np.concatenate([self.state, self.desired]), reward, done, {}
+        return np.concatenate([self.desired, np.array([0])]) - self.state, reward, done, {}
 
     def render(self, mode='human'):
         pass
@@ -146,6 +146,7 @@ class ActorCritic(nn.Module):
             nn.Linear(128, 128),
             nn.Tanh(),
             nn.Linear(128, 1)
+            # ,nn.Tanh()
         )
 
     def set_action_std(self, new_action_std):
@@ -167,7 +168,7 @@ class ActorCritic(nn.Module):
             dist = Categorical(action_probs)
 
         action = dist.sample()
-        action_logprob = dist.log_prob(action/self.action_range)
+        action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
 
         return action.detach(), action_logprob.detach(), state_val.detach()
@@ -306,8 +307,8 @@ class PPO:
             surr2 = torch.clamp(ratios, 1 - self.eps_clip, 1 + self.eps_clip) * advantages
 
             # final loss of clipped objective PPO
-            loss = -torch.min(surr1, surr2) + 0.5 * self.MseLoss(state_values, rewards) - 0.01 * dist_entropy
-
+            loss = -torch.min(surr1, surr2) # + 0.5 * self.MseLoss(state_values, rewards) - 0.01 * dist_entropy
+            # print(torch.min(surr1, surr2))
             # take gradient step
             self.optimizer.zero_grad()
             loss.mean().backward()
@@ -335,25 +336,24 @@ class PPO:
 env_name = "MBKdes"
 has_continuous_action_space = True
 
-max_ep_len = 400  # max timesteps in one episode
 max_training_timesteps = int(1e5)  # break training loop if timeteps > max_training_timesteps
 
 print_freq = max_ep_len * 4  # print avg reward in the interval (in num timesteps)
 log_freq = max_ep_len * 2  # log avg reward in the interval (in num timesteps)
 save_model_freq = int(2e4)  # save model frequency (in num timesteps)
 
-action_std = 0.1
+action_std = 0.5
 max_ep_len = 1500  # max timesteps in one episode
 
 ################ PPO hyperparameters ################
 
 
-update_timestep = max_ep_len * 4  # update policy every n timesteps
-K_epochs = 40  # update policy for K epochs
+update_timestep = 1000  # update policy every n timesteps
+K_epochs = 80  # update policy for K epochs
 eps_clip = 0.2  # clip parameter for PPO
 gamma = 0.99  # discount factor
 
-lr_actor = 0.0003  # learning rate for actor network
+lr_actor = 0.003  # learning rate for actor network
 lr_critic = 0.1  # learning rate for critic network
 
 random_seed = 0
@@ -461,7 +461,7 @@ if random_seed:
     np.random.seed(random_seed)
 
 #####################################################
-action_range = 100
+action_range = 1
 print("============================================================================================")
 
 ################# training procedure ################
@@ -641,6 +641,7 @@ print("-------------------------------------------------------------------------
 
 state_array = []
 action_array = []
+reward_array = []
 test_running_reward = 0
 
 for ep in range(1, total_test_episodes + 1):
@@ -655,6 +656,7 @@ for ep in range(1, total_test_episodes + 1):
         ep_reward += reward
         state_array.append(state)
         action_array.append(action)
+        reward_array.append(reward)
         if done:
             break
 
@@ -672,10 +674,11 @@ if env_name == "MBKdes":
     state_array = np.array(state_array)
     plt.figure()
     plt.subplot(2, 1, 1)
-    plt.plot(state_array[:, 0])
+    plt.plot(env.desired - state_array[:, 0])
     plt.ylabel('Position (m)')
     # plot constant desired
     plt.plot(np.ones(state_array[:, 0].shape) * env.desired, 'r--')
+    plt.plot(reward_array)
     plt.subplot(2, 1, 2)
     plt.plot(state_array[:, 1])
     plt.ylabel('Velocity (m/s)')

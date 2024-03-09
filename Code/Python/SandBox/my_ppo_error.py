@@ -37,10 +37,11 @@ class MassSpringDamperEnv(gym.Env):
         self.dt = 0.01  # Time step (s)
         self.max_steps = 1000  # Maximum simulation steps
         self.current_step = 0
+        self.prev_act = None
 
         # State and action spaces
         self.action_space = gym.spaces.Box(low=-100.0, high=100.0, shape=(1,))
-        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(3,))
+        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(2,))
         self.desired = None
 
         # Initial state
@@ -55,7 +56,8 @@ class MassSpringDamperEnv(gym.Env):
         self.desired = np.random.uniform(low=-10, high=10, size=(1,))
         self.state = np.random.uniform(low=-10, high=10, size=(2,))
         self.current_step = 0
-        return np.concatenate([self.state, self.desired])
+        self.prev_act = 0
+        return np.concatenate([self.desired, np.array([0])]) - self.state
 
     def step(self, action):
         # Apply control action and simulate one time step using Euler integration
@@ -68,16 +70,17 @@ class MassSpringDamperEnv(gym.Env):
 
         self.state = np.array([position, velocity])
         # add noise to state
-        self.state += np.random.uniform(low=-0.1, high=0.1, size=(2,))
+        # self.state += np.random.uniform(low=-0.1, high=0.1, size=(2,))
         self.current_step += 1
 
         # Calculate the reward (e.g., minimize position error)
-        reward = -abs(position - self.desired.item())
+        reward = -abs(position - self.desired.item()) - abs(velocity)
+        self.prev_act = action[0]
 
         # Check if the episode is done
         done = self.current_step >= self.max_steps
 
-        return np.concatenate([self.state, self.desired]), reward, done, {}
+        return np.concatenate([self.desired, np.array([0])]) - self.state, reward, done, {}
 
     def render(self, mode='human'):
         pass
@@ -146,6 +149,7 @@ class ActorCritic(nn.Module):
             nn.Linear(128, 128),
             nn.Tanh(),
             nn.Linear(128, 1)
+            # ,nn.Tanh()
         )
 
     def set_action_std(self, new_action_std):
@@ -160,6 +164,8 @@ class ActorCritic(nn.Module):
     def act(self, state):
         if self.has_continuous_action_space:
             action_mean = self.actor(state)
+            # add noise for exploration during training
+            action_mean += torch.randn_like(action_mean) * self.action_var.sqrt()
             cov_mat = torch.diag(self.action_var).unsqueeze(dim=0)
             dist = MultivariateNormal(action_mean, cov_mat)
         else:
@@ -167,7 +173,7 @@ class ActorCritic(nn.Module):
             dist = Categorical(action_probs)
 
         action = dist.sample()
-        action_logprob = dist.log_prob(action/self.action_range)
+        action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
 
         return action.detach(), action_logprob.detach(), state_val.detach()
@@ -348,7 +354,7 @@ max_ep_len = 1500  # max timesteps in one episode
 ################ PPO hyperparameters ################
 
 
-update_timestep = max_ep_len * 4  # update policy every n timesteps
+update_timestep = max_ep_len // 4  # update policy every n timesteps
 K_epochs = 40  # update policy for K epochs
 eps_clip = 0.2  # clip parameter for PPO
 gamma = 0.99  # discount factor
@@ -641,6 +647,7 @@ print("-------------------------------------------------------------------------
 
 state_array = []
 action_array = []
+reward_array = []
 test_running_reward = 0
 
 for ep in range(1, total_test_episodes + 1):
@@ -655,6 +662,7 @@ for ep in range(1, total_test_episodes + 1):
         ep_reward += reward
         state_array.append(state)
         action_array.append(action)
+        reward_array.append(reward)
         if done:
             break
 
@@ -672,10 +680,11 @@ if env_name == "MBKdes":
     state_array = np.array(state_array)
     plt.figure()
     plt.subplot(2, 1, 1)
-    plt.plot(state_array[:, 0])
+    plt.plot(env.desired - state_array[:, 0])
     plt.ylabel('Position (m)')
     # plot constant desired
     plt.plot(np.ones(state_array[:, 0].shape) * env.desired, 'r--')
+    # plt.plot(reward_array)
     plt.subplot(2, 1, 2)
     plt.plot(state_array[:, 1])
     plt.ylabel('Velocity (m/s)')
