@@ -170,70 +170,73 @@ class TD3(object):
         self.actor_optimizer.load_state_dict(torch.load(filename + "_actor_optimizer"))
         self.actor_target = copy.deepcopy(self.actor)
 
+
 import numpy as np
 import torch
 
 
 class ReplayBuffer(object):
-	def __init__(self, state_dim, action_dim, max_size=int(1e6)):
-		self.max_size = max_size
-		self.ptr = 0
-		self.size = 0
+    def __init__(self, state_dim, action_dim, max_size=int(1e6)):
+        self.max_size = max_size
+        self.ptr = 0
+        self.size = 0
 
-		self.state = np.zeros((max_size, state_dim))
-		self.action = np.zeros((max_size, action_dim))
-		self.next_state = np.zeros((max_size, state_dim))
-		self.reward = np.zeros((max_size, 1))
-		self.not_done = np.zeros((max_size, 1))
+        self.state = np.zeros((max_size, state_dim))
+        self.action = np.zeros((max_size, action_dim))
+        self.next_state = np.zeros((max_size, state_dim))
+        self.reward = np.zeros((max_size, 1))
+        self.not_done = np.zeros((max_size, 1))
 
-		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    def add(self, state, action, next_state, reward, done):
+        self.state[self.ptr] = state
+        self.action[self.ptr] = action
+        self.next_state[self.ptr] = next_state
+        self.reward[self.ptr] = reward
+        self.not_done[self.ptr] = 1. - done
 
-	def add(self, state, action, next_state, reward, done):
-		self.state[self.ptr] = state
-		self.action[self.ptr] = action
-		self.next_state[self.ptr] = next_state
-		self.reward[self.ptr] = reward
-		self.not_done[self.ptr] = 1. - done
+        self.ptr = (self.ptr + 1) % self.max_size
+        self.size = min(self.size + 1, self.max_size)
 
-		self.ptr = (self.ptr + 1) % self.max_size
-		self.size = min(self.size + 1, self.max_size)
+    def sample(self, batch_size):
+        ind = np.random.randint(0, self.size, size=batch_size)
 
+        return (
+            torch.FloatTensor(self.state[ind]).to(self.device),
+            torch.FloatTensor(self.action[ind]).to(self.device),
+            torch.FloatTensor(self.next_state[ind]).to(self.device),
+            torch.FloatTensor(self.reward[ind]).to(self.device),
+            torch.FloatTensor(self.not_done[ind]).to(self.device)
+        )
 
-	def sample(self, batch_size):
-		ind = np.random.randint(0, self.size, size=batch_size)
-
-		return (
-			torch.FloatTensor(self.state[ind]).to(self.device),
-			torch.FloatTensor(self.action[ind]).to(self.device),
-			torch.FloatTensor(self.next_state[ind]).to(self.device),
-			torch.FloatTensor(self.reward[ind]).to(self.device),
-			torch.FloatTensor(self.not_done[ind]).to(self.device)
-		)
 
 # Runs policy for X episodes and returns average reward
 # A fixed seed is used for the eval environment
 def eval_policy(policy, env, seed, eval_episodes=10):
-	eval_env = env
-	eval_env.reset(seed=seed
-    )
+    eval_env = env
+    eval_env.reset(seed=seed
+                   )
 
-	avg_reward = 0.
-	for _ in range(eval_episodes):
-		state, done = eval_env.reset(), False
-		while not done:
-			action = policy.select_action(np.array(state))
-			state, reward, done, _ = eval_env.step(action)
-			avg_reward += reward
+    avg_reward = 0.
+    for _ in range(eval_episodes):
+        state, done = eval_env.reset(), False
+        while not done:
+            action = policy.select_action(np.array(state))
+            state, reward, done, _ = eval_env.step(action)
+            avg_reward += reward
 
-	avg_reward /= eval_episodes
+    avg_reward /= eval_episodes
 
-	print("---------------------------------------")
-	print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
-	print("---------------------------------------")
-	return avg_reward
+    print("---------------------------------------")
+    print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
+    print("---------------------------------------")
+    return avg_reward
+
 
 import gym
+
+
 class MassSpringDamperEnv(gym.Env):
     def __init__(self):
         super(MassSpringDamperEnv, self).__init__()
@@ -287,7 +290,8 @@ class MassSpringDamperEnv(gym.Env):
         # Check if the episode is done
         done = self.current_step >= self.max_steps
 
-        return np.concatenate([np.array([self.state[0] - self.desired.item()]), np.array([self.state[1]])]), reward, done, {}
+        return np.concatenate(
+            [np.array([self.state[0] - self.desired.item()]), np.array([self.state[1]])]), reward, done, {}
 
     def render(self, mode='human'):
         pass
@@ -311,12 +315,12 @@ DEFAULT_ENV = "MBK"
 DEFAULT_SEED = 0
 DEFAULT_START_TIMESTEPS = int(25e3)
 DEFAULT_EVAL_FREQ = int(5e3)
-DEFAULT_MAX_TIMESTEPS = int(5e5)
-DEFAULT_EXPL_NOISE = 0.5
+DEFAULT_MAX_TIMESTEPS = int(5e4)
+DEFAULT_EXPL_NOISE = 0.01
 DEFAULT_BATCH_SIZE = 256
 DEFAULT_DISCOUNT = 0.99
 DEFAULT_TAU = 0.005
-DEFAULT_POLICY_NOISE = 0.5
+DEFAULT_POLICY_NOISE = 0.01
 DEFAULT_NOISE_CLIP = 0.2
 DEFAULT_POLICY_FREQ = 2
 
@@ -359,8 +363,8 @@ for t in range(int(DEFAULT_MAX_TIMESTEPS)):
         action = env.action_space.sample()
     else:
         action = (
-            policy.select_action(np.array(state))
-            + np.random.normal(0, max_action * DEFAULT_EXPL_NOISE, size=action_dim)
+                policy.select_action(np.array(state))
+                + np.random.normal(0, max_action * DEFAULT_EXPL_NOISE, size=action_dim)
         ).clip(-max_action, max_action)
 
     # Perform action
@@ -379,7 +383,8 @@ for t in range(int(DEFAULT_MAX_TIMESTEPS)):
 
     if done:
         # +1 to account for 0 indexing. +0 on ep_timesteps since it will increment +1 even if done=True
-        print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
+        print(
+            f"Total T: {t + 1} Episode Num: {episode_num + 1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
         # Reset environment
         state, done = env.reset(), False
         episode_reward = 0
@@ -416,8 +421,8 @@ while not done:
     env.render()
 print(f"Episode Reward: {episode_reward:.3f}")
 
-plt.plot(np.linspace(0, 10, num=len(state_array)),state_array + np.array([env.desired.item(), 0]))
-plt.plot(np.linspace(0, 10, num=len(state_array)),np.ones(len(state_array))*env.desired)
+plt.plot(np.linspace(0, 10, num=len(state_array)), state_array + np.array([env.desired.item(), 0]))
+plt.plot(np.linspace(0, 10, num=len(state_array)), np.ones(len(state_array)) * env.desired)
 plt.xlabel("Time (sec)")
 plt.ylabel("State")
 plt.legend(["Position", "Velocity", "desired"])
@@ -442,7 +447,7 @@ while not done:
     env.render()
 print(f"Episode Reward: {episode_reward:.3f}")
 
-plt.plot(np.linspace(0, 10, num=len(state_array)),state_array)
+plt.plot(np.linspace(0, 10, num=len(state_array)), state_array)
 plt.xlabel("Time (sec)")
 plt.ylabel("State")
 plt.legend(["Position", "Velocity"])
@@ -452,4 +457,3 @@ plt.plot(np.linspace(0, 10, num=len(state_array)), action_array)
 plt.xlabel("Time (sec)")
 plt.ylabel("action (N)")
 plt.show()
-
