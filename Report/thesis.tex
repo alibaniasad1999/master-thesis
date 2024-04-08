@@ -13,6 +13,17 @@
 \documentclass[oneside,a4paper,12pt]{book}
 \input{styles/common.tex}
 \input{styles/custom.tex}
+\tikzset{
+	frame/.style={
+		rectangle, draw,
+		text width=6em, text centered,
+		minimum height=4em,drop shadow,fill=white,
+		rounded corners,
+	},
+	line/.style={
+		draw, -{Latex},rounded corners=3mm,
+	}
+}
 
 
 \begin{document}
@@ -46,7 +57,8 @@
 \pagenumbering{arabic}
 
 %
-\include{Chapters/RL/RL}
+\input{Chapters/RL/RL}
+\input{Chapters/RL/Concept}
 \input{Chapters/RL/DDPG}
 \input{Chapters/RL/TD3}
 % -------------------- Appendices --------------------

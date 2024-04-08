@@ -1,0 +1,21 @@
+\section{عامل گرادیان سیاست عمیق قطعی }
+
+گرادیان سیاست عمیق قطعی\LTRfootnote{Deep Deterministic Policy Gradient (DDPG)}
+الگوریتمی است که همزمان یک تابع \lr{Q} و یک سیاست را یاد می‌گیرد. این الگوريتم برای یادگیری تابع \lr{Q} از داده‌های غیرسیاست محور\LTRfootnote{Off-Policy}
+ و معادله بلمن استفاده می‌کند. این الگوریتم برای یادگیری سیاست از تابع \lr{Q} استفاده می‌کند.
+ 
+ این رویکرد وابستگی نزدیکی به یادگیری \lr{Q} دارد. اگر تابع ارزش-عمل بهینه 
+% \lr{(optimal action-value function)}
+ را مشخص باشد، در هر حالت داده شده، عمل بهینه
+%  \lr{(optimal action)} 
+  را می‌توان با حل کردن
+ معادله
+ \eqref{eq:optimal_action_value_function}
+  به دست آورد.
+\begin{equation}
+	\label{eq:optimal_action_value_function}
+	a^*(s) = \arg \max_a Q^*(s,a)
+\end{equation}
+
+
+

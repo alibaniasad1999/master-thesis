@@ -1,0 +1,51 @@
+\section{مفاهیم اولیه}
+بخش‌های اصلی یادگیری تقویتی\LTRfootnote{Reinforcement Learning (RL)}
+شامل عامل\LTRfootnote{Agent}
+ و محیط\LTRfootnote{Environment}
+  است. عامل در محیط قرار دارد و با آن تعامل دارد.
+  در هر مرحله از تعامل بین عامل و محیط، عامل یک مشاهده جزئی از وضعیت محیط انجام می‌دهد و سپس در مورد اقدامی که باید انجام دهد تصمیم می‌گیرد. وقتی عامل بر روی محیط عمل می کند، محیط تغییر می‌کند، اما ممکن است محیط به تنهایی نیز تغییر کند.
+  عامل همچنین یک سیگنال پاداش\LTRfootnote{Reward}
+   از محیط دریافت می کند، عددی که به آن می‌گوید وضعیت فعلی محیط چقدر خوب یا بد است. هدف عامل به حداکثر رساندن پاداش انباشته خود است که بازگشت\LTRfootnote{Return}
+    نام دارد. یادگیری تقویتی روش‌هایی هستند که عامل رفتارهای مناسب برای رسیدن به هدف خود را می‌آموزد. در شکل
+    \ref{fig:agent_env}
+    تعامل بین محیط و عامل نشان داده شده است.
+\begin{figure}[H]
+	\begin{center}
+\lr{		\begin{tikzpicture}[very thick,node distance = 4cm]
+			\node [frame] (agent) {Agent};
+			\node [frame, below=1.2cm of agent] (environment) {Environment};
+			\draw[line] (environment) -- ++ (3.5,0) |- (agent) 
+			node[right,pos=0.25,align=left] {action\\ $A_t$};
+			\coordinate[left=10mm of environment] (P);
+			\draw[thin,dashed] (P|-environment.north) -- (P|-environment.south);
+			\draw[line] (environment.200) -- (P |- environment.200)
+			node[midway,above]{$S_{i+1}$};
+			\draw[line,thick] (environment.160) -- (P |- environment.160)
+			node[midway,above]{$R_{i+1}$};
+			\draw[line] (P |- environment.200) -- ++ (-1.4,0) |- (agent.160)
+			node[left, pos=0.25, align=right] {state\\ $s_t$};
+			\draw[line,thick] (P |- environment.160) -- ++ (-0.8,0) |- (agent.200)
+			node[right,pos=0.25,align=left] {reward\\ $R_t$};
+		\end{tikzpicture}}
+	\end{center}
+	\caption{حلقه تعامل عامل و محیط}
+	\label{fig:agent_env}
+\end{figure}
+\subsection{حالت و مشاهدات}
+حالت\LTRfootnote{State}
+\((s)\)
+ توصیف کاملی از وضعیت محیط است. همه‌ی اطلاعات محیط در حالت وجود دارد. مشاهده\LTRfootnote{Observation}
+ \((o)\)
+  یک توصیف جزئی از حالت است که ممکن است شامل تمامی اطلاعات نباشد.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
