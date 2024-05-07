@@ -3,40 +3,51 @@
 %  Common Styles and Formattings
 % -------------------------------------------------------
 
-\usepackage[font=small,labelfont=bf]{caption}
-\usepackage{amssymb,amsmath}
-\usepackage{amstext}
 
+\usepackage{amssymb,amsmath}
 \usepackage[colorlinks,linkcolor=blue,citecolor=blue]{hyperref}
 \usepackage[usenames,dvipsnames]{pstricks}
 \usepackage{graphicx,subfigure,wrapfig}
-\usepackage{geometry,fancyhdr}
+\usepackage{geometry}
 \usepackage[mathscr]{euscript}
+\usepackage{graphicx,subfigure,wrapfig}
 \usepackage{multicol}
+\usepackage{multirow}
 \usepackage{tikz}
+\tikzset{
+	frame/.style={
+		rectangle, draw,
+		text width=6em, text centered,
+		minimum height=4em,drop shadow,fill=white,
+		rounded corners,
+	},
+	line/.style={
+		draw, -{Latex},rounded corners=3mm,
+	}
+}
 \usetikzlibrary{arrows.meta,shadows,positioning}
+\usepackage[figureposition=bottom,tableposition=top,font={small,bf},labelfont=bf]{caption}
 
 \usepackage{algorithmicx,algorithm}
-\usepackage{pdfpages}
+
 \usepackage[localise=on,extrafootnotefeatures]{xepersian}
 \usepackage[noend]{algpseudocode}
 \input{styles/alg-fa}
-\usepackage{notoccite}
-
 
 
 % -------------------- Page Layout --------------------
 
 
-\newgeometry{top=3.5cm,bottom=3.5cm,left=2.5cm,right=3cm,headheight=25pt}
+%\newgeometry{top=3cm,right=3cm,left=2.5cm,bottom=3cm,footskip=1.25cm}
+\newgeometry{margin=1in,bottom=1.1in,footskip=.4in}
 
 \renewcommand{\baselinestretch}{1.4}
 \linespread{1.6}
 \setlength{\parskip}{0.45em}
 
-\fancyhf{}
-\rhead{\leftmark}
-\lhead{\thepage}
+%\fancyhf{}
+%\rhead{\leftmark}
+%\lhead{\thepage}
 
 
 % -------------------- Fonts --------------------
@@ -45,19 +56,19 @@
 Scale=1.09,
 Extension=.ttf, 
 Path=styles/fonts/,
-BoldFont=Yas Bd,
-ItalicFont=Yas It,
-BoldItalicFont=Yas BdIt
-]{Yas}
+BoldFont=XB NiloofarBd,
+ItalicFont=XB NiloofarIt,
+BoldItalicFont=XB NiloofarBdIt
+]{XB Niloofar}
 
 \setdigitfont[
 Scale=1.09,
 Extension=.ttf, 
 Path=styles/fonts/,
-BoldFont=Yas Bd,
-ItalicFont=Yas It,
-BoldItalicFont=Yas BdIt
-]{Yas}
+BoldFont=XB NiloofarBd,
+ItalicFont=XB NiloofarIt,
+BoldItalicFont=XB NiloofarBdIt
+]{XB Niloofar}
 
 \defpersianfont\sayeh[
 Scale=1,
@@ -183,4 +194,5 @@ Path=styles/fonts/
 \NewDocumentCommand{\img}{m m o}
 	{\begin{wrapfigure}{l}{\IfValueTF{#3}{#3}{#2}}
 	\centering\includegraphics[width=#2]{figs/#1}\end{wrapfigure}}
+
 

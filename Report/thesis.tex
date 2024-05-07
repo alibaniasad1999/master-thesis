@@ -1,84 +1,86 @@
 
 %--------------------------------------------------------------------------
 %
-%  B.Sc. Thesis
-%  [LQDG for 3DOF Quadcopter]
-%  By: [Ali Baniasad]
+%  M.Sc. Thesis
+%  [Put Your Thesis Title Here]
+%  By: [Put Your Name Here]
+%
+%--------------------------------------------------------------------------
+
+%--------------------------------------------------------------------------
+%
+%  LaTeX Thesis Template (v4)
+%  By: Hamid Zarrabi-Zadeh
+%
+%  Contributors:
+%      Ehsan Emamjomeh-Zadeh
+%      Omid Gheibi
 %
 %--------------------------------------------------------------------------
 
 
-
-
 \documentclass[oneside,a4paper,12pt]{book}
+
 \input{styles/common.tex}
 \input{styles/custom.tex}
-\tikzset{
-	frame/.style={
-		rectangle, draw,
-		text width=6em, text centered,
-		minimum height=4em,drop shadow,fill=white,
-		rounded corners,
-	},
-	line/.style={
-		draw, -{Latex},rounded corners=3mm,
-	}
-}
-
 
 \begin{document}
 
 
 % -------------------- Front Pages --------------------
 
+\include{front/info}
+\pagestyle{empty}
+
+\include{front/template/title}
+%\input{front/template/besmellah.tex}‌  % بسم‌الله
+
+\include{front/template/signatures}  % تصویب‌نامه
+%\include{front/template/declaration}  % اظهارنامه
+
+\pagestyle{plain}
 \pagenumbering{tartibi}
 
-\input{front/info.tex}
-\input{front/template/title.tex}
-
-\input{front/template/besmellah.tex}
-
-% Uncomment the following line for adding signature page
-%\input{front/template/signatures.tex}
-
-\input{front/acknowledge.tex}
-\input{front/abstract.tex}
+\include{front/acknowledge}  % تقدیر و تشکر
+\include{front/abstract}
 
 
 % -------------------- Table of Contents --------------------
 
-
-\pagestyle{fancy}
-
 \tableofcontents \newpage
 \listoftables \newpage
-\listoffigures
+\listoffigures \newpage
+
+
+% -------------------- Chapters --------------------
 
 \pagenumbering{arabic}
 
-%
 \input{Chapters/RL/RL}
 \input{Chapters/RL/Concept}
 \input{Chapters/RL/DDPG}
 \input{Chapters/RL/TD3}
+
+
+% -------------------- Bibliography & Dictionary --------------------
+
+\include{bibs/bibs}
+\include{front/dictionary}
+
+
 % -------------------- Appendices --------------------
 
-%\begin{appendix}
-%\input{chapters/appendix}
-%\end{appendix}
-
-% -------------------- Bibliography --------------------
-
-
-\input{bibs/bibs.tex}
+\begin{appendix}
+\include{chapters/appendix}
+\end{appendix}
 
 
 % -------------------- English Pages --------------------
 
+%\newgeometry{left=3cm,right=2.5cm}
 
-\newgeometry{left=3cm,right=2.5cm}
-\input{front/abstract-eng.tex}
-\input{front/template/title-eng.tex}
+\include{front/abstract-eng}
+\include{front/template/title-eng}
 
 
 % -------------------- The End! --------------------
