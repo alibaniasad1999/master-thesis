@@ -13,6 +13,8 @@
 .*.lb
 .env/
 slprj/
+.idea/
+.vscode/
 
 ## Intermediate documents:
 *.dvi
