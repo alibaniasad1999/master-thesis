@@ -15,6 +15,7 @@
 slprj/
 .idea/
 .vscode/
+.**/
 
 ## Intermediate documents:
 *.dvi
