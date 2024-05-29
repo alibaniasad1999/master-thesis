@@ -133,7 +133,7 @@ class MassSpringDamperEnv(gym.Env):
             self.done = True
 
         # early stop
-        if sum(self.state) > 20 or sum(self.state) < -20:
+        if sum(self.state > 20) > 0 or sum(self.state < -20) > 0:
             self.done = True
             costs -= 1e6
 
@@ -252,7 +252,7 @@ def mlp(x, sizes, activation=keras.activations.tanh, output_activation=None):
 # Define the log-probabilities function for continuous actions
 def logprobabilities(mean, log_std, actions):
     std = tf.exp(log_std)
-    var = std ** 2
+    var = std ** 2 / 5
     # print(actions.dtype)
     # print(mean.dtype)
     # print(var.dtype)
