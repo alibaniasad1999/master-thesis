@@ -125,8 +125,8 @@ class MassSpringDamperEnv(gym.Env):
         self.state = np.array([position, velocity])
         self.integral_error += position * self.dt
 
-        costs = position ** 2 + 0.1 * velocity ** 2 \
-                + 0.01 * self.integral_error ** 2 + 0.001 * (force ** 2)
+        costs = (position ** 2 + 0.1 * velocity ** 2 \
+                + 0.01 * self.integral_error ** 2 + 0.001 * (force ** 2)) * self.dt
 
         self.step_num += 1
         if self.step_num > 1000:
@@ -135,7 +135,7 @@ class MassSpringDamperEnv(gym.Env):
         # early stop
         if sum(self.state > 20) > 0 or sum(self.state < -20) > 0:
             self.done = True
-            costs -= 1e6
+            costs += 10
 
         return self._get_obs(), -costs, self.done, False, {}
 
@@ -308,7 +308,7 @@ def train_policy(
 
     mean, log_std = actor(observation_buffer)
     kl = logprobability_buffer - logprobabilities(mean, log_std, action_buffer)
-    kl = tf.reduce_sum(kl)
+    kl = tf.reduce_mean(kl)
     return kl
 
 
@@ -338,7 +338,7 @@ value_function_learning_rate = 1e-4
 train_policy_iterations = 80
 train_value_iterations = 80
 lam = 0.97
-target_kl = 0.01
+target_kl = 0.1
 hidden_sizes = (64, 64)
 
 # True if you want to render the environment
