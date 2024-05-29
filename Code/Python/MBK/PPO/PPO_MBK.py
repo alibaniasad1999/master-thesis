@@ -14,17 +14,19 @@
 # 
 # ### MBK
 # 
-# The system is controlled by applying a force within the range of +20 to -20. The system starts from a random position and speed.
+# The system is controlled by applying a force within the range of +20 to -20. The system starts from a random
+# position and speed.
 # 
 # ### Proximal Policy Optimization
 # 
 # PPO is a policy gradient method and can be used for environments with either discrete or continuous action spaces.
 # It trains a stochastic policy in an on-policy way. Also, it utilizes the actor critic method. The actor maps the
-# observation to an action, and the critic gives an expectation of the rewards of the agent for the observation given.
-# Firstly, it collects a set of trajectories for each epoch by sampling from the latest version of the stochastic policy.
-# Then, the rewards-to-go and the advantage estimates are computed in order to update the policy and fit the value function.
-# The policy is updated via a stochastic gradient ascent optimizer, while the value function is fitted via some gradient descent algorithm.
-# This procedure is applied for many epochs until the environment is solved.
+# observation to an action, and the critic gives an expectation of the rewards of the agent for the observation
+# given. Firstly, it collects a set of trajectories for each epoch by sampling from the latest version of the
+# stochastic policy. Then, the rewards-to-go and the advantage estimates are computed in order to update the policy
+# and fit the value function. The policy is updated via a stochastic gradient ascent optimizer, while the value
+# function is fitted via some gradient descent algorithm. This procedure is applied for many epochs until the
+# environment is solved.
 # 
 # ![Algorithm](https://i.imgur.com/rd5tda1.png)
 # 
@@ -113,7 +115,7 @@ class MassSpringDamperEnv(gym.Env):
 
     def step(self, u):
         # Apply control action and simulate one time step using Euler integration
-        force = action[0]
+        force = action[0]  * self.action_space.high[0]
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
@@ -130,6 +132,11 @@ class MassSpringDamperEnv(gym.Env):
         if self.step_num > 1000:
             self.done = True
 
+        # early stop
+        if sum(self.state) > 20 or sum(self.state) < -20:
+            self.done = True
+            costs -= 1e6
+
         return self._get_obs(), -costs, self.done, False, {}
 
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
@@ -144,7 +151,7 @@ class MassSpringDamperEnv(gym.Env):
         return self._get_obs(), {}
 
     def _get_obs(self):
-        position, velocity = self.state
+        position, velocity = (self.state + self.action_space.high[0])/(self.action_space.high[0] - self.action_space.low[0]) # normalized data
         return np.array([position, velocity, self.integral_error], dtype=np.float32)
 
 
@@ -277,7 +284,7 @@ def sample_action(observation, stochastic=True):
 # Train the policy by maximizing the PPO-Clip objective
 # @tf.function
 def train_policy(
-        observation_buffer, action_buffer, logprobability_buffer, advantage_buffer
+    observation_buffer, action_buffer, logprobability_buffer, advantage_buffer
 ):
     with tf.GradientTape() as tape:  # Record operations for automatic differentiation.
         mean, log_std = actor(observation_buffer)
@@ -294,7 +301,9 @@ def train_policy(
         policy_loss = -tf.reduce_mean(
             tf.minimum(ratio * advantage_buffer, min_advantage)
         )
+    actor_value = 1.0
     policy_grads = tape.gradient(policy_loss, actor.trainable_variables)
+    policy_grads = [tf.clip_by_value(grad, -actor_value, actor_value) for grad in policy_grads]
     policy_optimizer.apply_gradients(zip(policy_grads, actor.trainable_variables))
 
     mean, log_std = actor(observation_buffer)
@@ -306,9 +315,11 @@ def train_policy(
 # Train the value function by regression on mean-squared error
 # @tf.function
 def train_value_function(observation_buffer, return_buffer):
+    clip_value = 1.0
     with tf.GradientTape() as tape:  # Record operations for automatic differentiation.
         value_loss = keras.ops.mean((return_buffer - critic(observation_buffer)) ** 2)
     value_grads = tape.gradient(value_loss, critic.trainable_variables)
+    value_grads = [tf.clip_by_value(grad, -clip_value, clip_value) for grad in value_grads]
     value_optimizer.apply_gradients(zip(value_grads, critic.trainable_variables))
 
 
@@ -323,7 +334,7 @@ epochs = 10
 gamma = 0.99
 clip_ratio = 0.2
 policy_learning_rate = 3e-4
-value_function_learning_rate = 1e-3
+value_function_learning_rate = 1e-4
 train_policy_iterations = 80
 train_value_iterations = 80
 lam = 0.97
@@ -353,7 +364,7 @@ observation_input = keras.Input(shape=(observation_dimensions,), dtype="float32"
 dense1_actor = keras.layers.Dense(64, activation='relu')(observation_input)
 dense2_actor = keras.layers.Dense(64, activation='relu')(dense1_actor)
 # add mean out put with tanh and upper and lower limit # Output mean of the Gaussian distribution
-mean_output = keras.layers.Dense(num_actions, activation='tanh')(dense2_actor) * env.action_space.high[0]
+mean_output = keras.layers.Dense(num_actions, activation='tanh')(dense2_actor)
 log_std_output = keras.layers.Dense(num_actions, activation='tanh')(dense2_actor)  # Output log standard deviation of
 # the Gaussian distribution
 actor = keras.Model(inputs=observation_input, outputs=[mean_output, log_std_output])
