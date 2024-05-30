@@ -111,11 +111,11 @@ class MassSpringDamperEnv(gym.Env):
 
         # State and action spaces
         self.action_space = gym.spaces.Box(low=-20.0, high=20.0, shape=(1,))
-        self.observation_space = gym.spaces.Box(low=-100, high=100, shape=(3,))
+        self.observation_space = gym.spaces.Box(low=-100, high=100, shape=(2,))
 
     def step(self, u):
         # Apply control action and simulate one time step using Euler integration
-        force = action[0]  * self.action_space.high[0]
+        force = action[0] * self.action_space.high[0]
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
@@ -152,7 +152,7 @@ class MassSpringDamperEnv(gym.Env):
 
     def _get_obs(self):
         position, velocity = (self.state + self.action_space.high[0])/(self.action_space.high[0] - self.action_space.low[0]) # normalized data
-        return np.array([position, velocity, self.integral_error], dtype=np.float32)
+        return np.array([position, velocity], dtype=np.float32)
 
 
 # In[89]:
@@ -160,6 +160,8 @@ class MassSpringDamperEnv(gym.Env):
 
 # Specify the `render_mode` parameter to show the attempts of the agent in a pop up window.
 env = MassSpringDamperEnv()
+ENV = 'HalfCheetah-v4'
+env = gym.make(ENV)
 
 num_states = env.observation_space.shape[0]
 print("Size of State Space ->  {}".format(num_states))
@@ -185,17 +187,21 @@ def discounted_cumulative_sums(x, discount):
 
 class Buffer:
     # Buffer for storing trajectories
-    def __init__(self, observation_dimensions, size, gamma=0.99, lam=0.95):
+    def __init__(self, observation_dimensions, action_dimensions, size, gamma=0.99, lam=0.95):
         # Buffer initialization
         self.observation_buffer = np.zeros(
             (size, observation_dimensions), dtype=np.float32
         )
-        self.action_buffer = np.zeros(size, dtype=np.float32)
+        self.action_buffer = np.zeros(
+            (size, action_dimensions), dtype=np.float32
+        )
         self.advantage_buffer = np.zeros(size, dtype=np.float32)
         self.reward_buffer = np.zeros(size, dtype=np.float32)
         self.return_buffer = np.zeros(size, dtype=np.float32)
         self.value_buffer = np.zeros(size, dtype=np.float32)
-        self.logprobability_buffer = np.zeros(size, dtype=np.float32)
+        self.logprobability_buffer = np.zeros(
+            (size, action_dimensions), dtype=np.float32
+        )
         self.gamma, self.lam = gamma, lam
         self.pointer, self.trajectory_start_index = 0, 0
 
@@ -252,11 +258,11 @@ def mlp(x, sizes, activation=keras.activations.tanh, output_activation=None):
 # Define the log-probabilities function for continuous actions
 def logprobabilities(mean, log_std, actions):
     std = tf.exp(log_std)
-    var = std ** 2 / 5
+    var = std ** 2
     # print(actions.dtype)
     # print(mean.dtype)
     # print(var.dtype)
-    actions = tf.reshape(actions, (-1, 1))
+    actions = tf.reshape(actions, (-1, 6))
 
     logp = -0.5 * (((actions - mean) ** 2) / var + 2 * log_std + tf.math.log(2 * np.pi))
     return tf.reduce_sum(logp, axis=-1)
@@ -330,7 +336,7 @@ def train_value_function(observation_buffer, return_buffer):
 
 # Hyperparameters of the PPO algorithm
 steps_per_epoch = 4000
-epochs = 10
+epochs = 20
 gamma = 0.99
 clip_ratio = 0.2
 policy_learning_rate = 3e-4
@@ -355,23 +361,25 @@ observation_dimensions = env.observation_space.shape[0]
 num_actions = env.action_space.shape[0]
 
 # Initialize the buffer
-buffer = Buffer(observation_dimensions, steps_per_epoch)
+buffer = Buffer(observation_dimensions, num_actions, steps_per_epoch)
 
 # Define the observation input
 observation_input = keras.Input(shape=(observation_dimensions,), dtype="float32")
 
 # Define the actor model
-dense1_actor = keras.layers.Dense(64, activation='relu')(observation_input)
-dense2_actor = keras.layers.Dense(64, activation='relu')(dense1_actor)
+dense1_actor = keras.layers.Dense(64, activation='tanh')(observation_input)
+dense2_actor = keras.layers.Dense(64, activation='tanh')(dense1_actor)
 # add mean out put with tanh and upper and lower limit # Output mean of the Gaussian distribution
 mean_output = keras.layers.Dense(num_actions, activation='tanh')(dense2_actor)
-log_std_output = keras.layers.Dense(num_actions, activation='tanh')(dense2_actor)  # Output log standard deviation of
+log_std_output = keras.layers.Dense(num_actions, activation='sigmoid')(dense2_actor)  # Output log standard deviation of
 # the Gaussian distribution
+# Step 2: Apply the transformation
+log_std_output = layers.Lambda(lambda x: x - 5)(log_std_output)  # Subtract constant
 actor = keras.Model(inputs=observation_input, outputs=[mean_output, log_std_output])
 
 # Define the critic model
-dense1_critic = keras.layers.Dense(64, activation='relu')(observation_input)
-dense2_critic = keras.layers.Dense(64, activation='relu')(dense1_critic)
+dense1_critic = keras.layers.Dense(64, activation='tanh')(observation_input)
+dense2_critic = keras.layers.Dense(64, activation='tanh')(dense1_critic)
 value = keras.layers.Dense(1)(dense2_critic)  # Output single value for the critic
 critic = keras.Model(inputs=observation_input, outputs=value)
 
@@ -444,7 +452,7 @@ for epoch in range(epochs):
         kl = train_policy(
             observation_buffer, action_buffer, logprobability_buffer, advantage_buffer
         )
-        if kl > 1.5 * target_kl:
+        if kl > 1.5 * target_kl and epoch > 5:
             # Early Stopping
             break
 
