@@ -7,13 +7,13 @@
     },
     "actor_critic":	"MLPActorCritic",
     "clip_ratio":	0.2,
-    "env_fn":	"<function <lambda> at 0x15435c400>",
+    "env_fn":	"<function <lambda> at 0x15be4c400>",
     "epochs":	50,
     "exp_name":	"ppo",
     "gamma":	0.99,
     "lam":	0.97,
     "logger":	{
-        "<logx.EpochLogger object at 0x154354dd0>":	{
+        "<logx.EpochLogger object at 0x15be41350>":	{
             "epoch_dict":	{},
             "exp_name":	"ppo",
             "first_row":	true,
