@@ -1,13 +1,79 @@
 import numpy as np
 import torch
 from torch.optim import Adam
-import gym
+import gymnasium as gym
 import time
+import matplotlib.pyplot as plt
 import core
 from logx import EpochLogger
 from mpi_pytorch import setup_pytorch_for_mpi, sync_params, mpi_avg_grads
 from mpi_tools import mpi_fork, mpi_avg, proc_id, mpi_statistics_scalar, num_procs
 
+class MassSpringDamperEnv(gym.Env):
+
+    def __init__(self):
+        super(MassSpringDamperEnv, self).__init__()
+
+        # System parameters
+        self.step_num = None
+        self.last_u = None
+        self.state = None
+        self.done = None
+        self.m = 1.0  # Mass (kg)
+        self.k = 1.0  # Spring constant (N/m)
+        self.c = 0.1  # Damping coefficient (N*s/m)
+
+        # Simulation parameters
+        self.dt = 0.01  # Time step (s)
+        self.max_steps = 1000  # Maximum simulation steps
+        self.current_step = 0
+
+        # Integrator
+        self.integral_error = 0
+
+        # State and action spaces
+        self.action_space = gym.spaces.Box(low=-20.0, high=20.0, shape=(1,))
+        self.observation_space = gym.spaces.Box(low=-100, high=100, shape=(2,))
+
+    def step(self, action):
+        # Apply control action and simulate one time step using Euler integration
+        force = action[0] * self.action_space.high[0]
+        position, velocity = self.state
+
+        acceleration = (force - self.c * velocity - self.k * position) / self.m
+        velocity += acceleration * self.dt
+        position += velocity * self.dt
+
+        self.state = np.array([position, velocity])
+        self.integral_error += position * self.dt
+
+        costs = (position ** 2 + 0.1 * velocity ** 2 \
+                + 0.01 * self.integral_error ** 2 + 0.001 * (force ** 2)) * self.dt
+
+        self.step_num += 1
+        if self.step_num > 1000:
+            self.done = True
+
+        # early stop
+        if sum(self.state > 20) > 0 or sum(self.state < -20) > 0:
+            self.done = True
+            costs += 10
+
+        return self._get_obs(), -costs, self.done, False, {}
+
+    def reset(self):
+        self.state = np.random.uniform(low=-10, high=10, size=(2,))
+        self.current_step = 0
+        self.last_u = None
+        self.done = False
+        self.step_num = 0
+        self.integral_error = 0
+
+        return self._get_obs(), {}
+
+    def _get_obs(self):
+        position, velocity = (self.state + self.action_space.high[0])/(self.action_space.high[0] - self.action_space.low[0]) # normalized data
+        return np.array([position, velocity], dtype=np.float32)
 
 class PPOBuffer:
     """
@@ -84,10 +150,10 @@ class PPOBuffer:
         return {k: torch.as_tensor(v, dtype=torch.float32) for k, v in data.items()}
 
 
-def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
+def ppo(env, actor_critic=core.MLPActorCritic, ac_kwargs=None, seed=0,
         steps_per_epoch=4000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
         vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=1000,
-        target_kl=0.01, logger_kwargs=dict(), save_freq=10):
+        target_kl=0.01, logger_kwargs=None, save_freq=10):
     """
     Proximal Policy Optimization (by clipping),
 
@@ -192,6 +258,10 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
     """
 
     # Special function to avoid certain slowdowns from PyTorch + MPI combo.
+    if logger_kwargs is None:
+        logger_kwargs = dict()
+    if ac_kwargs is None:
+        ac_kwargs = dict()
     setup_pytorch_for_mpi()
 
     # Set up logger and save configuration
@@ -204,7 +274,6 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
     np.random.seed(seed)
 
     # Instantiate environment
-    env = env_fn()
     obs_dim = env.observation_space.shape
     act_dim = env.action_space.shape
 
@@ -291,14 +360,15 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
 
     # Prepare for interaction with environment
     start_time = time.time()
-    o, ep_ret, ep_len = env.reset(), 0, 0
+    o, _ = env.reset()
+    ep_ret, ep_len = 0, 0
 
     # Main loop: collect experience in env and update/log each epoch
     for epoch in range(epochs):
         for t in range(local_steps_per_epoch):
             a, v, logp = ac.step(torch.as_tensor(o, dtype=torch.float32))
 
-            next_o, r, d, _ = env.step(a)
+            next_o, r, d, _, _ = env.step(a)
             ep_ret += r
             ep_len += 1
 
@@ -314,7 +384,7 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
             epoch_ended = t == local_steps_per_epoch - 1
 
             if terminal or epoch_ended:
-                if epoch_ended and not (terminal):
+                if epoch_ended and not terminal:
                     print('Warning: trajectory cut off by epoch at %d steps.' % ep_len, flush=True)
                 # if trajectory didn't reach terminal state, bootstrap value target
                 if timeout or epoch_ended:
@@ -325,7 +395,8 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
                 if terminal:
                     # only save EpRet / EpLen if trajectory finished
                     logger.store(EpRet=ep_ret, EpLen=ep_len)
-                o, ep_ret, ep_len = env.reset(), 0, 0
+                o, _ = env.reset()
+                ep_ret, ep_len = 0, 0
 
         # Save model
         if (epoch % save_freq == 0) or (epoch == epochs - 1):
@@ -351,34 +422,49 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
         logger.log_tabular('Time', time.time() - start_time)
         logger.dump_tabular()
 
+    return ac
+
 
 if __name__ == '__main__':
     # Define constants
-    ENV = 'HalfCheetah-v3'
+    ENV = 'MountainCarContinuous-v0'
     HID = 64
     L = 2
     GAMMA = 0.99
     SEED = 0
-    CPU = 4
     STEPS = 4000
-    EPOCHS = 50
+    EPOCHS = 216
     EXP_NAME = 'ppo'
 
     # Use the constants directly
     from run_utils import setup_logger_kwargs
-    import gym
     import core
 
 
-    def mpi_fork(cpu):
-        pass  # Replace with actual mpi_fork implementation
-
-
-    mpi_fork(CPU)  # run parallel code with mpi
 
     logger_kwargs = setup_logger_kwargs(EXP_NAME, SEED)
 
-    ppo(lambda: gym.make(ENV), actor_critic=core.MLPActorCritic,
+    ac = ppo(MassSpringDamperEnv(), actor_critic=core.MLPActorCritic,
         ac_kwargs=dict(hidden_sizes=[HID] * L), gamma=GAMMA,
         seed=SEED, steps_per_epoch=STEPS, epochs=EPOCHS,
         logger_kwargs=logger_kwargs)
+
+    # test the trained model
+    env = MassSpringDamperEnv()
+    o, _ = env.reset()
+    states = []
+    actions = []
+    while True:
+        a, _, _ = ac.step(torch.as_tensor(o, dtype=torch.float32))
+        actions.append(a*20)
+        o, _, d, _, _ = env.step(a)
+        states.append(o*40-20)
+        if d:
+            break
+
+    plt.plot(states)
+    plt.show()
+
+    plt.plot(actions)
+    plt.show()
+

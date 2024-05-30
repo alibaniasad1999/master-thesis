@@ -7,13 +7,57 @@
     },
     "actor_critic":	"MLPActorCritic",
     "clip_ratio":	0.2,
-    "env_fn":	"<function <lambda> at 0x15be4c400>",
-    "epochs":	50,
+    "env":	{
+        "<MassSpringDamperEnv instance>":	{
+            "action_space":	{
+                "Box(-20.0, 20.0, (1,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        1
+                    ],
+                    "bounded_above":	"[ True]",
+                    "bounded_below":	"[ True]",
+                    "dtype":	"float32",
+                    "high":	"[20.]",
+                    "high_repr":	"20.0",
+                    "low":	"[-20.]",
+                    "low_repr":	"-20.0"
+                }
+            },
+            "c":	0.1,
+            "current_step":	0,
+            "done":	null,
+            "dt":	0.01,
+            "integral_error":	0,
+            "k":	1.0,
+            "last_u":	null,
+            "m":	1.0,
+            "max_steps":	1000,
+            "observation_space":	{
+                "Box(-100.0, 100.0, (2,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        2
+                    ],
+                    "bounded_above":	"[ True  True]",
+                    "bounded_below":	"[ True  True]",
+                    "dtype":	"float32",
+                    "high":	"[100. 100.]",
+                    "high_repr":	"100.0",
+                    "low":	"[-100. -100.]",
+                    "low_repr":	"-100.0"
+                }
+            },
+            "state":	null,
+            "step_num":	null
+        }
+    },
+    "epochs":	216,
     "exp_name":	"ppo",
     "gamma":	0.99,
     "lam":	0.97,
     "logger":	{
-        "<logx.EpochLogger object at 0x15be41350>":	{
+        "<logx.EpochLogger object at 0x156ec5350>":	{
             "epoch_dict":	{},
             "exp_name":	"ppo",
             "first_row":	true,
