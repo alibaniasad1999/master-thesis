@@ -16,7 +16,7 @@ slprj/
 .idea/
 .vscode/
 .**/
-
+__pycache__/
 ## Intermediate documents:
 *.dvi
 *.xdv
