@@ -57,14 +57,14 @@
     "lam":	0.97,
     "logger_kwargs":	{
         "exp_name":	"ppo",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/data/ppo/ppo_s0"
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/data/ppo/ppo_s0"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x12d9a8410>":	{
+        "<__main__.PPO object at 0x14bb77850>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -121,15 +121,15 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x1210b6790>":	{
+                "<__main__.EpochLogger object at 0x14bb6c690>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ppo",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/data/ppo/ppo_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/data/ppo/ppo_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/data/ppo/ppo_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/data/ppo/ppo_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -137,7 +137,7 @@
             },
             "logger_kwargs":	{
                 "exp_name":	"ppo",
-                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/data/ppo/ppo_s0"
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/data/ppo/ppo_s0"
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,
