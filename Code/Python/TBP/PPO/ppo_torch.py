@@ -1124,8 +1124,7 @@ class ExperimentGrid:
         variants = []
         for val in vals[0]:
             for pre_v in pre_variants:
-                v = {}
-                v[keys[0]] = val
+                v = {keys[0]: val}
                 v.update(pre_v)
                 variants.append(v)
         return variants
