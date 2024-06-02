@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[49]:
+# In[1]:
 
 
-get_ipython().system('pip install gymnasium')
-get_ipython().system('pip install mpi4py')
+# !pip install gymnasium
+# !pip install mpi4py
 
 
-# In[50]:
+# In[2]:
 
 
 # Standard library imports
@@ -44,14 +44,14 @@ from torch.distributions.normal import Normal
 from torch.distributions.categorical import Categorical
 
 
-# In[51]:
+# In[3]:
 
 
 import logging
 logging.getLogger('matplotlib.font_manager').setLevel(level=logging.CRITICAL)
 
 
-# In[52]:
+# In[4]:
 
 
 # Default neural network backend for each algo
@@ -94,7 +94,7 @@ DEFAULT_SHORTHAND = True
 WAIT_BEFORE_LAUNCH = 5
 
 
-# In[53]:
+# In[5]:
 
 
 def mpi_fork(n, bind_to_core=False):
@@ -186,7 +186,7 @@ def mpi_statistics_scalar(x, with_min_and_max=False):
     return mean, std
 
 
-# In[54]:
+# In[6]:
 
 
 def convert_json(obj):
@@ -222,7 +222,7 @@ def is_json_serializable(v):
         return False
 
 
-# In[55]:
+# In[7]:
 
 
 def setup_pytorch_for_mpi():
@@ -255,7 +255,7 @@ def sync_params(module):
         broadcast(p_numpy)
 
 
-# In[56]:
+# In[8]:
 
 
 """
@@ -606,7 +606,7 @@ class EpochLogger(Logger):
         return mpi_statistics_scalar(vals)
 
 
-# In[57]:
+# In[9]:
 
 
 def combined_shape(length, shape=None):
@@ -739,7 +739,7 @@ class MLPActorCritic(nn.Module):
         return self.step(obs)[0]
 
 
-# In[58]:
+# In[10]:
 
 
 DIV_LINE_WIDTH = 80
@@ -1280,81 +1280,122 @@ def test_eg():
 
 # ## Mass Spring Damper Environment
 
-# In[59]:
+# In[11]:
 
 
-class MassSpringDamperEnv(gym.Env):
+import pandas as pd
+## import trajectory data
+df = pd.read_csv('trajectory.csv')
+df.head()
+# df to numpy array
+data = df.to_numpy()
+print(data.shape)
+trajectory = np.delete(data, 2, 1)
+trajectory = np.delete(trajectory, -1, 1)
+trajectory.shape
 
-    def __init__(self):
-        super(MassSpringDamperEnv, self).__init__()
 
-        # System parameters
-        self.step_num = None
-        self.last_u = None
-        self.state = None
-        self.done = None
-        self.m = 1.0  # Mass (kg)
-        self.k = 1.0  # Spring constant (N/m)
-        self.c = 0.1  # Damping coefficient (N*s/m)
+# In[12]:
 
-        # Simulation parameters
-        self.dt = 0.01  # Time step (s)
-        self.max_steps = 1000  # Maximum simulation steps
-        self.current_step = 0
 
-        # Integrator
-        self.integral_error = 0
+plt.plot(trajectory[:,0], trajectory[:,1])
 
-        # State and action spaces
-        self.action_space = gym.spaces.Box(low=-20.0, high=20.0, shape=(1,))
-        self.observation_space = gym.spaces.Box(low=-100, high=100, shape=(2,))
+
+# In[13]:
+
+
+# three body problem env
+from gymnasium import spaces
+import numpy as np
+
+class ThreeBodyEnv(gym.Env):
+    def __init__(self, trajectory):
+        self.trajectory = trajectory
+        self.state = np.zeros(4)
+        self.dt = 0.01
+        self.mu = 0.012277471
+        self.action_space = spaces.Box(low=-10, high=10, shape=(2,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=-1, high=1, shape=(4,), dtype=np.float32)
+        self.position = trajectory[0]
+        self.steps = 0
+        self.max_steps = 1000
+        self.reward_range = (-float('inf'), float('inf'))
+        self.render_logic = False
+        self.reset()
 
     def step(self, action):
-        # clip action
-        np.clip(action, -1, 1)
-        # Apply control action and simulate one time step using Euler integration
-        force = action[0] * self.action_space.high[0]
-        position, velocity = self.state
+        x = self.position[0]
+        y = self.position[1]
+        xdot = self.position[2]
+        ydot = self.position[3]
 
-        acceleration = (force - self.c * velocity - self.k * position) / self.m
-        velocity += acceleration * self.dt
-        position += velocity * self.dt
+        # force = action[0] * env.state[2:] + action[1] * env.state[:2]
+        a_x = action[0]/10
+        a_y = action[1]/10
 
-        self.state = np.array([position, velocity])
-        self.integral_error += position * self.dt
+        r1 = np.sqrt((x+self.mu)**2 + y**2)
+        r2 = np.sqrt((x-1+self.mu)**2 + y**2)
 
-        costs = (position ** 2 + 0.1 * velocity ** 2
-                 + 0.01 * self.integral_error ** 2 + 0.001 * (force ** 2)) * self.dt
+        xddot = 2*ydot + x -(1-self.mu)*((x+self.mu)/(r1**3)) - self.mu*(x-1+self.mu)/(r2**3) + a_x
+        yddot = -2*xdot + y - (1-self.mu)*(y/(r1**3)) - self.mu*(y)/(r2**3) + a_y
 
-        self.step_num += 1
-        if self.step_num > 1000:
-            self.done = True
+        x = x + xdot*self.dt
+        y = y + ydot*self.dt
 
-        # early stop
-        if sum(self.state > 20) > 0 or sum(self.state < -20) > 0:
-            self.done = True
-            costs += 10
+        xdot = xdot + xddot*self.dt
+        ydot = ydot + yddot*self.dt
 
-        return self._get_obs(), -costs, self.done, False, {}
+        self.position = np.array([x, y, xdot, ydot])
 
-    def reset(self):
-        self.state = np.random.uniform(low=-10, high=10, size=(2,))
-        self.current_step = 0
-        self.last_u = None
-        self.done = False
-        self.step_num = 0
-        self.integral_error = 0
+        self.steps += 1
 
-        return self._get_obs(), {}
+        self.position2state()
 
-    def _get_obs(self):
-        position, velocity = (self.state + self.action_space.high[0])/(self.action_space.high[0] - self.action_space.low[0]) # normalized data
-        return np.array([position, velocity], dtype=np.float32)
+        # plot position
+        if self.render_logic:
+            plt.plot(x, y, 'ro')
+            plt.plot(self.trajectory[:,0], self.trajectory[:,1])
+            plt.show()
+
+        reward = 1 - np.linalg.norm(self.state, axis=0) # + self.steps
+        done = self.steps >= self.max_steps
+        if np.linalg.norm(self.position[0:2] - self.trajectory[-1, 0:2]) < 0.01:
+            done = True
+            reward = 10000
+            print("done")
+        if self.steps > 1000:
+            done = True
+            reward = -10000
+            print("end time")
+        if np.linalg.norm(self.state[0:2]) > 0.05:
+            done = True
+            reward = -10000
+            # print("too much error")
+
+        # print(self.state, reward, done, self.position)
+        return 1000*self.state, reward, done, False, self.position
+
+    def position2state(self):
+        # find the nearest point from position to trajectory
+        distance = np.linalg.norm(self.trajectory - self.position, axis=1)
+        nearest_idx = np.argmin(distance)
+        # estate = position - nearest(index)
+        self.state = self.position - self.trajectory[nearest_idx]
+
+    def reset(self,
+              *,
+              seed: 5 = None,
+              return_info: bool = False,
+              options: 6 = None):
+        self.position = self.trajectory[0]
+        self.steps = 0
+        self.position2state()
+        return 10000*self.state, {}
 
 
 # ## Proximal Policy Optimization (PPO)
 
-# In[60]:
+# In[14]:
 
 
 class PPOBuffer:
@@ -1432,7 +1473,7 @@ class PPOBuffer:
         return {k: torch.as_tensor(v, dtype=torch.float32) for k, v in data.items()}
 
 
-# In[61]:
+# In[15]:
 
 
 class PPO:
@@ -1629,9 +1670,9 @@ class PPO:
             self.pi_optimizer.zero_grad()
             loss_pi, pi_info = self.compute_loss_pi(data)
             kl = mpi_avg(pi_info['kl'])
-            if kl > 1.5 * self.target_kl:
-                self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
-                break
+            # if kl > 1.5 * self.target_kl:
+            #     self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
+            #     break
             loss_pi.backward()
             mpi_avg_grads(self.ac.pi)  # average grads across MPI processes
             self.pi_optimizer.step()
@@ -1721,40 +1762,40 @@ class PPO:
 
     def test(self, fun_mode=False, deterministic=True):
         o, _ = self.env.reset()
-        states = []
-        actions = []
+        state_array = []
+        action_array = []
         while True:
             a, _, _ = ppo.ac.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
-            actions.append(a*20)
-            o, _, d, _, _ = self.env.step(a)
-            states.append(o*40-20)
+            action_array.append(a)
+            o, _, d, _, position = self.env.step(a)
+            state_array.append(position)
             if d:
                 break
         dt = self.env.dt
-        time = np.arange(0, len(states)*dt, dt)
+        time = np.arange(0, len(state_array)*dt, dt)
+        state_array = np.array(state_array)
+        action_array = np.array(action_array)
 
 
         if fun_mode:
             # Use XKCD style for hand-drawn look
             with plt.xkcd():
-                plt.plot(time, states)
-                plt.xlabel("Time (sec)")
-                plt.ylabel("State")
-                plt.legend(["position", "velocity", "integral error"])
+                plt.plot(state_array[:,0], state_array[:,1], label='State')
+                plt.plot(trajectory[:,0], trajectory[:,1], label='Trajectory')
+                plt.legend()
                 plt.show()
             with plt.xkcd():
-                plt.plot(time, actions)
+                plt.plot(time, action_array)
                 plt.xlabel("Time (sec)")
                 plt.ylabel("action (N)")
                 plt.show()
         else:
-            plt.plot(time, states)
-            plt.xlabel("Time (sec)")
-            plt.ylabel("State")
-            plt.legend(["position", "velocity", "integral error"])
+            plt.plot(state_array[:,0], state_array[:,1], label='State')
+            plt.plot(trajectory[:,0], trajectory[:,1], label='Trajectory')
+            plt.legend()
             plt.show()
 
-            plt.plot(time, actions)
+            plt.plot(time, action_array)
             plt.xlabel("Time (sec)")
             plt.ylabel("action (N)")
             plt.show()
@@ -1780,7 +1821,7 @@ class PPO:
 
 
 
-# In[62]:
+# In[16]:
 
 
 # Define constants
@@ -1790,7 +1831,7 @@ GAMMA = 0.99
 SEED = 0
 STEPS = 4000
 EPOCHS = 216
-EXP_NAME = 'ppo'
+EXP_NAME = 'PPO_3BP'
 
 # Use the constants directly
 
@@ -1798,7 +1839,7 @@ EXP_NAME = 'ppo'
 
 logger_kwargs = setup_logger_kwargs(EXP_NAME, SEED)
 
-ppo = PPO(MassSpringDamperEnv(), ac_kwargs=dict(hidden_sizes=[HID] * L), gamma=GAMMA,
+ppo = PPO(ThreeBodyEnv(trajectory), ac_kwargs=dict(hidden_sizes=[HID] * L), gamma=GAMMA,
             seed=SEED, steps_per_epoch=STEPS, epochs=EPOCHS,
             logger_kwargs=logger_kwargs)
 
@@ -1806,31 +1847,31 @@ ppo = PPO(MassSpringDamperEnv(), ac_kwargs=dict(hidden_sizes=[HID] * L), gamma=G
 ppo.test(deterministic=False)
 
 
-# In[63]:
+# In[17]:
 
 
 ppo.train()
 
 
-# In[64]:
+# In[18]:
 
 
-# ppo.save()
+ppo.save()
 
 
-# In[65]:
+# In[19]:
 
 
 # ppo.load()
 
 
-# In[66]:
+# In[20]:
 
 
 ppo.test(fun_mode=True)
 
 
-# In[67]:
+# In[21]:
 
 
 ppo.test()
