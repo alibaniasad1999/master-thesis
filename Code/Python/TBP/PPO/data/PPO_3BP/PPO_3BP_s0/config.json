@@ -58,14 +58,14 @@
     "lam":	0.97,
     "logger_kwargs":	{
         "exp_name":	"PPO_3BP",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0"
+        "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0"
     },
     "max_ep_len":	1000,
-    "pi_lr":	0.0003,
+    "pi_lr":	3e-08,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x1362bfe90>":	{
+        "<__main__.PPO object at 0x7d21f51dd7e0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -123,15 +123,15 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x10ed14cd0>":	{
+                "<__main__.EpochLogger object at 0x7d21f51dd840>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0",
+                    "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/content/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -139,22 +139,22 @@
             },
             "logger_kwargs":	{
                 "exp_name":	"PPO_3BP",
-                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0"
+                "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0"
             },
             "max_ep_len":	1000,
-            "pi_lr":	0.0003,
+            "pi_lr":	3e-08,
             "save_freq":	10,
             "seed":	0,
             "steps_per_epoch":	4000,
             "target_kl":	0.01,
             "train_pi_iters":	80,
             "train_v_iters":	80,
-            "vf_lr":	0.001
+            "vf_lr":	1e-07
         }
     },
     "steps_per_epoch":	4000,
     "target_kl":	0.01,
     "train_pi_iters":	80,
     "train_v_iters":	80,
-    "vf_lr":	0.001
+    "vf_lr":	1e-07
 }
