@@ -24,6 +24,8 @@
                 }
             },
             "dt":	0.01,
+            "error_range":	0.01,
+            "final_range":	0.01,
             "max_steps":	1000,
             "mu":	0.012277471,
             "observation_space":	{
@@ -65,7 +67,7 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x7ccb1d1626b0>":	{
+        "<__main__.PPO object at 0x7f6bf7f03610>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -91,6 +93,8 @@
                         }
                     },
                     "dt":	0.01,
+                    "error_range":	0.01,
+                    "final_range":	0.01,
                     "max_steps":	1000,
                     "mu":	0.012277471,
                     "observation_space":	{
@@ -123,7 +127,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x7ccb1d1637f0>":	{
+                "<__main__.EpochLogger object at 0x7f6bf7f02710>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
