@@ -63,7 +63,14 @@ BoldItalicFont=Yas BdIt
 ]{Yas}
 
 
-\ExplSyntaxOn \cs_set_eq:NN \etex_iffontchar:D \tex_iffontchar:D \ExplSyntaxOff
+\ExplSyntaxOn
+\cs_set_eq:NN
+\etex_iffontchar:D
+\tex_iffontchar:D
+\cs_undefine:N \c_one
+\int_const:Nn \c_one { 1 }
+\ExplSyntaxOff
+%\setdigitfont
 
 %\setdigitfont[
 %Scale=1.09,
