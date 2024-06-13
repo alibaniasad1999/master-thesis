@@ -110,6 +110,8 @@ if choice == 1
     % Train the agent.
     trainingStats = train(agent,env,trainOpts,Evaluator=evaluator);
 else
+    load('DDPG_MBK.mat');
     msg = sprintf('I just  loaded Agent, have a nice day!');
     h = msgbox(msg);
+    open_system(mdl)
 end
