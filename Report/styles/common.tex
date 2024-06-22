@@ -14,6 +14,11 @@
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{fit, positioning, shapes.geometric}
+\usepackage{pgfplots}       % <-- required in preamble
+\usepackage{siunitx}        % <-- required in preamble
+\pgfplotsset{compat=newest} % <-- optional in preamble
 \usepackage{subfiles}
 \tikzset{
 	frame/.style={
@@ -34,6 +39,7 @@
 \usepackage[localise=on,extrafootnotefeatures]{xepersian}
 \usepackage[noend]{algpseudocode}
 \input{styles/alg-fa}
+
 
 
 % -------------------- Page Layout --------------------

@@ -1,0 +1,23 @@
+\section{سندباکس}
+
+
+\begin{tikzpicture}
+	\begin{axis}[
+		% xmode=log,
+		% ymode=log,
+		legend style={at={(1,1)},anchor=north east
+			,draw=none,fill=none,inner sep=2mm},
+		xlabel=X, % \hertz requires SIunits
+		ylabel=Y,
+		title={Trajectory of the satellite},
+		% grid=both,
+		% minor grid style={gray!25},
+		% major grid style={gray!25},
+		width=0.75\linewidth,
+		enlarge y limits=0.15,
+		no marks]
+		\addplot[line width=1pt,solid,color=blue] %
+		table[x=x,y=y,col sep=comma]{../Code/Python/Environment/trajectory_latex.csv};
+		\addlegendentry{Trajectory}
+	\end{axis}
+\end{tikzpicture}
