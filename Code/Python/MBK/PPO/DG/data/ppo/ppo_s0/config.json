@@ -52,19 +52,19 @@
         }
     },
     "epochs":	216,
-    "exp_name":	"PPO_MBK_DG",
+    "exp_name":	"ppo",
     "gamma":	0.99,
     "lam":	0.97,
     "logger_kwargs":	{
-        "exp_name":	"PPO_MBK_DG",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/PPO_MBK_DG/PPO_MBK_DG_s0"
+        "exp_name":	"ppo",
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x139443710>":	{
+        "<PPO_DG.PPO object at 0x12ff83cd0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -121,23 +121,23 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<PPO_utilz_DG.EpochLogger object at 0x139079d90>":	{
+                "<PPO_utilz_DG.EpochLogger object at 0x1306ae890>":	{
                     "epoch_dict":	{},
-                    "exp_name":	"PPO_MBK_DG",
+                    "exp_name":	"ppo",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/PPO_MBK_DG/PPO_MBK_DG_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/PPO_MBK_DG/PPO_MBK_DG_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
                 }
             },
             "logger_kwargs":	{
-                "exp_name":	"PPO_MBK_DG",
-                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/PPO_MBK_DG/PPO_MBK_DG_s0"
+                "exp_name":	"ppo",
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,

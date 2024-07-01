@@ -51,7 +51,7 @@ class MassSpringDamperEnv(gym.Env):
 
         # Linear quadratic differential game cost
         costs = (position ** 2 + 0.1 * velocity ** 2 + 0.01 * self.integral_error ** 2 +
-                 0.001 * (action_1 ** 2) - 0.001 * (action_2 ** 2)) * self.d
+                 0.001 * (action_1 ** 2) - 0.001 * (action_2 ** 2)) * self.dt
 
         self.step_num += 1
         if self.step_num > 1000:

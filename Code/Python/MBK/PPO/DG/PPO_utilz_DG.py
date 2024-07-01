@@ -487,6 +487,7 @@ class Logger:
                 if '_2' in key and not second_player_part:
                     print("-" * n_slashes)
                     print("⚔️" * (n_slashes//2))
+                    print("-" * n_slashes)
                     second_player_part = True
                 val = self.log_current_row.get(key, "")
                 valstr = "%8.3g" % val if hasattr(val, "__float__") else val

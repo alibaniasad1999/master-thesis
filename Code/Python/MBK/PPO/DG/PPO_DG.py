@@ -300,11 +300,12 @@ class PPO:
     def compute_loss_pi(self, data, actor_no='player_1'):
         if actor_no == 'player_1':
             obs, act, adv, logp_old = data['obs'], data['act'], data['adv'], data['logp']
+            pi, logp = self.ac.pi(obs, act)
         else:
             obs, act, adv, logp_old = data['obs'], data['act_2'], data['adv_2'], data['logp_2']
+            pi, logp = self.ac_2.pi(obs, act)
 
         # Policy loss
-        pi, logp = self.ac.pi(obs, act)
         ratio = torch.exp(logp - logp_old)
         clip_adv = torch.clamp(ratio, 1 - self.clip_ratio, 1 + self.clip_ratio) * adv
         loss_pi = -(torch.min(ratio * adv, clip_adv)).mean()
@@ -322,9 +323,10 @@ class PPO:
     def compute_loss_v(self, data, actor_no='player_1'):
         if actor_no == 'player_1':
             obs, ret = data['obs'], data['ret']
+            return ((self.ac.v(obs) - ret) ** 2).mean()
         else:
             obs, ret = data['obs'], data['ret_2']
-        return ((self.ac.v(obs) - ret) ** 2).mean()
+            return ((self.ac_2.v(obs) - ret) ** 2).mean()
 
     def update(self):
         data = self.buf.get()
@@ -358,6 +360,7 @@ class PPO:
                 break
             loss_pi_2.backward()
             mpi_avg_grads(self.ac_2.pi)  # average grads across MPI processes
+            self.pi_optimizer_2.step()
 
         self.logger.store(StopIter=i)
 
