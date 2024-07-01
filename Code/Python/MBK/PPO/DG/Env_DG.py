@@ -51,10 +51,7 @@ class MassSpringDamperEnv(gym.Env):
 
         # Linear quadratic differential game cost
         costs = (position ** 2 + 0.1 * velocity ** 2 + 0.01 * self.integral_error ** 2 +
-                 0.001 * (action_1 ** 2) - 0.001 * (action_2 ** 2)) * self.dt
-
-        # second player cost
-        costs_2 = -costs
+                 0.001 * (action_1 ** 2) - 0.001 * (action_2 ** 2)) * self.d
 
         self.step_num += 1
         if self.step_num > 1000:
@@ -64,6 +61,9 @@ class MassSpringDamperEnv(gym.Env):
         if sum(self.state > 20) > 0 or sum(self.state < -20) > 0:
             self.done = True
             costs += 10
+
+        # second player cost
+        costs_2 = -costs
 
         return self._get_obs(), -costs, self.done, False, {}, -costs_2
 
