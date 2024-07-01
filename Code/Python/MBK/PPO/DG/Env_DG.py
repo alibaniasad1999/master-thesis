@@ -36,8 +36,10 @@ class MassSpringDamperEnv(gym.Env):
     def step(self, action):
         # clip action
         np.clip(action, -1, 1)
+        action_1 = action[0]
+        action_2 = action[1] if len(action) > 1 else None
         # Apply control action and simulate one time step using Euler integration
-        force = action[0] * self.action_space.high[0]
+        force = (action_1 + action_2) * self.action_space.high[0]
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
@@ -47,8 +49,12 @@ class MassSpringDamperEnv(gym.Env):
         self.state = np.array([position, velocity])
         self.integral_error += position * self.dt
 
-        costs = (position ** 2 + 0.1 * velocity ** 2
-                 + 0.01 * self.integral_error ** 2 + 0.001 * (force ** 2)) * self.dt
+        # Linear quadratic differential game cost
+        costs = (position ** 2 + 0.1 * velocity ** 2 + 0.01 * self.integral_error ** 2 +
+                 0.001 * (action_1 ** 2) - 0.001 * (action_2 ** 2)) * self.dt
+
+        # second player cost
+        costs_2 = -costs
 
         self.step_num += 1
         if self.step_num > 1000:
@@ -59,7 +65,7 @@ class MassSpringDamperEnv(gym.Env):
             self.done = True
             costs += 10
 
-        return self._get_obs(), -costs, self.done, False, {}
+        return self._get_obs(), -costs, self.done, False, {}, -costs_2
 
     def reset(self):
         self.state = np.random.uniform(low=-10, high=10, size=(2,))
@@ -72,5 +78,6 @@ class MassSpringDamperEnv(gym.Env):
         return self._get_obs(), {}
 
     def _get_obs(self):
-        position, velocity = (self.state + self.action_space.high[0])/(self.action_space.high[0] - self.action_space.low[0]) # normalized data
+        position, velocity = (self.state + self.action_space.high[0]) / (
+                    self.action_space.high[0] - self.action_space.low[0])  # normalized data
         return np.array([position, velocity], dtype=np.float32)

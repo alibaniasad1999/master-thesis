@@ -27,6 +27,7 @@ import torch.nn as nn
 from torch.distributions.normal import Normal
 from torch.distributions.categorical import Categorical
 import logging
+
 logging.getLogger('matplotlib.font_manager').setLevel(level=logging.CRITICAL)
 
 
@@ -40,6 +41,7 @@ def get_script_dir():
         # Fallback for environments where __file__ is not defined
         # This assumes the current working directory is the script directory
         return osp.abspath('.')
+
 
 # Where experiment outputs are saved by default:
 DEFAULT_DATA_DIR = osp.join(
@@ -58,6 +60,7 @@ DEFAULT_SHORTHAND = True
 # experiments.
 WAIT_BEFORE_LAUNCH = 5
 
+
 def mpi_fork(n, bind_to_core=False):
     """
     Re-launches the current script with workers linked by MPI.
@@ -74,7 +77,7 @@ def mpi_fork(n, bind_to_core=False):
 
         bind_to_core (bool): Bind each MPI process to a core.
     """
-    if n<=1:
+    if n <= 1:
         return
     if os.getenv("IN_MPI") is None:
         env = os.environ.copy()
@@ -92,21 +95,26 @@ def mpi_fork(n, bind_to_core=False):
 
 
 def msg(m, string=''):
-    print(('Message from %d: %s \t '%(MPI.COMM_WORLD.Get_rank(), string))+str(m))
+    print(('Message from %d: %s \t ' % (MPI.COMM_WORLD.Get_rank(), string)) + str(m))
+
 
 def proc_id():
     """Get rank of calling process."""
     return MPI.COMM_WORLD.Get_rank()
 
+
 def allreduce(*args, **kwargs):
     return MPI.COMM_WORLD.Allreduce(*args, **kwargs)
+
 
 def num_procs():
     """Count active MPI processes."""
     return MPI.COMM_WORLD.Get_size()
 
+
 def broadcast(x, root=0):
     MPI.COMM_WORLD.Bcast(x, root=root)
+
 
 def mpi_op(x, op):
     x, scalar = ([x], True) if np.isscalar(x) else (x, False)
@@ -115,12 +123,15 @@ def mpi_op(x, op):
     allreduce(x, buff, op=op)
     return buff[0] if scalar else buff
 
+
 def mpi_sum(x):
     return mpi_op(x, MPI.SUM)
+
 
 def mpi_avg(x):
     """Average a scalar or vector over MPI processes."""
     return mpi_sum(x) / num_procs()
+
 
 def mpi_statistics_scalar(x, with_min_and_max=False):
     """
@@ -137,7 +148,7 @@ def mpi_statistics_scalar(x, with_min_and_max=False):
     global_sum, global_n = mpi_sum([np.sum(x), len(x)])
     mean = global_sum / global_n
 
-    global_sum_sq = mpi_sum(np.sum((x - mean)**2))
+    global_sum_sq = mpi_sum(np.sum((x - mean) ** 2))
     std = np.sqrt(global_sum_sq / global_n)  # compute global std
 
     if with_min_and_max:
@@ -146,6 +157,7 @@ def mpi_statistics_scalar(x, with_min_and_max=False):
         return mean, std, global_min, global_max
     return mean, std
 
+
 def convert_json(obj):
     """ Convert obj to a version which can be serialized with JSON. """
     if is_json_serializable(obj):
@@ -153,7 +165,7 @@ def convert_json(obj):
     else:
         if isinstance(obj, dict):
             return {convert_json(k): convert_json(v)
-                    for k,v in obj.items()}
+                    for k, v in obj.items()}
 
         elif isinstance(obj, tuple):
             return (convert_json(x) for x in obj)
@@ -161,15 +173,16 @@ def convert_json(obj):
         elif isinstance(obj, list):
             return [convert_json(x) for x in obj]
 
-        elif hasattr(obj,'__name__') and not('lambda' in obj.__name__):
+        elif hasattr(obj, '__name__') and not ('lambda' in obj.__name__):
             return convert_json(obj.__name__)
 
-        elif hasattr(obj,'__dict__') and obj.__dict__:
+        elif hasattr(obj, '__dict__') and obj.__dict__:
             obj_dict = {convert_json(k): convert_json(v)
-                        for k,v in obj.__dict__.items()}
+                        for k, v in obj.__dict__.items()}
             return {str(obj): obj_dict}
 
         return str(obj)
+
 
 def is_json_serializable(v):
     try:
@@ -178,34 +191,38 @@ def is_json_serializable(v):
     except:
         return False
 
+
 def setup_pytorch_for_mpi():
     """
     Avoid slowdowns caused by each separate process's PyTorch using
     more than its fair share of CPU resources.
     """
     #print('Proc %d: Reporting original number of Torch threads as %d.'%(proc_id(), torch.get_num_threads()), flush=True)
-    if torch.get_num_threads()==1:
+    if torch.get_num_threads() == 1:
         return
     fair_num_threads = max(int(torch.get_num_threads() / num_procs()), 1)
     torch.set_num_threads(fair_num_threads)
     #print('Proc %d: Reporting new number of Torch threads as %d.'%(proc_id(), torch.get_num_threads()), flush=True)
 
+
 def mpi_avg_grads(module):
     """ Average contents of gradient buffers across MPI processes. """
-    if num_procs()==1:
+    if num_procs() == 1:
         return
     for p in module.parameters():
-        p_grad_numpy = p.grad.numpy()   # numpy view of tensor data
+        p_grad_numpy = p.grad.numpy()  # numpy view of tensor data
         avg_p_grad = mpi_avg(p.grad)
         p_grad_numpy[:] = avg_p_grad[:]
 
+
 def sync_params(module):
     """ Sync all parameters of module across all MPI processes. """
-    if num_procs()==1:
+    if num_procs() == 1:
         return
     for p in module.parameters():
         p_numpy = p.data.numpy()
         broadcast(p_numpy)
+
 
 """
 
@@ -227,6 +244,7 @@ color2num = dict(
     crimson=38
 )
 
+
 def colorize(string, color, bold=False, highlight=False):
     """
     Colorize a string.
@@ -239,6 +257,7 @@ def colorize(string, color, bold=False, highlight=False):
     attr.append(str(num))
     if bold: attr.append('1')
     return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+
 
 class Logger:
     """
@@ -267,26 +286,32 @@ class Logger:
                 hyperparameter configuration with multiple random seeds, you
                 should give them all the same ``exp_name``.)
         """
-        if proc_id()==0:
-            self.output_dir = output_dir or "/tmp/experiments/%i"%int(time.time())
+        if proc_id() == 0:
+            self.output_dir = output_dir or "/tmp/experiments/%i" % int(time.time())
             if osp.exists(self.output_dir):
-                print("Warning: Log dir %s already exists! Storing info there anyway."%self.output_dir)
+                print("Warning: Log dir %s already exists! Storing info there anyway." % self.output_dir)
             else:
                 os.makedirs(self.output_dir)
             self.output_file = open(osp.join(self.output_dir, output_fname), 'w')
             atexit.register(self.output_file.close)
-            print(colorize("Logging data to %s"%self.output_file.name, 'green', bold=True))
+            print(colorize("Logging data to %s" % self.output_file.name, 'green', bold=True))
         else:
             self.output_dir = None
             self.output_file = None
-        self.first_row=True
+        self.first_row = True
         self.log_headers = []
         self.log_current_row = {}
         self.exp_name = exp_name
 
     def log(self, msg, color='green'):
         """Print a colorized message to stdout."""
-        if proc_id()==0:
+        if proc_id() == 0:
+            print(colorize(msg, color, bold=True))
+
+    # log for second player
+    def log_2(self, msg, color='green'):
+        """Print a colorized message to stdout."""
+        if proc_id() == 0:
             print(colorize(msg, color, bold=True))
 
     def log_tabular(self, key, val):
@@ -301,8 +326,8 @@ class Logger:
         if self.first_row:
             self.log_headers.append(key)
         else:
-            assert key in self.log_headers, "Trying to introduce a new key %s that you didn't include in the first iteration"%key
-        assert key not in self.log_current_row, "You already set %s this iteration. Maybe you forgot to call dump_tabular()"%key
+            assert key in self.log_headers, "Trying to introduce a new key %s that you didn't include in the first iteration" % key
+        assert key not in self.log_current_row, "You already set %s this iteration. Maybe you forgot to call dump_tabular()" % key
         self.log_current_row[key] = val
 
     def save_config(self, config):
@@ -324,8 +349,8 @@ class Logger:
         config_json = convert_json(config)
         if self.exp_name is not None:
             config_json['exp_name'] = self.exp_name
-        if proc_id()==0:
-            output = json.dumps(config_json, separators=(',',':\t'), indent=4, sort_keys=True)
+        if proc_id() == 0:
+            output = json.dumps(config_json, separators=(',', ':\t'), indent=4, sort_keys=True)
             print(colorize('Saving config:\n', color='cyan', bold=True))
             # print(output)
             with open(osp.join(self.output_dir, "config.json"), 'w') as out:
@@ -352,8 +377,8 @@ class Logger:
 
             itr: An int, or None. Current iteration of training.
         """
-        if proc_id()==0:
-            fname = 'vars.pkl' if itr is None else 'vars%d.pkl'%itr
+        if proc_id() == 0:
+            fname = 'vars.pkl' if itr is None else 'vars%d.pkl' % itr
             try:
                 joblib.dump(state_dict, osp.join(self.output_dir, fname))
             except:
@@ -402,7 +427,6 @@ class Logger:
     #         tf.saved_model.simple_save(export_dir=fpath, **self.tf_saver_elements)
     #         joblib.dump(self.tf_saver_info, osp.join(fpath, 'model_info.pkl'))
 
-
     def setup_pytorch_saver(self, what_to_save):
         """
         Set up easy model saving for a single PyTorch model.
@@ -423,12 +447,12 @@ class Logger:
         """
         Saves the PyTorch model (or models).
         """
-        if proc_id()==0:
+        if proc_id() == 0:
             assert hasattr(self, 'pytorch_saver_elements'), \
                 "First have to setup saving with self.setup_pytorch_saver"
             fpath = 'pyt_save'
             fpath = osp.join(self.output_dir, fpath)
-            fname = 'model' + ('%d'%itr if itr is not None else '') + '.pt'
+            fname = 'model' + ('%d' % itr if itr is not None else '') + '.pt'
             fname = osp.join(fpath, fname)
             os.makedirs(fpath, exist_ok=True)
             with warnings.catch_warnings():
@@ -443,34 +467,41 @@ class Logger:
                 # not being able to save the source code.
                 torch.save(self.pytorch_saver_elements, fname)
 
-
     def dump_tabular(self):
         """
         Write all of the diagnostics from the current iteration.
 
         Writes both to stdout, and to the output file.
         """
-        if proc_id()==0:
+        if proc_id() == 0:
             vals = []
             key_lens = [len(key) for key in self.log_headers]
-            max_key_len = max(15,max(key_lens))
-            keystr = '%'+'%d'%max_key_len
+            max_key_len = max(15, max(key_lens))
+            keystr = '%' + '%d' % max_key_len
             fmt = "| " + keystr + "s | %15s |"
             n_slashes = 22 + max_key_len
-            print("-"*n_slashes)
+            print("-" * n_slashes)
+            second_player_part = False
             for key in self.log_headers:
+                # if key has _2 in it
+                if '_2' in key and not second_player_part:
+                    print("-" * n_slashes)
+                    print("⚔️" * (n_slashes//2))
+                    second_player_part = True
                 val = self.log_current_row.get(key, "")
-                valstr = "%8.3g"%val if hasattr(val, "__float__") else val
-                print(fmt%(key, valstr))
+                valstr = "%8.3g" % val if hasattr(val, "__float__") else val
+                print(fmt % (key, valstr))
                 vals.append(val)
-            print("-"*n_slashes, flush=True)
+            print("-" * n_slashes, flush=True)
+            second_player_part = False
             if self.output_file is not None:
                 if self.first_row:
-                    self.output_file.write("\t".join(self.log_headers)+"\n")
-                self.output_file.write("\t".join(map(str,vals))+"\n")
+                    self.output_file.write("\t".join(self.log_headers) + "\n")
+                self.output_file.write("\t".join(map(str, vals)) + "\n")
                 self.output_file.flush()
         self.log_current_row.clear()
-        self.first_row=False
+        self.first_row = False
+
 
 class EpochLogger(Logger):
     """
@@ -508,8 +539,8 @@ class EpochLogger(Logger):
         Provide an arbitrary number of keyword arguments with numerical
         values.
         """
-        for k,v in kwargs.items():
-            if not(k in self.epoch_dict.keys()):
+        for k, v in kwargs.items():
+            if not (k in self.epoch_dict.keys()):
                 self.epoch_dict[k] = []
             self.epoch_dict[k].append(v)
 
@@ -533,17 +564,17 @@ class EpochLogger(Logger):
                 of the diagnostic over the epoch.
         """
         if val is not None:
-            super().log_tabular(key,val)
+            super().log_tabular(key, val)
         else:
             v = self.epoch_dict[key]
-            vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape)>0 else v
+            vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0 else v
             stats = mpi_statistics_scalar(vals, with_min_and_max=with_min_and_max)
             super().log_tabular(key if average_only else 'Average' + key, stats[0])
-            if not(average_only):
-                super().log_tabular('Std'+key, stats[1])
+            if not (average_only):
+                super().log_tabular('Std' + key, stats[1])
             if with_min_and_max:
-                super().log_tabular('Max'+key, stats[3])
-                super().log_tabular('Min'+key, stats[2])
+                super().log_tabular('Max' + key, stats[3])
+                super().log_tabular('Min' + key, stats[2])
         self.epoch_dict[key] = []
 
     def get_stats(self, key):
@@ -551,8 +582,9 @@ class EpochLogger(Logger):
         Lets an algorithm ask the logger for mean/std/min/max of a diagnostic.
         """
         v = self.epoch_dict[key]
-        vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape)>0 else v
+        vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0 else v
         return mpi_statistics_scalar(vals)
+
 
 def combined_shape(length, shape=None):
     if shape is None:
@@ -562,9 +594,9 @@ def combined_shape(length, shape=None):
 
 def mlp(sizes, activation, output_activation=nn.Identity):
     layers = []
-    for j in range(len(sizes)-1):
-        act = activation if j < len(sizes)-2 else output_activation
-        layers += [nn.Linear(sizes[j], sizes[j+1]), act()]
+    for j in range(len(sizes) - 1):
+        act = activation if j < len(sizes) - 2 else output_activation
+        layers += [nn.Linear(sizes[j], sizes[j + 1]), act()]
     return nn.Sequential(*layers)
 
 
@@ -640,7 +672,7 @@ class MLPGaussianActor(Actor):
         return Normal(mu, std)
 
     def _log_prob_from_distribution(self, pi, act):
-        return pi.log_prob(act).sum(axis=-1)    # Last axis sum needed for Torch Normal distribution
+        return pi.log_prob(act).sum(axis=-1)  # Last axis sum needed for Torch Normal distribution
 
 
 class MLPCritic(nn.Module):
@@ -650,15 +682,13 @@ class MLPCritic(nn.Module):
         self.v_net = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
 
     def forward(self, obs):
-        return torch.squeeze(self.v_net(obs), -1) # Critical to ensure v has right shape.
-
+        return torch.squeeze(self.v_net(obs), -1)  # Critical to ensure v has right shape.
 
 
 class MLPActorCritic(nn.Module):
 
-
     def __init__(self, observation_space, action_space,
-                 hidden_sizes=(64,64), activation=nn.Tanh):
+                 hidden_sizes=(64, 64), activation=nn.Tanh):
         super().__init__()
 
         obs_dim = observation_space.shape[0]
@@ -670,7 +700,7 @@ class MLPActorCritic(nn.Module):
             self.pi = MLPCategoricalActor(obs_dim, action_space.n, hidden_sizes, activation)
 
         # build value function
-        self.v  = MLPCritic(obs_dim, hidden_sizes, activation)
+        self.v = MLPCritic(obs_dim, hidden_sizes, activation)
 
     def step(self, obs, deterministic=False):
         with torch.no_grad():
@@ -683,8 +713,10 @@ class MLPActorCritic(nn.Module):
     def act(self, obs):
         return self.step(obs)[0]
 
+
 # Commented out IPython magic to ensure Python compatibility.
 DIV_LINE_WIDTH = 80
+
 
 def setup_logger_kwargs(exp_name, seed=None, data_dir=None, datestamp=False):
     """
@@ -792,7 +824,7 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
     """
 
     # Determine number of CPU cores to run on
-    num_cpu = psutil.cpu_count(logical=False) if num_cpu=='auto' else num_cpu
+    num_cpu = psutil.cpu_count(logical=False) if num_cpu == 'auto' else num_cpu
 
     # Send random seed to thunk
     kwargs['seed'] = seed
@@ -802,7 +834,7 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
     print(exp_name + '\n')
     print(colorize('with kwargs:\n', color='cyan', bold=True))
     kwargs_json = convert_json(kwargs)
-    print(json.dumps(kwargs_json, separators=(',',':\t'), indent=4, sort_keys=True))
+    print(json.dumps(kwargs_json, separators=(',', ':\t'), indent=4, sort_keys=True))
     print('\n')
 
     # Set up logger output directory
@@ -815,7 +847,7 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
         # Make 'env_fn' from 'env_name'
         if 'env_name' in kwargs:
             env_name = kwargs['env_name']
-            kwargs['env_fn'] = lambda : gym.make(env_name)
+            kwargs['env_fn'] = lambda: gym.make(env_name)
             del kwargs['env_name']
 
         # Fork into multiple processes
@@ -828,12 +860,12 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
     pickled_thunk = cloudpickle.dumps(thunk_plus)
     encoded_thunk = base64.b64encode(zlib.compress(pickled_thunk)).decode('utf-8')
 
-    entrypoint = osp.join(osp.abspath(osp.dirname(__file__)),'run_entrypoint.py')
+    entrypoint = osp.join(osp.abspath(osp.dirname(__file__)), 'run_entrypoint.py')
     cmd = [sys.executable if sys.executable else 'python', entrypoint, encoded_thunk]
     try:
         subprocess.check_call(cmd, env=os.environ)
     except CalledProcessError:
-        err_msg = '\n'*3 + '='*DIV_LINE_WIDTH + '\n' + dedent("""
+        err_msg = '\n' * 3 + '=' * DIV_LINE_WIDTH + '\n' + dedent("""
 
             There appears to have been an error in your experiment.
 
@@ -842,20 +874,20 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
             for diagnosing the error), shows the stack leading up to the
             experiment launch.
 
-            """) + '='*DIV_LINE_WIDTH + '\n'*3
+            """) + '=' * DIV_LINE_WIDTH + '\n' * 3
         print(err_msg)
         raise
 
     # Tell the user about where results are, and how to check them
     logger_kwargs = kwargs['logger_kwargs']
 
-    plot_cmd = 'python -m spinup.run plot '+logger_kwargs['output_dir']
+    plot_cmd = 'python -m spinup.run plot ' + logger_kwargs['output_dir']
     plot_cmd = colorize(plot_cmd, 'green')
 
-    test_cmd = 'python -m spinup.run test_policy '+logger_kwargs['output_dir']
+    test_cmd = 'python -m spinup.run test_policy ' + logger_kwargs['output_dir']
     test_cmd = colorize(test_cmd, 'green')
 
-    output_msg = '\n'*5 + '='*DIV_LINE_WIDTH +'\n' + dedent("""\
+    output_msg = '\n' * 5 + '=' * DIV_LINE_WIDTH + '\n' + dedent("""\
     End of experiment.
 
 
@@ -869,13 +901,14 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
 #     %s
 
 
-    """%(plot_cmd,test_cmd)) + '='*DIV_LINE_WIDTH + '\n'*5
+    """ % (plot_cmd, test_cmd)) + '=' * DIV_LINE_WIDTH + '\n' * 5
 
     print(output_msg)
 
 
 def all_bools(vals):
-    return all([isinstance(v,bool) for v in vals])
+    return all([isinstance(v, bool) for v in vals])
+
 
 def valid_str(v):
     """
@@ -918,23 +951,23 @@ class ExperimentGrid:
 
     def print(self):
         """Print a helpful report about the experiment grid."""
-        print('='*DIV_LINE_WIDTH)
+        print('=' * DIV_LINE_WIDTH)
 
         # Prepare announcement at top of printing. If the ExperimentGrid has a
         # short name, write this as one line. If the name is long, break the
         # announcement over two lines.
         base_msg = 'ExperimentGrid %s runs over parameters:\n'
-        name_insert = '['+self._name+']'
-        if len(base_msg%name_insert) <= 80:
-            msg = base_msg%name_insert
+        name_insert = '[' + self._name + ']'
+        if len(base_msg % name_insert) <= 80:
+            msg = base_msg % name_insert
         else:
-            msg = base_msg%(name_insert+'\n')
+            msg = base_msg % (name_insert + '\n')
         print(colorize(msg, color='green', bold=True))
 
         # List off parameters, shorthands, and possible values.
         for k, v, sh in zip(self.keys, self.vals, self.shs):
             color_k = colorize(k.ljust(40), color='cyan', bold=True)
-            print('', color_k, '['+sh+']' if sh is not None else '', '\n')
+            print('', color_k, '[' + sh + ']' if sh is not None else '', '\n')
             for i, val in enumerate(v):
                 print('\t' + str(convert_json(val)))
             print()
@@ -952,8 +985,7 @@ class ExperimentGrid:
         print(' Variants, counting seeds: '.ljust(40), nvars_total)
         print(' Variants, not counting seeds: '.ljust(40), nvars_seedless)
         print()
-        print('='*DIV_LINE_WIDTH)
-
+        print('=' * DIV_LINE_WIDTH)
 
     def _default_shorthand(self, key):
         # Create a default shorthand for the key, built from the first
@@ -961,8 +993,10 @@ class ExperimentGrid:
         # But if the first three letters contains something which isn't
         # alphanumeric, shear that off.
         valid_chars = "%s%s" % (string.ascii_letters, string.digits)
+
         def shear(x):
             return ''.join(z for z in x[:3] if z in valid_chars)
+
         sh = '-'.join([shear(x) for x in key.split(':')])
         return sh
 
@@ -1035,7 +1069,7 @@ class ExperimentGrid:
             # Except, however, when the parameter is 'seed'. Seed is handled
             # differently so that runs of the same experiment, with different
             # seeds, will be grouped by experiment name.
-            if (len(v)>1 or inn) and not(k=='seed'):
+            if (len(v) > 1 or inn) and not (k == 'seed'):
 
                 # Use the shorthand if available, otherwise the full name.
                 param_name = sh if sh is not None else k
@@ -1058,7 +1092,7 @@ class ExperimentGrid:
         """
         Recursively builds list of valid variants.
         """
-        if len(keys)==1:
+        if len(keys) == 1:
             pre_variants = [dict()]
         else:
             pre_variants = self._variants(keys[1:], vals[1:])
@@ -1113,21 +1147,21 @@ class ExperimentGrid:
             new_var = dict()
             unflatten_set = set()
 
-            for k,v in var.items():
+            for k, v in var.items():
                 if ':' in k:
                     splits = k.split(':')
                     k0 = splits[0]
                     assert k0 not in new_var or isinstance(new_var[k0], dict), \
                         "You can't assign multiple values to the same key."
 
-                    if not(k0 in new_var):
+                    if not (k0 in new_var):
                         new_var[k0] = dict()
 
                     sub_k = ':'.join(splits[1:])
                     new_var[k0][sub_k] = v
                     unflatten_set.add(k0)
                 else:
-                    assert not(k in new_var), \
+                    assert not (k in new_var), \
                         "You can't assign multiple values to the same key."
                     new_var[k] = v
 
@@ -1165,13 +1199,12 @@ class ExperimentGrid:
         # Print variant names for the user.
         var_names = set([self.variant_name(var) for var in variants])
         var_names = sorted(list(var_names))
-        line = '='*DIV_LINE_WIDTH
+        line = '=' * DIV_LINE_WIDTH
         preparing = colorize('Preparing to run the following experiments...',
                              color='green', bold=True)
         joined_var_names = '\n'.join(var_names)
         announcement = f"\n{preparing}\n\n{joined_var_names}\n\n{line}"
         print(announcement)
-
 
         if WAIT_BEFORE_LAUNCH > 0:
             delay_msg = colorize(dedent("""
@@ -1180,7 +1213,7 @@ class ExperimentGrid:
             To customize or disable this behavior, change WAIT_BEFORE_LAUNCH in
             spinup/user_config.py.
 
-            """), color='cyan', bold=True)+line
+            """), color='cyan', bold=True) + line
             print(delay_msg)
             wait, steps = WAIT_BEFORE_LAUNCH, 100
             prog_bar = trange(steps, desc='Launching in...',
@@ -1188,7 +1221,7 @@ class ExperimentGrid:
                               mininterval=0.25,
                               bar_format='{desc}: {bar}| {remaining} {elapsed}')
             for _ in prog_bar:
-                time.sleep(wait/steps)
+                time.sleep(wait / steps)
 
         # Run the variants.
         for var in variants:
@@ -1211,10 +1244,10 @@ class ExperimentGrid:
 
 def test_eg():
     eg = ExperimentGrid()
-    eg.add('test:a', [1,2,3], 'ta', True)
-    eg.add('test:b', [1,2,3])
-    eg.add('some', [4,5])
-    eg.add('why', [True,False])
+    eg.add('test:a', [1, 2, 3], 'ta', True)
+    eg.add('test:b', [1, 2, 3])
+    eg.add('some', [4, 5])
+    eg.add('why', [True, False])
     eg.add('huh', 5)
     eg.add('no', 6, in_name=True)
     return eg.variants()
