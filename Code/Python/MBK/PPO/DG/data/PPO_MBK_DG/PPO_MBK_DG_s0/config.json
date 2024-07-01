@@ -52,19 +52,19 @@
         }
     },
     "epochs":	216,
-    "exp_name":	"ppo",
+    "exp_name":	"PPO_MBK_DG",
     "gamma":	0.99,
     "lam":	0.97,
     "logger_kwargs":	{
-        "exp_name":	"ppo",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
+        "exp_name":	"PPO_MBK_DG",
+        "output_dir":	"/content/data/PPO_MBK_DG/PPO_MBK_DG_s0"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<PPO_DG.PPO object at 0x12bd95190>":	{
+        "<PPO_DG.PPO object at 0x787108a0b160>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -121,27 +121,28 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<PPO_utilz_DG.EpochLogger object at 0x12c22c810>":	{
+                "<PPO_utilz_DG.EpochLogger object at 0x787045c10730>":	{
                     "epoch_dict":	{},
-                    "exp_name":	"ppo",
+                    "exp_name":	"PPO_MBK_DG",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0",
+                    "output_dir":	"/content/data/PPO_MBK_DG/PPO_MBK_DG_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/content/data/PPO_MBK_DG/PPO_MBK_DG_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
                 }
             },
             "logger_kwargs":	{
-                "exp_name":	"ppo",
-                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
+                "exp_name":	"PPO_MBK_DG",
+                "output_dir":	"/content/data/PPO_MBK_DG/PPO_MBK_DG_s0"
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,
             "save_freq":	10,
+            "second_player":	true,
             "seed":	0,
             "steps_per_epoch":	4000,
             "target_kl":	0.01,
