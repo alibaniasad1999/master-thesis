@@ -154,6 +154,7 @@ class PPO:
         self.logger_kwargs = logger_kwargs or {}
         setup_pytorch_for_mpi()
         self.save_freq = save_freq
+        self.second_player = True
         """
             Proximal Policy Optimization (by clipping),
 
@@ -402,8 +403,8 @@ class PPO:
                 # add second player
                 a_2, v_2, logp_2 = self.ac_2.step(torch.as_tensor(o, dtype=torch.float32))
 
-                actions = [a.item(), a_2.item()]
-                next_o, r, d, _, _, r_2 = self.env.step(actions)
+                action = [a.item(), a_2.item() if self.second_player else 0]
+                next_o, r, d, _, _, r_2 = self.env.step(action)
                 ep_ret += r
                 ep_len += 1
                 ep_ret_2 += r_2
@@ -484,7 +485,7 @@ class PPO:
             a_2, _, _ = self.ac_2.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
             actions.append(a * 20)
             actions_2.append(a_2 * 20)
-            action = [a.item(), a_2.item()]
+            action = [a.item(), a_2.item() if self.second_player else 0]
             o, _, d, _, _, _ = self.env.step(action)
             states.append(o * 40 - 20)
             if d:
