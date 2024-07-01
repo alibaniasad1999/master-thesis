@@ -1,0 +1,158 @@
+{
+    "ac_kwargs":	{
+        "hidden_sizes":	[
+            64,
+            64
+        ]
+    },
+    "clip_ratio":	0.2,
+    "env":	{
+        "<MassSpringDamperEnv instance>":	{
+            "action_space":	{
+                "Box(-20.0, 20.0, (1,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        1
+                    ],
+                    "bounded_above":	"[ True]",
+                    "bounded_below":	"[ True]",
+                    "dtype":	"float32",
+                    "high":	"[20.]",
+                    "high_repr":	"20.0",
+                    "low":	"[-20.]",
+                    "low_repr":	"-20.0"
+                }
+            },
+            "c":	0.1,
+            "current_step":	0,
+            "done":	null,
+            "dt":	0.01,
+            "integral_error":	0,
+            "k":	1.0,
+            "last_u":	null,
+            "m":	1.0,
+            "max_steps":	1000,
+            "observation_space":	{
+                "Box(-100.0, 100.0, (2,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        2
+                    ],
+                    "bounded_above":	"[ True  True]",
+                    "bounded_below":	"[ True  True]",
+                    "dtype":	"float32",
+                    "high":	"[100. 100.]",
+                    "high_repr":	"100.0",
+                    "low":	"[-100. -100.]",
+                    "low_repr":	"-100.0"
+                }
+            },
+            "state":	null,
+            "step_num":	null
+        }
+    },
+    "epochs":	216,
+    "exp_name":	"ppo",
+    "gamma":	0.99,
+    "lam":	0.97,
+    "logger_kwargs":	{
+        "exp_name":	"ppo",
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
+    },
+    "max_ep_len":	1000,
+    "pi_lr":	0.0003,
+    "save_freq":	10,
+    "seed":	0,
+    "self":	{
+        "<PPO.PPO object at 0x1309ec650>":	{
+            "ac_kwargs":	{
+                "hidden_sizes":	[
+                    64,
+                    64
+                ]
+            },
+            "clip_ratio":	0.2,
+            "env":	{
+                "<MassSpringDamperEnv instance>":	{
+                    "action_space":	{
+                        "Box(-20.0, 20.0, (1,), float32)":	{
+                            "_np_random":	null,
+                            "_shape":	[
+                                1
+                            ],
+                            "bounded_above":	"[ True]",
+                            "bounded_below":	"[ True]",
+                            "dtype":	"float32",
+                            "high":	"[20.]",
+                            "high_repr":	"20.0",
+                            "low":	"[-20.]",
+                            "low_repr":	"-20.0"
+                        }
+                    },
+                    "c":	0.1,
+                    "current_step":	0,
+                    "done":	null,
+                    "dt":	0.01,
+                    "integral_error":	0,
+                    "k":	1.0,
+                    "last_u":	null,
+                    "m":	1.0,
+                    "max_steps":	1000,
+                    "observation_space":	{
+                        "Box(-100.0, 100.0, (2,), float32)":	{
+                            "_np_random":	null,
+                            "_shape":	[
+                                2
+                            ],
+                            "bounded_above":	"[ True  True]",
+                            "bounded_below":	"[ True  True]",
+                            "dtype":	"float32",
+                            "high":	"[100. 100.]",
+                            "high_repr":	"100.0",
+                            "low":	"[-100. -100.]",
+                            "low_repr":	"-100.0"
+                        }
+                    },
+                    "state":	null,
+                    "step_num":	null
+                }
+            },
+            "epochs":	216,
+            "gamma":	0.99,
+            "lam":	0.97,
+            "logger":	{
+                "<PPO_utilz.EpochLogger object at 0x13012fc10>":	{
+                    "epoch_dict":	{},
+                    "exp_name":	"ppo",
+                    "first_row":	true,
+                    "log_current_row":	{},
+                    "log_headers":	[],
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0",
+                    "output_file":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                            "mode":	"w"
+                        }
+                    }
+                }
+            },
+            "logger_kwargs":	{
+                "exp_name":	"ppo",
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/MBK/PPO/DG/data/ppo/ppo_s0"
+            },
+            "max_ep_len":	1000,
+            "pi_lr":	0.0003,
+            "save_freq":	10,
+            "seed":	0,
+            "steps_per_epoch":	4000,
+            "target_kl":	0.01,
+            "train_pi_iters":	80,
+            "train_v_iters":	80,
+            "vf_lr":	0.001
+        }
+    },
+    "steps_per_epoch":	4000,
+    "target_kl":	0.01,
+    "train_pi_iters":	80,
+    "train_v_iters":	80,
+    "vf_lr":	0.001
+}
