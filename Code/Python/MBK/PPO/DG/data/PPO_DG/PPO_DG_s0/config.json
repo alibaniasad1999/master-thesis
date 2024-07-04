@@ -25,6 +25,9 @@
             },
             "c":	0.1,
             "current_step":	0,
+            "disturbance":	false,
+            "disturbance_time":	null,
+            "disturbance_u":	null,
             "done":	null,
             "dt":	0.01,
             "integral_error":	0,
@@ -52,7 +55,7 @@
             "step_num":	null
         }
     },
-    "epochs":	500,
+    "epochs":	1000,
     "exp_name":	"PPO_DG",
     "gamma":	0.99,
     "lam":	0.97,
@@ -65,7 +68,7 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x7a02b58b1b40>":	{
+        "<__main__.PPO object at 0x7a611203c790>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -92,6 +95,9 @@
                     },
                     "c":	0.1,
                     "current_step":	0,
+                    "disturbance":	false,
+                    "disturbance_time":	null,
+                    "disturbance_u":	null,
                     "done":	null,
                     "dt":	0.01,
                     "integral_error":	0,
@@ -119,11 +125,11 @@
                     "step_num":	null
                 }
             },
-            "epochs":	500,
+            "epochs":	1000,
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x7a02b58b1b70>":	{
+                "<__main__.EpochLogger object at 0x7a611203c7c0>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_DG",
                     "first_row":	true,
