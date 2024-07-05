@@ -14,7 +14,7 @@
 \lr{		\begin{tikzpicture}[very thick,node distance = 4cm]
 			\node [frame] (agent) {Agent};
 			\node [frame, below=1.2cm of agent] (environment) {Environment};
-			\draw[line] (environment) -- ++ (3.5,0) |- (agent) 
+			\draw[line] (agent) -- ++ (3.5,0) |- (environment) 
 			node[right,pos=0.25,align=left] {action\\ $A_t$};
 			\coordinate[left=10mm of environment] (P);
 			\draw[thin,dashed] (P|-environment.north) -- (P|-environment.south);
