@@ -59,14 +59,14 @@
     "lam":	0.97,
     "logger_kwargs":	{
         "exp_name":	"PPO_3BP",
-        "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0"
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x7bd16ddf5c90>":	{
+        "<__main__.PPO object at 0x1378de2d0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -125,15 +125,15 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x7bd16ddf64a0>":	{
+                "<__main__.EpochLogger object at 0x135986650>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/content/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -141,7 +141,7 @@
             },
             "logger_kwargs":	{
                 "exp_name":	"PPO_3BP",
-                "output_dir":	"/content/data/PPO_3BP/PPO_3BP_s0"
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/data/PPO_3BP/PPO_3BP_s0"
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,
