@@ -1,1 +1,173 @@
 \section{عامل گرادیان سیاست عمیق قطعی تاخیری دوگانه}
+الگوریتم
+\lr{TD3}\LTRfootnote{Twin Delayed Deep Deterministic Policy Gradient}
+ یکی از الگوریتم‌های یادگیری تقویتی است که برای حل مسائل کنترل در محیط‌های پیوسته طراحی شده است. این الگوریتم بر اساس الگوریتم \lr{DDPG} توسعه یافته و با استفاده از تکنیک‌های مختلف، پایداری و کارایی یادگیری را بهبود می‌بخشد.
+ در حالی که \lr{DDPG} گاهی اوقات می‌تواند عملکرد بسیار خوبی داشته باشد، اما اغلب نسبت به فراپارامترها و سایر انواع تنظیمات حساس است. یک حالت رایج شکست برای \lr{DDPG} این است که تابع \lr{Q} یادگرفته شده شروع به بیش برآورد چشمگیر مقادیر \lr{Q} می‌کند که منجر به شکستن سیاست می‌شود، زیرا از خطاهای تابع \lr{Q} به‌صورت چشمگیری افزایش می‌یابد.
+ الگوریتم
+  \lr{TD3 (Twin Delayed \lr{DDPG}) }
+از سه ترفند زیر جهت بهبود مشکلات اشاره شده استفاده می‌کند.
+\begin{itemize}
+	\item یادگیری دوگانه‌ی محدود شده\LTRfootnote{Clipped Double-Q Learning}:
+	 الگوریتم 
+	 \lr{TD3}
+	  به جای یک تابع \lr{Q}، دو تابع
+	   \(Q_{\phi_1}\) و \(Q_{\phi_2}\)
+	    را یاد می‌گیرد (از این رو دوگانه\LTRfootnote{twin} نامیده می‌شود) و از کوچک‌ترین مقدار این دو 
+	     \(Q_{\phi_1}\) و \(Q_{\phi_2}\)
+%	     یعنی
+%	     \(\min(
+%	     Q_{\phi_1}, Q_{\phi_2}
+%	     )\)
+	      برای بهینه‌سازی تابع بلمن استفاده می‌شود.
+	      \begin{equation}
+	      	y(r,s',d) = r + \gamma (1 - d) \min_{i=1,2} Q_{\phi_{i, \text{targ}}}(s', a'(s'))
+	      \end{equation}
+	      سپس، در هر دو تابع \(Q_{\phi_1}\) و \(Q_{\phi_2}\) یادگیری انجام می‌شود.
+	      \begin{align}
+	       L(\phi_1, {\mathcal D}) = 
+	       	\underset{(s,a,r,s',d) \sim {\mathcal D}}{{\mathrm E}}
+	       	{
+	       	\Bigg( Q_{\phi_1}(s,a) - y(r,s',d) \Bigg)^2
+	       }\\
+	       L(\phi_2, {\mathcal D}) = \underset{(s,a,r,s',d) \sim {\mathcal D}}{{\mathrm E}}
+	       	 {
+	       	\Bigg( Q_{\phi_2}(s,a) - y(r,s',d) \Bigg)^2
+	       }
+	      \end{align}
+	  \item به‌روزرسانی‌های تاخیری سیاست\LTRfootnote{Delayed Policy Updates}:
+	   الگوریتم
+	   \lr{TD3} 
+	  سیاست را با تاخیر بیشتری نسبت به تابع \lr{Q} به‌روزرسانی می‌کند. در مرجع
+	  \cite{TD3}
+	   توصیه شده است که برای هر دو به‌روزرسانی تابع \lr{Q}، یک به‌روزرسانی سیاست انجام شود.
+	   \item هموار‌سازی سیاست\LTRfootnote{Target Policy Smoothing}:
+	    الگوریتم
+	    \lr{TD3}
+	     نویز را به عمل انجام شده بر محیط اضافه می‌کند تا به هموارسازی تابع \lr{Q} کمک کند.
+	     اگر تابع \lr{Q} یک پیک نادرست برای برخی عمل‌ها ایجاد کند، سیاست به سرعت از آن اوج ایجاد شده در تابع \lr{Q} بهره‌برداری می‌کند و سپس رفتار ناپایدار کننده یا نادرستی خواهد داشت.
+	      هموارسازی \lr{Q} در امتداد تغییرات در عمل سبب می‌شود که بهره‌برداری از خطاهای تابع \lr{Q} را برای سیاست سخت‌تر شود. پس از افزودن نویز محدود شده، عمل جهت قرار گرفتن در محدوده عمل معتبر محدود می‌شود. بنابراین عمل‌ها به‌صورت زیر هستند:
+	     \begin{equation}
+	     	a'(s') = \text{clip}\left(\mu_{\theta_{\text{targ}}}(s') + \text{clip}(\epsilon,-c,c), a_{Low}, a_{High}\right), \;\;\;\;\; \epsilon \sim \mathcal{N}(0, \sigma)
+	     \end{equation}
+\end{itemize}
+این سه ترفند منجر به بهبود قابل توجه عملکرد
+\lr{TD3}
+ نسبت به \lr{DDPG} پایه می‌شوند.
+ در نهایت سیاست با به حداکثر رساندن \(Q_{\phi_1} \) آموخته می‌شود:
+ \begin{equation}
+	 \max_{\theta} \underset{s \sim {\mathcal D}}{{\mathrm E}}\left[ Q_{\phi_1}(s, \mu_{\theta}(s)) \right]
+ \end{equation}
+ 
+         \subsection{اکتشاف و بهره‌برداری در 
+ 	\lr{TD3}
+ }
+ الگوریتم
+ \lr{TD3}
+  یک سیاست قطعی را به‌صورت غیر سیاست محور آموزش را می‌دهد. از آنجایی که سیاست قطعی است، اگر عامل بخواهد به‌صورت سیاست محور اکتشاف کند، احتمالاً در ابتدا تنوع کافی از اعمال را برای یافتن روش‌های مفید امتحان نمی‌کند. برای بهبود اکتشاف سیاست‌های \lr{TD3}، نویز را به اعمال آن‌ها در زمان آموزش اضافه می‌شود، در این پژوهش نویز گاوسی با میانگین صفر بدون همبستگی اعمال شده است. جهت تسهیل در دست‌یابی به داده‌های آموزشی با کیفیت بالاتر، مقیاس نویز را در طول آموزش کاهش می‌یابد.
+  
+  \subsection{شبه‌کد 
+  \lr{TD3}
+  }
+   در این بخش الگوریتم
+  \lr{TD3}
+  پیاده‌سازی شده آورده شده است. در این پژوهش الگوریتم~\رجوع{alg:PPO} در محیط پایتون با استفاده از کتابخانه
+  \lr{PyTorch} \cite{paszke2017automatic}
+  پیاده‌سازی شده ‌است.
+         
+  \begin{algorithm}[H]
+  	\caption{عامل گرادیان سیاست عمیق قطعی تاخیری دوگانه}\label{alg:TD3}
+  	\begin{algorithmic}[1]
+  		\ورودی پارامترهای اولیه سیاست
+  		$(\theta)$، پارامترهای تابع
+  		\lr{Q}
+  		$(\phi_1, \phi_2)$،
+  		 بافر بازی خالی $(\mathcal{D})$
+  		%        \خروجی یک پوشش رأسی از $G$
+  		\State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید
+  		$\theta_{\text{targ}} \leftarrow \theta$,
+  		 $\phi_{\text{targ}, 1} \leftarrow \phi_1$,
+  		  $\phi_{\text{targ}, 2} \leftarrow \phi_2$
+  		
+  		%        \دستور قرار بده $C = \emptyset$  % \توضیحات{مقداردهی اولیه}
+  		\While{همگرایی رخ دهد}
+  		\State 
+  		وضعیت $(s)$ را مشاهده کرده و عمل 
+  		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{\text{Low}}, a_{\text{High}})$
+%  		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{Low}, a_{High})$
+  		 را انتخاب کنید، به‌طوری که $\epsilon \sim \mathcal{N}$ است.
+  		\State عمل $a$ را در محیط اجرا کنید.
+  		\State 
+  		وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+  		\State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
+  		\If{زمان به‌روزرسانی فرا رسیده است}
+  		\For{هر تعداد به‌روزرسانی}
+  		\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+  		\State
+  		عمل را محاسبه کنید:
+  		\begin{equation*}
+  			 a'(s') = \text{clip}\left(\mu_{\theta_{\text{targ}}}(s') + \text{clip}(\epsilon,-c,c), a_{Low}, a_{High}\right), \;\;\;\;\; \epsilon \sim \mathcal{N}(0, \sigma) 
+  		\end{equation*}
+  		\State
+  		اهداف را محاسبه کنید:
+  		\begin{equation*}
+  			 y(r,s',d) = r + \gamma (1-d) \min_{i=1,2} Q_{\phi_{\text{targ},i}}(s', a'(s')) 
+  		\end{equation*}
+  		
+  		\State تابع \lr{Q} را با یک مرحله از نزول گرادیان با استفاده از رابطه زیر به‌روزرسانی کنید:
+  		\begin{align*} 
+  			 \nabla_{\phi_i} \frac{1}{|B|}\sum_{(s,a,r,s',d) \in B} \left( Q_{\phi_i}(s,a) - y(r,s',d) \right)^2 
+  			 \quad \text{\lr{for }}i=1,2 
+  		\end{align*}
+  		
+  		\If{
+  			باقیمانده
+  			$j $ 
+  			بر
+  			تاخیر سیاست
+  			برابر
+  			$ 0$
+  			باشد
+  		}
+  		\State سیاست را با یک مرحله از صعود گرادیان با استفاده از رابطه زیر به‌روزرسانی کنید:
+  		 \begin{equation*}
+  		 	 \nabla_{\theta} \frac{1}{|B|}\sum_{s \in B}Q_{\phi_1}(s, \mu_{\theta}(s))
+  		 	  \end{equation*}
+  		\State شبکه‌های هدف را با استفاده از معادلات زیر به‌روزرسانی کنید:
+  		\begin{align*}
+  			\phi_{\text{targ},i} &\leftarrow \rho \phi_{\text{targ}, i} + (1-\rho) \phi_i \quad \text{\lr{for }}i=1,2  \\
+  			\theta_{\text{targ}} &\leftarrow \rho \theta_{\text{targ}} + (1-\rho) \theta
+  		\end{align*}
+  		\EndIf
+  		\EndFor
+  		\EndIf
+  		\EndWhile
+  		%        \تاوقتی{$E$ تهی نیست}
+  		%        %\اگر{$|E| > 0$}
+  		%        %	\دستور{یک کاری انجام بده}
+  		%        %\پایان‌اگر
+  		%        \If{$i\geq 5$} 
+  		%        \State $i \gets i-1$ \do
+  		%        \Else
+  		%        \If{$i\leq 3$}
+  		%        \State $i \gets i+2$
+  		%        \EndIf
+  		%        \EndIf
+  		%        \دستور یال دل‌‌خواه $uv \in E$ را انتخاب کن
+  		%        \دستور رأس‌های $u$ و $v$ را به $C$ اضافه کن
+  		%        \دستور تمام یال‌های واقع بر $u$ یا $v$ را از $E$ حذف کن
+  		%        \پایان‌تاوقتی
+  		%        \دستور $C$ را برگردان
+  	\end{algorithmic}
+  \end{algorithm}
+  
+  
+  
+  
+  
+  
+  
+  
+%    \STATE Update Q-functions by one step of gradient descent using \begin{align*} & \nabla_{\phi_i} \frac{1}{|B|}\sum_{(s,a,r,s',d) \in B} \left( Q_{\phi_i}(s,a) - y(r,s',d) \right)^2 && \text{for } i=1,2 \end{align*} \IF{ $j \mod$ \texttt{policy\_delay} $ = 0$} \STATE Update policy by one step of gradient ascent using \begin{equation*} \nabla_{\theta} \frac{1}{|B|}\sum_{s \in B}Q_{\phi_1}(s, \mu_{\theta}(s)) \end{equation*} \STATE Update target networks with \begin{align*} \phi_{\text{targ},i} &\leftarrow \rho \phi_{\text{targ}, i} + (1-\rho) \phi_i && \text{for } i=1,2\\ \theta_{\text{targ}} &\leftarrow \rho \theta_{\text{targ}} + (1-\rho) \theta \end{align*} \ENDIF \ENDFOR \ENDIF \UNTIL{convergence} \end{algorithmic} \end{algorithm}"
+  
+  
+  
