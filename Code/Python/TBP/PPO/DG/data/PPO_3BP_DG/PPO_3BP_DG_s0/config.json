@@ -67,7 +67,7 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x12b655ed0>":	{
+        "<__main__.PPO object at 0x13423fb50>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     64,
@@ -127,7 +127,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x12902fc90>":	{
+                "<__main__.EpochLogger object at 0x12d92c1d0>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP_DG",
                     "first_row":	true,
@@ -147,8 +147,9 @@
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,
+            "random_learning":	true,
             "save_freq":	10,
-            "second_player":	true,
+            "second_player":	false,
             "second_player_learning":	false,
             "seed":	0,
             "steps_per_epoch":	4000,
