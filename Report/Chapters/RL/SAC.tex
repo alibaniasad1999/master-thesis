@@ -1,1 +1,299 @@
 \section{عامل عملگر نقاد نرم}
+عملگرد نقاد نرم\LTRfootnote{Soft Actor Critic (SAC)}
+ الگوریتمی است که یک سیاست تصادفی را به‌صورت  سیاست محور بهینه می‌کند و پلی بین بهینه‌سازی سیاست تصادفی و رویکردهای مانند
+ \lr{DDPG}
+  ایجاد می‌کند. این الگوریتم جانشین مستقیم 
+ \lr{TD3}
+  نیست (زیرا تقریباً همزمان منتشر شده است)، اما ترفند یادگیری دوگانه محدود شده را در خود جای داده است و به دلیل سیاست تصادفی \lr{SAC}، از چیزی روشی به نام صاف کردن سیاست هدف\LTRfootnote{Target Policy Smoothing}
+    استفاده شده‌است.
+یکی از ویژگی های اصلی \lr{SAC}، تنظیم آنتروپی است.
+آنتروپی معیاری از تصادفی بودن انتخاب عمل در سیاست است.
+ سیاست به گونه ای آموزش داده می‌شود که حداکثر سازی تعادل بین بازده مورد انتظار و آنتروپی را بهینه کند. این شرایط ارتباط نزدیکی با تعادل اکتشاف-بهره‌برداری دارد. افزایش آنتروپی منجر به اکتشاف بیشتر می‌شود که می‌تواند یادگیری را در مراحل بعدی تسریع کند. همچنین می‌تواند از همگرایی زودهنگام سیاست به یک بهینه محلی بد جلوگیری کند.
+ برای توضیح \lr{SAC}، ابتدا باید بررسی یادگیری تقویتی تنظیم‌شده با آنتروپی\LTRfootnote{Entropy-Regularized Reinforcement Learning}
+  را پرداخته شود. در \lr{RL} تنظیم‌شده با آنتروپی، روابط تابع ارزش کمی متفاوت است.
+ 
+\subsection{یادگیری تقویتی تنظیم‌شده با آنتروپی}
+ آنتروپی کمیتی است که به طور کلی می‌گوید که یک متغیر تصادفی چقدر تصادفی است. اگر وزن یک سکه به گونه ای باشد که تقریباً همیشه نتیجه یک سمت آن باشد، آنتروپی پایینی دارد. اگر به طور مساوی وزن داشته باشد و شانس هر طرف سکه نصف باشد، آنتروپی بالایی دارد.
+ فرض کنید \(x\) یک متغیر تصادفی با تابع چگالی احتمال
+\(  P\)
+   باشد. آنتروپی
+\(    H\)
+     متغیر \(x\) از توزیع آن
+      \(P\)
+       مطابق با رابطه زیر محاسبه می‌شود:
+       \[
+       H(P) =  \underset{x \sim P} {\mathrm E} \left[  {-\log P(x)}  \right]
+       \]
+       \subsection{سیاست در \lr{SAC}}
+       در یادگیری تقویتی تنظیم‌شده با آنتروپی، عامل در هر مرحله زمانی متناسب با آنتروپی سیاست در آن مرحله زمانی پاداش دریافت می‌کند. بر اساس توضیحات اشاره شده روابط یادگیری تقویتی به‌صورت زیر می‌شود.
+       
+       \[
+       \pi^* = \arg \max_{\pi} \underset{\tau \sim \pi}{\mathrm E}{ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg)}
+       \]
+       
+       
+       که در آن
+        (\(\alpha > 0\))
+         ضریب مبادله\LTRfootnote{Trade-Off}
+          است.
+          \subsection{تابع ارزش در \lr{SAC}}
+           اکنون می‌توان تابع ارزش کمی متفاوت را بر اساس این مفهموم تعریف کرد.
+            \(V^{\pi}\)
+             به گونه‌ای تغییر می‌کند که پاداش‌های آنتروپی را از هر مرحله زمانی شامل می‌شود.
+             \[
+             V^{\pi}(s) = \underset{\tau \sim \pi}{\mathrm E}{ \left. \left[ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg) \right| s_0 = s\right] }
+             \]
+             
+            \subsection{تابع \lr{Q}
+            در \lr{SAC}}
+            تابع
+            \(Q^{\pi}\)
+             به گونه ای تغییر می‌کند که پاداش های آنتروپی را از هر مرحله زمانی به جز مرحله اول شامل می‌شود.
+             \[
+             Q^{\pi}(s,a) = \underE{\tau \sim \pi}\left[
+             { \left. \sum_{t=0}^{\infty} \gamma^t  R(s_t, a_t, s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H\left(\pi(\cdot|s_t)\right)\right| s_0 = s, a_0 = a}
+             \right]
+             \]
+       با این تعاریف رابطه
+       ٰ\(V^{\pi}\)
+       و 
+       \(Q^{\pi}\)
+        به‌صورت زیر است.
+        \[
+        V^{\pi}(s) = \underE{a \sim \pi}\left[
+        {Q^{\pi}(s,a)} 
+        \right]+ \alpha H\left(\pi(\cdot|s)\right)
+        \]
+       \subsection{معادله بلمن در \lr{SAC}}
+       معادله بلمن در حالت تنظیم‌شده با آنتروپی به‌صورت زیر ارائه می‌شود.
+       \begin{align}
+       	Q^{\pi}(s,a) &=\underset{\substack{s' \sim P \\ a' \sim \pi}}{\mathrm{E}} 
+       	\left[
+       	{R(s,a,s') + \gamma\left(Q^{\pi}(s',a') + \alpha H\left(\pi(\cdot|s')\right) \right)}
+       	\right] \\
+       	&= \underE{s' \sim P}\left[
+       	{R(s,a,s') + \gamma V^{\pi}(s')}
+       	\right]
+       \end{align}
+       
+       \subsection{یادگیری \lr{Q}}
+                 با درنظرگرفتن موارد اشاره‌شده، یادگیری \lr{Q} در \lr{SAC} با کمینه‌کردن تابع خطای میانگین مربعات بلمن (\lr{MSBE}) یعنی معادله \eqref{eq:msbe_sac} با استفاده از کاهش گرادیان
+       انجام می‌شود.
+       \[\label{eq:msbe_sac}
+       L(\phi_i, {\mathcal D}) = \underset{(s,a,r,s',d) \sim {\mathcal D}}{{\mathrm E}}\left[
+       \Bigg( Q_{\phi_i}(s,a) - y(r,s',d) \Bigg)^2
+       \right]
+       \]
+       در معادله 
+       \eqref{eq:msbe_sac}
+       تابع هدف برای روش یادگیری تقویتی 
+       \lr{SAC}
+       به صورت زیر تعریف می‌شود.
+       \[
+       y(r, s', d) = r + \gamma (1 - d) \left( \min_{j=1,2} Q_{\phi_{\text{targ},j}}(s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s') \right), \;\;\;\;\; \tilde{a}' \sim \pi_{\theta}(\cdot|s')
+       \]
+       نماد عمل بعدی را به جای 
+       \(a'\)
+        به
+        \( \tilde{a}'\)
+         تغییر داده شده تا مشخص شود که عمل‌های بعدی باید آخرین سیاست نمونه‌برداری شوند در حالی که 
+          \(r\)
+           و 
+           \(s\)
+            باید از بافر تکرار بازی آمده باشند.
+            
+            
+          \subsection{سیاست در \lr{SAC}}
+          سیاست باید در هر وضعیت برای به حداکثر رساندن بازگشت مورد انتظار آینده به همراه آنتروپی مورد انتظار آینده عمل کند. یعنی باید
+           \(V^{\pi}(s)\)
+            را به حداکثر برساند، بسط تابع ارزش در ادامه آمده است.
+          \begin{align}
+          	V^{\pi}(s) &= \underE{a \sim \pi}\left[
+          	{Q^{\pi}(s,a)}
+          	\right] + \alpha H\left(\pi(\cdot|s)\right) \\
+          	&= \underE{a \sim \pi}\left[
+          	{Q^{\pi}(s,a) - \alpha \log \pi(a|s)}
+          	\right]
+          \end{align}
+          
+          روش بهینه‌سازی سیاست از ترفند پارامترسازی مجدد\LTRfootnote{Reparameterization}
+           استفاده می‌کند، که در آن نمونه ای از 
+           \(\pi_{\theta}(\cdot|s)\)
+            با محاسبه یک تابع قطعی از وضعیت، پارامترهای سیاست و نویز مستقل استخراج می‌شود. در این پژوهش مانند نویسندگان مقاله \lr{SAC}
+            \cite{DBLP:journals/corr/abs-1801-01290}،
+             از یک سیاست گاوسی\LTRfootnote{Squashed Gaussian Policy}
+              فشرده استفاده شده است. بر اساس این روش نمونه‌ها مطابق با رابطه زیر بدست می‌آیند:
+              \[
+              \tilde{a}_{\theta}(s, \xi) = \tanh\left( \mu_{\theta}(s) + \sigma_{\theta}(s) \odot \xi \right), \;\;\;\;\; \xi \sim \mathcal{N}(0, I)
+              \]
+              تابع 
+              \(\tanh\)
+               در سیاست \lr{SAC} تضمین می‌کند که اعمال در یک محدوده متناهی محدود شوند. این مورد در سیاست‌های \lr{VPG}، \lr{TRPO} و \lr{PPO} وجود ندارد. همچنین اعمال این تابع توزیع را از حالت گاوسی تغییر می‌دهد.
+               
+در الگوریتم SAC با استفاده از ترفند پارامتری‌سازی مجدد، عمل‌ها از یک توزیع نرمال به‌وسیله نویز تصادفی تولید شده و به این ترتیب امکان محاسبه مشتق‌ها به‌طور مستقیم از طریق تابع توزیع فراهم می‌شود، که باعث ثبات و کارایی بیشتر در آموزش می‌شود. اما در حالت بدون پارامتری‌سازی مجدد، عمل‌ها مستقیماً از توزیع سیاست نمونه‌برداری می‌شوند و محاسبه گرادیان نیازمند استفاده از ترفند نسبت احتمال\LTRfootnote{Likelihood Ratio Trick} است که معمولاً باعث افزایش واریانس و ناپایداری در آموزش می‌شود.
+\[
+\underE{a \sim \pi_{\theta}}\left[
+{Q^{\pi_{\theta}}(s,a) - \alpha \log \pi_{\theta}(a|s)} 
+\right]= \underE{\xi \sim \mathcal{N}}\left[
+{Q^{\pi_{\theta}}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
+\right]
+\]
+برای به‌دست آوردن تابع هزینه سیاست، گام نهایی این است که باید \( Q^{\pi_{\theta}} \) را با یکی از تخمین‌زننده‌های تابع خود جایگزین کنیم. برخلاف \lr{TD3} که از \( Q_{\phi_1} \) (فقط اولین تخمین‌زننده \lr{Q}) استفاده می‌کند، \lr{SAC} از \( \min_{j=1,2} Q_{\phi_j} \) (کمینه‌ی دو تخمین‌زننده \lr{Q}) استفاده می‌کند. بنابراین، سیاست طبق رابطه زیر بهینه‌سازی می‌شود:
+
+\[
+\max_{\theta}
+ \underset{\substack{s \sim \mathcal{D} \\ \xi \sim \mathcal{N}}}{\mathrm{E}} 
+ \left[
+ {\min_{j=1,2} Q_{\phi_j}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
+ \right]
+\]
+که تقریباً مشابه بهینه‌سازی سیاست در \lr{DDPG} و \lr{TD3} است، به جز ترفند \lr{min-double-Q}، تصادفی بودن و عبارت آنتروپی.
+
+\subsection{اکتشاف و بهره‌برداری در \lr{SAC}}
+
+الگوریتم \lr{SAC} یک سیاست تصادفی با تنظیم‌سازی آنتروپی آموزش می‌دهد و به صورت سیاست محور به اکتشاف می‌پردازد. ضریب تنظیم آنتروپی \( \alpha \) به طور صریح تعادل بین اکتشاف و بهره‌برداری را کنترل می‌کند، به‌طوری‌که مقادیر بالاتر \( \alpha \) به اکتشاف بیشتر و مقادیر پایین‌تر \( \alpha \) به بهره‌برداری بیشتر منجر می‌شود. مقدار بهینه \( \alpha \) (که به یادگیری پایدارتر و پاداش بالاتر منجر می‌شود) ممکن است در محیط‌های مختلف متفاوت باشد و نیاز به تنظیم دقیق داشته باشد.
+در زمان آزمایش، برای ارزیابی میزان بهره‌برداری سیاست از آنچه یاد گرفته است، تصادفی بودن را حذف کرده و از عمل میانگین به جای نمونه‌برداری از توزیع استفاده می‌کنیم. این روش معمولاً عملکرد را نسبت به سیاست تصادفی  بهبود می‌بخشد.
+
+
+
+\subsection{شبه‌کد
+	\lr{SAC}}
+
+در این بخش الگوریتم
+\lr{SAC}
+پیاده‌سازی شده آورده شده است. در این پژوهش الگوریتم~\رجوع{alg:SAC} در محیط پایتون با استفاده از کتابخانه
+\lr{PyTorch} \cite{paszke2017automatic}
+پیاده‌سازی شده ‌است.
+
+
+
+
+  \begin{algorithm}[H]
+	\caption{عامل عملگرد نقاد نرم}\label{alg:SAC}
+	\begin{algorithmic}[1]
+		\ورودی پارامترهای اولیه سیاست
+		$(\theta)$، پارامترهای تابع
+		\lr{Q}
+		$(\phi_1, \phi_2)$،
+		بافر بازی خالی $(\mathcal{D})$
+		%        \خروجی یک پوشش رأسی از $G$
+		\State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید
+		$\theta_{\text{targ}} \leftarrow \theta$,
+		$\phi_{\text{targ}, 1} \leftarrow \phi_1$,
+		$\phi_{\text{targ}, 2} \leftarrow \phi_2$
+		
+		%        \دستور قرار بده $C = \emptyset$  % \توضیحات{مقداردهی اولیه}
+		\While{همگرایی رخ دهد}
+		\State 
+		وضعیت $(s)$ را مشاهده کرده و عمل 
+		$a \sim \pi_{\theta}(\cdot|s)$
+		%  		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{Low}, a_{High})$
+		را انتخاب کنید.
+		\State عمل $a$ را در محیط اجرا کنید.
+		\State 
+		وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+		\State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
+		\If{زمان به‌روزرسانی فرا رسیده است}
+		\For{$j$
+			در
+			هر تعداد به‌روزرسانی}
+		\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+		%  		\State
+		%  		عمل را محاسبه کنید:
+		%  		\begin{equation*}
+			%  			 a'(s') = \text{clip}\left(\mu_{\theta_{\text{targ}}}(s') + \text{clip}(\epsilon,-c,c), a_{Low}, a_{High}\right), \;\;\;\;\; \epsilon \sim \mathcal{N}(0, \sigma) 
+			%  		\end{equation*}
+		\State
+		هدف را محاسبه کنید:
+		\begin{align*}
+			y (r,s',d) &= r + \gamma (1-d) \left(\min_{i=1,2} Q_{\phi_{\text{targ}, i}} (s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s')\right), && \tilde{a}' \sim \pi_{\theta}(\cdot|s')
+		\end{align*}
+		
+		\State تابع \lr{Q} را با یک مرحله از نزول گرادیان با استفاده از رابطه زیر به‌روزرسانی کنید:
+		\begin{align*} 
+			\nabla_{\phi_i} \frac{1}{|B|}\sum_{(s,a,r,s',d) \in B} \left( Q_{\phi_i}(s,a) - y(r,s',d) \right)^2 
+			\quad \text{\lr{for }}i=1,2 
+		\end{align*}
+		
+%		\If{
+%			باقیمانده
+%			$j $ 
+%			بر
+%			تاخیر سیاست
+%			برابر
+%			$ 0$
+%			باشد
+%		}
+		\State سیاست را با یک مرحله از صعود گرادیان با استفاده از رابطه زیر به‌روزرسانی کنید:
+		\begin{equation*}
+			\nabla_{\theta} \frac{1}{|B|}\sum_{s \in B} \Big(\min_{i=1,2} Q_{\phi_i}(s, \tilde{a}_{\theta}(s)) - \alpha \log \pi_{\theta} \left(\left. \tilde{a}_{\theta}(s) \right| s\right) \Big)
+		\end{equation*}
+		\State شبکه‌های هدف را با استفاده از معادلات زیر به‌روزرسانی کنید:
+		\begin{align*}
+			\phi_{\text{targ},i} &\leftarrow \rho \phi_{\text{targ}, i} + (1-\rho) \phi_i \quad \text{\lr{for }}i=1,2  
+%			\theta_{\text{targ}} &\leftarrow \rho \theta_{\text{targ}} + (1-\rho) \theta
+		\end{align*}
+%		\EndIf
+		\EndFor
+		\EndIf
+		\EndWhile
+		%        \تاوقتی{$E$ تهی نیست}
+		%        %\اگر{$|E| > 0$}
+		%        %	\دستور{یک کاری انجام بده}
+		%        %\پایان‌اگر
+		%        \If{$i\geq 5$} 
+		%        \State $i \gets i-1$ \do
+		%        \Else
+		%        \If{$i\leq 3$}
+		%        \State $i \gets i+2$
+		%        \EndIf
+		%        \EndIf
+		%        \دستور یال دل‌‌خواه $uv \in E$ را انتخاب کن
+		%        \دستور رأس‌های $u$ و $v$ را به $C$ اضافه کن
+		%        \دستور تمام یال‌های واقع بر $u$ یا $v$ را از $E$ حذف کن
+		%        \پایان‌تاوقتی
+		%        \دستور $C$ را برگردان
+	\end{algorithmic}
+\end{algorithm}
+%\begin{algorithm}[H]
+%	\caption{Soft Actor-Critic}
+%	\label{alg1}
+%	\begin{algorithmic}[1]
+%		\STATE Input: initial policy parameters $\theta$, Q-function parameters $\phi_1$, $\phi_2$, empty replay buffer $\mathcal{D}$
+%		\STATE Set target parameters equal to main parameters $\phi_{\text{targ},1} \leftarrow \phi_1$, $\phi_{\text{targ},2} \leftarrow \phi_2$
+%		\REPEAT
+%		\STATE Observe state $s$ and select action $a \sim \pi_{\theta}(\cdot|s)$
+%		\STATE Execute $a$ in the environment
+%		\STATE Observe next state $s'$, reward $r$, and done signal $d$ to indicate whether $s'$ is terminal
+%		\STATE Store $(s,a,r,s',d)$ in replay buffer $\mathcal{D}$
+%		\STATE If $s'$ is terminal, reset environment state.
+%		\IF{it's time to update}
+%		\FOR{$j$ in range(however many updates)}
+%		\STATE Randomly sample a batch of transitions, $B = \{ (s,a,r,s',d) \}$ from $\mathcal{D}$
+%		\STATE Compute targets for the Q functions:
+%		\begin{align*}
+%			y (r,s',d) &= r + \gamma (1-d) \left(\min_{i=1,2} Q_{\phi_{\text{targ}, i}} (s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s')\right), && \tilde{a}' \sim \pi_{\theta}(\cdot|s')
+%		\end{align*}
+%		\STATE Update Q-functions by one step of gradient descent using
+%		\begin{align*}
+%			& \nabla_{\phi_i} \frac{1}{|B|}\sum_{(s,a,r,s',d) \in B} \left( Q_{\phi_i}(s,a) - y(r,s',d) \right)^2 && \text{for } i=1,2
+%		\end{align*}
+%		\STATE Update policy by one step of gradient ascent using
+%		\begin{equation*}
+%			\nabla_{\theta} \frac{1}{|B|}\sum_{s \in B} \Big(\min_{i=1,2} Q_{\phi_i}(s, \tilde{a}_{\theta}(s)) - \alpha \log \pi_{\theta} \left(\left. \tilde{a}_{\theta}(s) \right| s\right) \Big),
+%		\end{equation*}
+%		where $\tilde{a}_{\theta}(s)$ is a sample from $\pi_{\theta}(\cdot|s)$ which is differentiable wrt $\theta$ via the reparametrization trick.
+%		\STATE Update target networks with
+%		\begin{align*}
+%			\phi_{\text{targ},i} &\leftarrow \rho \phi_{\text{targ}, i} + (1-\rho) \phi_i && \text{for } i=1,2
+%		\end{align*}
+%		\ENDFOR
+%		\ENDIF
+%		\UNTIL{convergence}
+%	\end{algorithmic}
+%\end{algorithm}
+
+
+            
+       
+       
