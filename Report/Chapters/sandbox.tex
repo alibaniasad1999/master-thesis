@@ -9,17 +9,17 @@
 			,draw=none,fill=none,inner sep=2mm},
 		xlabel=X, % \hertz requires SIunits
 		ylabel=Y,
-		title={Trajectory of the satellite},
+		title={Trajectory of the Satellite},
 		% grid=both,
 		% minor grid style={gray!25},
 		% major grid style={gray!25},
 		width=0.75\linewidth,
 		enlarge y limits=0.15,
 		no marks]
-		\addplot[line width=1pt,solid,color=blue] %
+		\addplot[line width=1pt,solid,color=red] %
 		table[x=x,y=y,col sep=comma]{../Code/Python/Environment/trajectory_latex.csv};
 		\addlegendentry{Trajectory}
-		\addplot[line width=1pt,solid,color=red] %
+		\addplot[line width=1pt,dashed,color=black] %
 		table[x=x,y=y,col sep=comma]{../Code/Python/TBP/PPO/DG/results/state.csv};
 		\addlegendentry{PPO DG Trajectory}
 	\end{axis}
