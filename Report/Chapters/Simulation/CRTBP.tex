@@ -1,0 +1,117 @@
+\section{مسئله سه‌جسمی محدود دایره‌ای}
+
+مسئله عمومی سه‌جسمی مسیرهای سه جسم پرجرم دلخواه را بررسی می‌کند که تحت تأثیر جاذبه متقابل قرار دارند. با این حال، این مسئله به مراتب عمومی‌تر از آن چیزی است که طراحان مأموریت‌های عملیاتی نیاز دارند. دو ساده‌سازی رایج وجود دارد که برای قابل دسترس‌تر و کاربردی‌تر کردن این مسئله در مسیرهای واقعی معمولاً انجام می‌شود. این ساده‌سازی‌ها عبارتند از:
+\begin{enumerate}
+	\item جرم جسم سوم (ماهواره) در مقایسه با اجسام اصلی ناچیز است.
+	\item اجسام اصلی و ثانویه در مدارهای دایره‌ای حول مرکز جرم که بین دو جسم قرار دارد حرکت می‌کنند.
+\end{enumerate}
+
+مسئله به‌دست‌آمده معمولاً به نام مسئله سه‌جسمی محدود دایره‌ای (CRTBP) شناخته می‌شود. گاهی اوقات، فرض دیگری نیاز به حرکت فقط در صفحه مداری اجسام اصلی و ثانویه دارد. برای این مسئله سه‌جسمی محدود دایره‌ای در صفحه، مؤلفه z معادلات صفر می‌شود. پیدا کردن معادلات ساده برای بیان راه‌حل‌ها در مسئله سه‌جسمی دشوار است. کتاب‌های کامل در این زمینه وجود دارد (Szebehely, 1967). هدف ما در اینجا توصیف حرکات کیفی و برجسته کردن چندین راه‌حل کلاسیکی است که شناخته‌شده هستند.
+
+ابتدا، بیایید از یک چارچوب مختصات همزمان برای مسئله سه‌جسمی استفاده کنیم، همانطور که در شکل 12-13 نشان داده شده است.* معادلاتی برای یک چارچوب باریکنانه (ثابت) به زودی معرفی خواهیم کرد. این چارچوب از نمادهای کوچک x، y و z برای اجزای فردی استفاده می‌کند. زیرنویس S با محور‌ها نشان می‌دهد که مبدأ در مرکز جرم (مرکز سیستم) است و چارچوب با سرعت زاویه‌ای qS می‌چرخد.
+
+%Macros
+\pgfmathsetmacro{\r}{0.8}	
+\pgfmathsetmacro{\Phi}{-160}
+\pgfmathsetmacro{\Theta}{-90}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		%Grid
+		%		\draw[thin, dotted] (0,0) grid (8,8);
+		%		\foreach \i in {1,...,8}
+		%		{
+			%			\node at (\i,-2ex) {\i};	
+			%		}
+		%		\foreach \i in {1,...,8}
+		%		{
+			%			\node at (-2ex,\i) {\i};	
+			%		}
+		%		\node at (-2ex,-2ex) {0};
+		
+		% Coordinates
+		\coordinate (earth) at (1,2);
+		\coordinate (moon) at (8,1);
+		\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
+		\coordinate (A) at (-.5,.5);
+		\coordinate (B) at (8.5,-0.5);
+		
+		% Earth
+		\draw[thick, fill=black!30, draw=black!30
+		] (earth) circle (\r);
+		% Text
+		\node (a) at (A) {Earth};
+		
+		% Moon
+		\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
+		% Text 
+		\node[below, shift={(0,-0.4)}] at (MOON) {$m$};
+		\node (b) at (B) {Moon};
+		
+		% Lines
+		% \draw[-latex] (earth) -- (MOON) node[pos=.55, below left] {$\vb{r}_o$};
+		% \draw[-latex] (earth) -- (earth-point1) node [pos=0.6, left] {$\vb{r}$};
+		\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
+		\draw[-stealth] (b) to[bend left=-30] (MOON);
+		\draw[dashed, black] (earth) -- (MOON.center);
+		
+		% center of mass 0.25 from earth
+		\coordinate (center) at ($(earth)!0.3!(MOON)$);
+		% small circle
+		\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
+		% add satellite with shift
+		\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
+		% \node at ($(center)!0.5!(MOON)+(0,2)$) {\faSatellite};
+		% shift coordinate
+		\node (satellite) at (satellite) {\faSatellite};
+		
+		% connect earth to satellite r1
+		\draw[-stealth] (earth) -- (satellite) node[pos=0.5, above] {$\vb{r}_1$};   
+		% connect moon to satellite r2
+		\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
+		% connect center of mass to satellite r
+		\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
+		% add line to show satellite is in between
+		\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
+		\draw[-stealth] (c) to[bend left=30] (satellite);
+		
+		
+		
+		
+		
+		% % Angles
+		% \pic[draw, "$\theta$", angle eccentricity=2.5, angle radius=5pt] {angle = moon--earth--earth-point1};
+		
+		% % Point
+		% \draw[fill=black] (earth) circle (1pt) node[below, shift={(0,-0.1)}] {$\mathrm{O}$};
+	\end{tikzpicture}
+	\caption{هندسه مسئله سه بدنه محدود}
+\end{figure}
+
+
+
+
+انتخاب سیستم مختصات با استفاده از فرم باریکنانه معادلات حرکت آغاز می‌شود. از معادله (1-38)، با $n = 3$، شتاب اینرسی به‌صورت زیر است:
+\[
+r = -\frac{Gm_1}{r_1^{\text{sat}}} - \frac{Gm_2}{r_2^{\text{sat}}} - \frac{Gm_3}{r_3^{\text{sat}}}
+\]
+\textit{تذکر:} نمادهای مختلفی برای جهت اصلی وجود دارد. Szebehely از جهت اصلی به سمت جسم بزرگ‌تر استفاده می‌کند. در حالی که بسیاری از ادبیات و مأموریت‌های عملیاتی از محور اصلی به سمت جسم کوچکتر استفاده می‌کنند. معادلات تنها با چند علامت تفاوت دارند. ما از سنت اخیر استفاده می‌کنیم.
+
+چرخش ذاتی سیستم مختصات نیازمند آن است که به ترم‌های اضافی که در شتاب ایجاد می‌شوند، توجه کنیم. معادله (3-26) شتاب‌های اینرسی و چرخان را مشخص می‌کند (من از نمادهای این بخش و چارچوب همزمان چرخان $r_S$، $v_S$، $a_S$ استفاده کرده‌ام):
+\[
+r_{B_{\text{sat}}} = a_S + q_S \times r_S + q_S \times (q_S \times r_S) + 2q_S \times v_S + a_{\text{org}}
+\]
+از آنجا که چرخش حول محور $z_S$ انجام می‌شود، می‌توانیم هر یک از ترم‌ها را ارزیابی کنیم. ما حرکت دایره‌ای را فرض کرده‌ایم، بنابراین نرخ تغییرات چرخش صفر است. همچنین، سیستم مختصات در مقایسه با مبدا اینرسی شتاب نمی‌گیرد؛ بنابراین $a_{\text{org}} = 0$. با تغییر رابطه بالا به‌طوری‌که با رویه معمول استفاده از مختصات دکارتی در چارچوب همزمان برای ماهواره هماهنگ شود و ضرب متقاطع را انجام دهیم، داریم:
+\[
+r_{B_{\text{sat}}} = r_S - q_S (x_S x_S + y_S y_S) - 2q_S (y_S x_S - x_S y_S)
+\]
+حال باید روابط ساده‌تری برای شتاب اینرسی پیدا کنیم. معادله (1-38) عبارت عمومی را ارائه می‌دهد. در این مرحله، مفید است که گرادیان‌ها را معرفی کنیم. ما در فصل 8 از گرادیان‌ها به‌طور مکرر استفاده کردیم. در اینجا، آنها نمادها را برای شتاب ساده می‌کنند.
+\[
+r_{B_{\text{sat}}} = \nabla \left( \frac{m_1}{r_1} + \frac{m_2}{r_2} \right)
+\]
+که در آن:
+\[
+\nabla R = x_S + y_S + \frac{\partial x}{\partial y} \frac{\partial z}{\partial z}
+\]
+
