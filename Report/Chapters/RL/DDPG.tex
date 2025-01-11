@@ -248,12 +248,21 @@ $\theta_{\text{targ}} \leftarrow \theta$, $\phi_{\text{targ}} \leftarrow \phi$
 
 %        \دستور قرار بده $C = \emptyset$  % \توضیحات{مقداردهی اولیه}
 \While{همگرایی رخ دهد}
-\State 
-وضعیت 
-\(s\)
- را مشاهده کرده و عمل $a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{\text{Low}}, a_{\text{High}})$ را انتخاب کنید به‌طوری که $\epsilon \sim \mathcal{N}$ است.
+%\State 
+%وضعیت 
+%\(s\)
+% را مشاهده کرده و عمل $a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{\text{Low}}, a_{\text{High}})$ را انتخاب کنید به‌طوری که $\epsilon \sim \mathcal{N}$ است.
+   \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+ 	وضعیت 
+ 	\(s\)
+ 	را مشاهده کرده و عمل $a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{\text{Low}}, a_{\text{High}})$ را انتخاب کنید به‌طوری که $\epsilon \sim \mathcal{N}$ است.
+ 	\strut}
 \State عمل $a$ را در محیط اجرا کنید.
-\State وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+%\State
+% وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+  \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+	 وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+	\strut}
 \State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
 \If{زمان به‌روزرسانی فرا رسیده است}
 \For{هر تعداد به‌روزرسانی}
