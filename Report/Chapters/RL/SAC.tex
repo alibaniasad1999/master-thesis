@@ -13,7 +13,7 @@
   را پرداخته شود. در \lr{RL} تنظیم‌شده با آنتروپی، روابط تابع ارزش کمی متفاوت است.
  
 \subsection{یادگیری تقویتی تنظیم‌شده با آنتروپی}
- آنتروپی کمیتی است که به طور کلی می‌گوید که یک متغیر تصادفی چقدر تصادفی است. اگر وزن یک سکه به گونه ای باشد که تقریباً همیشه نتیجه یک سمت آن باشد، آنتروپی پایینی دارد. اگر به طور مساوی وزن داشته باشد و شانس هر طرف سکه نصف باشد، آنتروپی بالایی دارد.
+ آنتروپی کمیتی است که به طور کلی می‌گوید که یک متغیر تصادفی چقدر تصادفی است. اگر وزن یک سکه به گونه‌ای باشد که تقریباً همیشه نتیجه یک سمت آن باشد، آنتروپی پایینی دارد. اگر به طور مساوی وزن داشته باشد و شانس هر طرف سکه نصف باشد، آنتروپی بالایی دارد.
  فرض کنید \(x\) یک متغیر تصادفی با تابع چگالی احتمال
 \(  P\)
    باشد. آنتروپی
@@ -21,15 +21,19 @@
      متغیر \(x\) از توزیع آن
       \(P\)
        مطابق با رابطه زیر محاسبه می‌شود:
-       \[
-       H(P) =  \underset{x \sim P} {\mathrm E} \left[  {-\log P(x)}  \right]
-       \]
+      
+      \begin{equation}
+      	H(P) =  \underset{x \sim P} {\mathrm E} \left[  {-\log P(x)}  \right]
+      \end{equation}
+      
+      
        \subsection{سیاست در \lr{SAC}}
        در یادگیری تقویتی تنظیم‌شده با آنتروپی، عامل در هر مرحله زمانی متناسب با آنتروپی سیاست در آن مرحله زمانی پاداش دریافت می‌کند. بر اساس توضیحات اشاره شده روابط یادگیری تقویتی به‌صورت زیر می‌شود.
        
-       \[
-       \pi^* = \arg \max_{\pi} \underset{\tau \sim \pi}{\mathrm E}{ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg)}
-       \]
+       \begin{equation}
+        \pi^* = \arg \max_{\pi} \underset{\tau \sim \pi}{\mathrm E}{ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg)}
+       \end{equation}
+       
        
        
        که در آن
@@ -40,30 +44,36 @@
            اکنون می‌توان تابع ارزش کمی متفاوت را بر اساس این مفهموم تعریف کرد.
             \(V^{\pi}\)
              به گونه‌ای تغییر می‌کند که پاداش‌های آنتروپی را از هر مرحله زمانی شامل می‌شود.
-             \[
-             V^{\pi}(s) = \underset{\tau \sim \pi}{\mathrm E}{ \left. \left[ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg) \right| s_0 = s\right] }
-             \]
+             
+             \begin{equation}
+             	V^{\pi}(s) = \underset{\tau \sim \pi}{\mathrm E}{ \left. \left[ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg) \right| s_0 = s\right] }
+             \end{equation}
+             
              
             \subsection{تابع \lr{Q}
             در \lr{SAC}}
             تابع
             \(Q^{\pi}\)
              به گونه ای تغییر می‌کند که پاداش های آنتروپی را از هر مرحله زمانی به جز مرحله اول شامل می‌شود.
-             \[
-             Q^{\pi}(s,a) = \underE{\tau \sim \pi}\left[
+             
+             \begin{equation}
+             	Q^{\pi}(s,a) = \underE{\tau \sim \pi}\left[
              { \left. \sum_{t=0}^{\infty} \gamma^t  R(s_t, a_t, s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H\left(\pi(\cdot|s_t)\right)\right| s_0 = s, a_0 = a}
              \right]
-             \]
+             \end{equation}
+             
        با این تعاریف رابطه
        ٰ\(V^{\pi}\)
        و 
        \(Q^{\pi}\)
         به‌صورت زیر است.
-        \[
-        V^{\pi}(s) = \underE{a \sim \pi}\left[
-        {Q^{\pi}(s,a)} 
-        \right]+ \alpha H\left(\pi(\cdot|s)\right)
-        \]
+        \begin{equation}
+         V^{\pi}(s) = \underE{a \sim \pi}\left[
+         {Q^{\pi}(s,a)} 
+         \right]+ \alpha H\left(\pi(\cdot|s)\right)
+        \end{equation}
+        
+        
        \subsection{معادله بلمن در \lr{SAC}}
        معادله بلمن در حالت تنظیم‌شده با آنتروپی به‌صورت زیر ارائه می‌شود.
        \begin{align}
@@ -79,19 +89,22 @@
        \subsection{یادگیری \lr{Q}}
                  با درنظرگرفتن موارد اشاره‌شده، یادگیری \lr{Q} در \lr{SAC} با کمینه‌کردن تابع خطای میانگین مربعات بلمن (\lr{MSBE}) یعنی معادله \eqref{eq:msbe_sac} با استفاده از کاهش گرادیان
        انجام می‌شود.
-       \[\label{eq:msbe_sac}
-       L(\phi_i, {\mathcal D}) = \underset{(s,a,r,s',d) \sim {\mathcal D}}{{\mathrm E}}\left[
-       \Bigg( Q_{\phi_i}(s,a) - y(r,s',d) \Bigg)^2
-       \right]
-       \]
+       \begin{equation}
+       	\label{eq:msbe_sac}
+       	L(\phi_i, {\mathcal D}) = \underset{(s,a,r,s',d) \sim {\mathcal D}}{{\mathrm E}}\left[
+       	\Bigg( Q_{\phi_i}(s,a) - y(r,s',d) \Bigg)^2
+       	\right]
+       \end{equation}
+       
+       
        در معادله 
        \eqref{eq:msbe_sac}
        تابع هدف برای روش یادگیری تقویتی 
        \lr{SAC}
        به صورت زیر تعریف می‌شود.
-       \[
-       y(r, s', d) = r + \gamma (1 - d) \left( \min_{j=1,2} Q_{\phi_{\text{targ},j}}(s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s') \right), \;\;\;\;\; \tilde{a}' \sim \pi_{\theta}(\cdot|s')
-       \]
+       \begin{equation}
+       	y(r, s', d) = r + \gamma (1 - d) \left( \min_{j=1,2} Q_{\phi_{\text{targ},j}}(s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s') \right), \;\;\;\;\; \tilde{a}' \sim \pi_{\theta}(\cdot|s')
+       \end{equation}
        نماد عمل بعدی را به جای 
        \(a'\)
         به
@@ -123,30 +136,35 @@
             \cite{DBLP:journals/corr/abs-1801-01290}،
              از یک سیاست گاوسی\LTRfootnote{Squashed Gaussian Policy}
               فشرده استفاده شده است. بر اساس این روش نمونه‌ها مطابق با رابطه زیر بدست می‌آیند:
-              \[
-              \tilde{a}_{\theta}(s, \xi) = \tanh\left( \mu_{\theta}(s) + \sigma_{\theta}(s) \odot \xi \right), \;\;\;\;\; \xi \sim \mathcal{N}(0, I)
-              \]
+              
+              \begin{equation}
+              	\tilde{a}_{\theta}(s, \xi) = \tanh\left( \mu_{\theta}(s) + \sigma_{\theta}(s) \odot \xi \right), \;\;\;\;\; \xi \sim \mathcal{N}(0, I)
+              \end{equation}
               تابع 
               \(\tanh\)
                در سیاست \lr{SAC} تضمین می‌کند که اعمال در یک محدوده متناهی محدود شوند. این مورد در سیاست‌های \lr{VPG}، \lr{TRPO} و \lr{PPO} وجود ندارد. همچنین اعمال این تابع توزیع را از حالت گاوسی تغییر می‌دهد.
                
 در الگوریتم SAC با استفاده از ترفند پارامتری‌سازی مجدد، عمل‌ها از یک توزیع نرمال به‌وسیله نویز تصادفی تولید شده و به این ترتیب امکان محاسبه مشتق‌ها به‌طور مستقیم از طریق تابع توزیع فراهم می‌شود، که باعث ثبات و کارایی بیشتر در آموزش می‌شود. اما در حالت بدون پارامتری‌سازی مجدد، عمل‌ها مستقیماً از توزیع سیاست نمونه‌برداری می‌شوند و محاسبه گرادیان نیازمند استفاده از ترفند نسبت احتمال\LTRfootnote{Likelihood Ratio Trick} است که معمولاً باعث افزایش واریانس و ناپایداری در آموزش می‌شود.
-\[
-\underE{a \sim \pi_{\theta}}\left[
-{Q^{\pi_{\theta}}(s,a) - \alpha \log \pi_{\theta}(a|s)} 
-\right]= \underE{\xi \sim \mathcal{N}}\left[
-{Q^{\pi_{\theta}}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
-\right]
-\]
+
+\begin{equation}
+	\underE{a \sim \pi_{\theta}}\left[
+	{Q^{\pi_{\theta}}(s,a) - \alpha \log \pi_{\theta}(a|s)} 
+	\right]= \underE{\xi \sim \mathcal{N}}\left[
+	{Q^{\pi_{\theta}}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
+	\right]
+\end{equation}
+
 برای به‌دست آوردن تابع هزینه سیاست، گام نهایی این است که باید \( Q^{\pi_{\theta}} \) را با یکی از تخمین‌زننده‌های تابع خود جایگزین کنیم. برخلاف \lr{TD3} که از \( Q_{\phi_1} \) (فقط اولین تخمین‌زننده \lr{Q}) استفاده می‌کند، \lr{SAC} از \( \min_{j=1,2} Q_{\phi_j} \) (کمینه‌ی دو تخمین‌زننده \lr{Q}) استفاده می‌کند. بنابراین، سیاست طبق رابطه زیر بهینه‌سازی می‌شود:
 
-\[
-\max_{\theta}
- \underset{\substack{s \sim \mathcal{D} \\ \xi \sim \mathcal{N}}}{\mathrm{E}} 
- \left[
- {\min_{j=1,2} Q_{\phi_j}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
- \right]
-\]
+
+\begin{equation}
+	\max_{\theta}
+	\underset{\substack{s \sim \mathcal{D} \\ \xi \sim \mathcal{N}}}{\mathrm{E}} 
+	\left[
+	{\min_{j=1,2} Q_{\phi_j}(s,\tilde{a}_{\theta}(s,\xi)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s,\xi)|s)}
+	\right]
+\end{equation}
+
 که تقریباً مشابه بهینه‌سازی سیاست در \lr{DDPG} و \lr{TD3} است، به جز ترفند \lr{min-double-Q}، تصادفی بودن و عبارت آنتروپی.
 
 \subsection{اکتشاف و بهره‌برداری در \lr{SAC}}
@@ -190,14 +208,19 @@
 		%  		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{Low}, a_{High})$
 		را انتخاب کنید.
 		\State عمل $a$ را در محیط اجرا کنید.
-		\State 
-		وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+		  \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+					وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+			\strut}
+%		\State 
+
 		\State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
 		\If{زمان به‌روزرسانی فرا رسیده است}
 		\For{$j$
 			در
 			هر تعداد به‌روزرسانی}
+			
 		\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+		
 		%  		\State
 		%  		عمل را محاسبه کنید:
 		%  		\begin{equation*}

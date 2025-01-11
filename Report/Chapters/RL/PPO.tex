@@ -4,7 +4,7 @@
  یک الگوریتم بهینه‌سازی سیاست مبتنی بر گرادیان است که برای حل مسائل کنترل مسئله‌های یادگیری تقویتی استفاده می‌شود. این الگوریتم از الگوریتم 
  \lr{TRPO}\LTRfootnote{Trust Region Policy Optimization}
  الهام گرفته شده است و با اعمال تغییراتی بر روی آن، سرعت و کارایی آن را افزایش داده است. در این بخش به بررسی این الگوریتم و نحوه عملکرد آن می‌پردازیم.
- الگوریتم \lr{PPO} همانند سایر الگوریتم‌های یادگیری تقویتی، به‌دنبال یافتن بهترین گام ممکن برای بهبود عملکرد سیایت با استفاده از داده‌های موجود است. این الگوریتم تلاش می‌کند تا از گام‌های بزرگ که می‌توانند منجر به افت ناگهانی عملکرد شوند، اجتناب کند.
+ الگوریتم \lr{PPO} همانند سایر الگوریتم‌های یادگیری تقویتی، به‌دنبال یافتن بهترین گام ممکن برای بهبود عملکرد سیاست با استفاده از داده‌های موجود است. این الگوریتم تلاش می‌کند تا از گام‌های بزرگ که می‌توانند منجر به افت ناگهانی عملکرد شوند، اجتناب کند.
  برخلاف روش‌های پیچیده‌تر مرتبه دوم مانند 
  \lr{TRPO}، \lr{PPO}
   از مجموعه‌ای از روش‌های مرتبه اول ساده‌تر برای حفظ نزدیکی سیاست‌های جدید به سیاست‌های قبلی استفاده می‌کند. این سادگی در پیاده‌سازی، \lr{PPO} را به روشی کارآمدتر تبدیل می‌کند، در حالی که از نظر تجربی نشان داده شده است که عملکردی حداقل به اندازه \lr{TRPO} دارد.
@@ -60,6 +60,7 @@
 \(L\)
 به‌صورت زیر تعریف شده است:
 \begin{equation}
+	\label{eq:l_ppo}
     L(s,a,\theta_k,\theta) = \min\left(
     \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a), \;\;
     \text{clip}\left(\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, 1 - \epsilon, 1+\epsilon \right) A^{\pi_{\theta_k}}(s,a)
@@ -71,8 +72,22 @@
 این فراپامتر مشخص می‌کند که چقدر اندازه گام بهینه‌سازی باید محدود شود.
 در این پژوهش مقدار 
 \(\epsilon = 0.2\)
-انتخاب شده است.
-
+انتخاب شده است. جهت سادگی در پیاده‌سازی معادله \eqref{eq:l_ppo} به معادله تغیر داده شده است.
+\begin{equation}
+	L(s,a,\theta_k,\theta) = \min\left(
+	\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a), \;\;
+	g(\epsilon, A^{\pi_{\theta_k}}(s,a))
+	\right)
+\end{equation}
+که تابع \(g\) به صورت زیر تعریف شده است.
+\begin{align}
+	g(\epsilon, A) = \left\{
+	\begin{array}{ll}
+		(1 + \epsilon) A & A \geq 0 \\
+		(1 - \epsilon) A & A < 0
+	\end{array}
+	\right.
+\end{align}
 
 در حالی که این نوع محدود کردن 
 (\lr{PPO-Clip})
@@ -126,13 +141,23 @@ $(\phi_0)$
 	 پاداش‌های باقی‌مانده 
 	 ($\hat{R}_t$)
 	 محاسبه شود.
-	\State
-	برآوردهای مزیت را محاسبه کنید، $\hat{A}_t$ (با استفاده از هر روش تخمین مزیت) بر اساس تابع ارزش فعلی $V_{\phi_k}$
+%	\State
+
+	    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+	برآوردهای مزیت را محاسبه کنید، $\hat{A}_t$ (با استفاده از هر روش تخمین مزیت) بر اساس تابع ارزش فعلی $V_{\phi_k}$.
+	    	\strut}
 	
-	\State
-	سیاست را با به حداکثر رساندن تابع هدف \lr{PPO-Clip} به‌روزرسانی کنید:
-	 \begin{equation*} \theta_{k+1} = \arg \max_{\theta} \frac{1}{|{\mathcal D}_k| T} \sum_{\tau \in {\mathcal D}_k} \sum_{t=0}^T \min\left( \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} A^{\pi_{\theta_k}}(s_t,a_t), \;\; g(\epsilon, A^{\pi_{\theta_k}}(s_t,a_t)) \right) \end{equation*}
-	 معمولاً از طریق گرادیان افزایشی تصادفی \lr{Adam}.
+	
+%	\State
+%	سیاست را با به حداکثر رساندن تابع هدف \lr{PPO-Clip} به‌روزرسانی کنید:
+%	 \begin{equation*} \theta_{k+1} = \arg \max_{\theta} \frac{1}{|{\mathcal D}_k| T} \sum_{\tau \in {\mathcal D}_k} \sum_{t=0}^T \min\left( \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} A^{\pi_{\theta_k}}(s_t,a_t), \;\; g(\epsilon, A^{\pi_{\theta_k}}(s_t,a_t)) \right) \end{equation*}
+%	 معمولاً از طریق گرادیان افزایشی تصادفی \lr{Adam}.
+	     \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+	     	سیاست را با به حداکثر رساندن تابع هدف \lr{PPO-Clip} به‌روزرسانی کنید:
+	     	\begin{equation*} \theta_{k+1} = \arg \max_{\theta} \frac{1}{|{\mathcal D}_k| T} \sum_{\tau \in {\mathcal D}_k} \sum_{t=0}^T \min\left( \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)} A^{\pi_{\theta_k}}(s_t,a_t), \;\; g(\epsilon, A^{\pi_{\theta_k}}(s_t,a_t)) \right) \end{equation*}
+	     	معمولاً از طریق گرادیان افزایشی تصادفی \lr{Adam}.
+	     	\strut}
+	 
 	 \State
 	 برازش تابع ارزش با رگرسیون بر روی میانگین مربعات خطا:
 	 \begin{equation*} \phi_{k+1} = \arg \min_{\phi} \frac{1}{|{\mathcal D}_k| T} \sum_{\tau \in {\mathcal D}_k} \sum_{t=0}^T\left( V_{\phi} (s_t) - \hat{R}_t \right)^2 \end{equation*} 
