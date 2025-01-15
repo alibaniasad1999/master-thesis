@@ -44,8 +44,6 @@ def main(args=None):
     rclpy.init(args=args)
     node = ArraySubscriber()
 
-    # Run the plot in the same thread as ROS spin
-    node.run_plot()
 
     try:
         rclpy.spin(node)

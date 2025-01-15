@@ -2,13 +2,12 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
-import gymnasium as gym
 import numpy as np
 from typing import Any
 
 
 
-class MassSpringDamperEnv(gym.Env):
+class MassSpringDamperEnv():
 
     def __init__(self):
         super(MassSpringDamperEnv, self).__init__()
@@ -31,8 +30,6 @@ class MassSpringDamperEnv(gym.Env):
         self.integral_error = 0
 
         # State and action spaces
-        self.action_space = gym.spaces.Box(low=-20.0, high=20.0, shape=(1,))
-        self.observation_space = gym.spaces.Box(low=-100, high=100, shape=(2,))
 
     def step(self, action):
         # clip action
@@ -76,8 +73,8 @@ class MassSpringDamperEnv(gym.Env):
         return self._get_obs(), {}
 
     def _get_obs(self):
-        position, velocity = (self.state + self.action_space.high[0]) / (
-                self.action_space.high[0] - self.action_space.low[0])  # normalized data
+        position, velocity = (self.state + 20) / (
+                20 + 20)  # normalized data
         return np.array([position, velocity], dtype=np.float32)
 
     def denormalize(self, state):
