@@ -34,8 +34,8 @@ class ArraySubscriber(Node):
 
     def run_plot(self):
         # Create the animation
-        ani = FuncAnimation(self.fig, self.animate, blit=True)
-        plt.show()
+        self.ani = FuncAnimation(self.fig, self.animate, blit=True)
+        # plt.show()
 
 def main(args=None):
     rclpy.init(args=args)
@@ -45,6 +45,7 @@ def main(args=None):
     from threading import Thread
     plot_thread = Thread(target=node.run_plot)
     plot_thread.start()
+    plt.show()
 
     try:
         rclpy.spin(node)
