@@ -11,15 +11,17 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'rclpy', 'std_msgs'],
     zip_safe=True,
     maintainer='ali',
     maintainer_email='alibaniasad1999@yahoo.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='A package that publishes and subscribes to an array for MBK system.',
+    license='MIT License',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'MBK_env_publisher_node = MBK_env.MBK_env_publisher:main',
+            'MBK_env_subscriber_node = MBK_env.mbk_plotter:main',
         ],
     },
 )
