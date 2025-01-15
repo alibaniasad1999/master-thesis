@@ -23,7 +23,7 @@ class MassSpringDamperEnv(gym.Env):
         self.c = 0.1  # Damping coefficient (N*s/m)
 
         # Simulation parameters
-        self.dt = 0.01  # Time step (s)
+        self.dt = 1  # Time step (s)
         self.max_steps = 1000  # Maximum simulation steps
         self.current_step = 0
 
