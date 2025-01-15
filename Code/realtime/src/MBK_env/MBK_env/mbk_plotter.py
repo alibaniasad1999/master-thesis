@@ -8,7 +8,6 @@ from matplotlib.animation import FuncAnimation
 class ArraySubscriber(Node):
     def __init__(self):
         super().__init__('mbk_subscriber')
-        self.ani = None
         self.subscription = self.create_subscription(
             Float64MultiArray,
             'mass_spring_damper_env',
@@ -22,22 +21,23 @@ class ArraySubscriber(Node):
         self.ax.set_ylim(-10, 10)
         self.get_logger().info('Array Subscriber Node has been started.')
 
+        # Create a timer to update the plot periodically
+        self.timer = self.create_timer(0.1, self.update_plot)  # 100 ms interval
+
     def listener_callback(self, msg):
         # Update the data list with the new message
         self.data = msg.data
         self.get_logger().info(f'Received data: {self.data}')
 
-    def animate(self, frame):
-        # Update the plot only if there is data
+    def update_plot(self):
+        # Update the plot with the latest data
         if len(self.data) == 2:
             self.line.set_data([0, 1], self.data)
-        else:
-            self.line.set_data([], [])  # Clear the plot if data is not valid
-        return self.line,
+            self.fig.canvas.draw_idle()  # Force the figure to update
 
     def run_plot(self):
-        # Create the animation
-        self.ani = FuncAnimation(self.fig, self.animate, blit=True)
+        # Create the animation (this might not be necessary anymore)
+        ani = FuncAnimation(self.fig, self.update_plot, blit=False)
         plt.show()
 
 def main(args=None):
