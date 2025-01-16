@@ -98,6 +98,8 @@ class ModelServiceNode(Node):
         # Declare the 'time_step' parameter with a default value of 1.0 second
         self.declare_parameter('time_step', 1.0)
         self.time_step = self.get_parameter('time_step').get_parameter_value().double_value
+        # show the time_step
+        self.get_logger().info(f'time_step: {self.time_step}')
 
         # Validate the 'time_step' parameter
         if self.time_step <= 0.0:
