@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'mbk_pid_contrler_service'
+package_name = 'mbk_pid_controler_service'
 
 setup(
     name=package_name,
