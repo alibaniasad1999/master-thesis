@@ -95,21 +95,41 @@ class ModelServiceNode(Node):
     def __init__(self):
         super().__init__('model_service_node')
 
+        # Declare the 'time_step' parameter with a default value of 1.0 second
+        self.declare_parameter('time_step', 1.0)
+        self.time_step = self.get_parameter('time_step').get_parameter_value().double_value
+
+        # Validate the 'time_step' parameter
+        if self.time_step <= 0.0:
+            self.get_logger().warn(f'Invalid time_step ({self.time_step}). Setting to default 1.0s.')
+            self.time_step = 1.0
+
         # Create a client for the 'compute_control_force' service
         self.client = self.create_client(ControlCommand, 'compute_control_force')
         while not self.client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('Waiting for controller service...')
 
         # Timer to periodically send state and receive control force
-        timer_period = 1.0  # seconds
-        self.mbk_env = MassSpringDamperEnv(dt=timer_period)
+        self.mbk_env = MassSpringDamperEnv(dt=self.time_step)
         state, _ = self.mbk_env.reset()
         self.position, self.velocity = state
-        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.timer = self.create_timer(self.time_step, self.timer_callback)
 
         self.get_logger().info('Model Service Node has been started.')
 
     def timer_callback(self):
+        # Calculate the actual elapsed time since the last update
+        current_time = self.get_clock().now()
+        dt = (current_time - self.last_update_time).nanoseconds / 1e9  # Convert nanoseconds to seconds
+        self.last_update_time = current_time
+
+        # Ensure dt is positive and reasonable
+        if dt <= 0.0:
+            self.get_logger().warn(f'Non-positive dt encountered: {dt:.4f}s. Skipping update.')
+            return
+        elif dt > 5.0:  # Allow a maximum dt of 5 seconds to prevent unrealistic jumps
+            self.get_logger().warn(f'Large dt encountered: {dt:.4f}s. Clamping to 5.0s.')
+            dt = 5.0  # Clamp to a maximum value to prevent unrealistic jumps
         # Create a request with the current state
         request = ControlCommand.Request()
         # change types to float64
