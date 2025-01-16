@@ -10,6 +10,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
 set(CMAKE_INSTALL_RPATH "home/ali/libtorch/lib")
+
+# Ensure that RPATH is used for installed targets
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Include Torch
 # Assuming LibTorch is installed in /usr/local/libtorch
 # Adjust the path as necessary
