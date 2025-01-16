@@ -45,7 +45,6 @@ class MassSpringDamperEnv:
         # np.clip(action, -1, 1)
         # Apply control action and simulate one time step using Euler integration
         force = action # * self.action_space.high[0]
-        force = 1
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
@@ -113,8 +112,9 @@ class ModelServiceNode(Node):
     def timer_callback(self):
         # Create a request with the current state
         request = ControlCommand.Request()
-        request.position = self.position
-        request.velocity = self.velocity
+        # change types to float64
+        request.position = float(self.position)
+        request.velocity = float(self.velocity)
 
         self.get_logger().info(f'Sending state -> Position: {self.position}, Velocity: {self.velocity}')
 
@@ -135,7 +135,7 @@ class ModelServiceNode(Node):
             self.get_logger().error(f'Service call failed: {e}')
 
     def update_state(self, control_force):
-        state, _, _, _, _ = self.mbk_env.step(np.array([control_force]))
+        state, _, _, _, _ = self.mbk_env.step(control_force)
         self.position, self.velocity = state
 
         self.get_logger().info(f'Updated state -> Position: {self.position}, Velocity: {self.velocity}')

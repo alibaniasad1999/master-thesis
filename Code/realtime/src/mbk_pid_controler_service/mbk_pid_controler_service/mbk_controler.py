@@ -33,7 +33,7 @@ class ControllerServiceNode(Node):
         self.get_logger().info(f'Computed control force: {control_force}')
 
         # Set the response
-        response.control_force = control_force
+        response.control_force = float(control_force)
 
         return response
 
