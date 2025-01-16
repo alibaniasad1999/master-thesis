@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                    'controller_service = mbk_pod_controler_service.mbk_controler:main',
-                    'model_service = mbk_pod_controler_service.mbk_model:main',
+                    'controller_service = mbk_pid_controler_service.mbk_controler:main',
+                    'model_service = mbk_pid_controler_service.mbk_model:main',
                 ],
     },
 )

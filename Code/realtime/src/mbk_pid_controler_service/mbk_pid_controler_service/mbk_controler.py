@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from model_controller_service.srv import ControlCommand
+from mbk_pid_controler_interface.srv import ControlCommand
 
 class ControllerServiceNode(Node):
     def __init__(self):
