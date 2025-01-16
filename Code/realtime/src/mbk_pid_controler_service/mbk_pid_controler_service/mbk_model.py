@@ -115,7 +115,16 @@ class ModelServiceNode(Node):
         self.position, self.velocity = state
         self.timer = self.create_timer(self.time_step, self.timer_callback)
 
+        # Initialize timing variables
+        self.last_update_time = self.get_clock().now()
+
+        # Timer to periodically send state and receive control force
+        # The timer period is set to the 'time_step' parameter
+        self.timer = self.create_timer(self.time_step, self.timer_callback)
+
         self.get_logger().info('Model Service Node has been started.')
+
+
 
     def timer_callback(self):
         # Calculate the actual elapsed time since the last update
