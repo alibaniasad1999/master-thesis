@@ -103,7 +103,8 @@ class ModelServiceNode(Node):
         # Timer to periodically send state and receive control force
         timer_period = 1.0  # seconds
         self.mbk_env = MassSpringDamperEnv(dt=timer_period)
-        self.position, self.velocity = self.mbk_env.reset()
+        state, _ = self.mbk_env.reset()
+        self.position, self.velocity = state
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.get_logger().info('Model Service Node has been started.')
