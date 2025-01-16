@@ -82,8 +82,7 @@ class MassSpringDamperEnv:
         return self._get_obs(), {}
 
     def _get_obs(self):
-        position, velocity = (self.state + self.action_space_high) / (
-                    self.action_space_high - self.action_space_low)  # normalized data
+        position, velocity = self.state
         return np.array([position, velocity], dtype=np.float32)
 
     def denormalize(self, state):
