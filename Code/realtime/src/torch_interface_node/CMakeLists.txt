@@ -12,7 +12,8 @@ find_package(rclcpp REQUIRED)
 # Include Torch
 # Assuming LibTorch is installed in /usr/local/libtorch
 # Adjust the path as necessary
-set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
+#set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
+set(CMAKE_PREFIX_PATH "/usr/ali/libtorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 
 
