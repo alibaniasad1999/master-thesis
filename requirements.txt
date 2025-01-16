@@ -16,4 +16,4 @@ optuna~=3.6.1
 torchviz~=0.0.2
 gym~=0.15.7
 pytest~=8.2.1
-setuptools~=65.5.0
+setuptools~=70.0.0
