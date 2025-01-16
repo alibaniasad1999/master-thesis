@@ -12,8 +12,8 @@ class ControllerServiceNode(Node):
         self.srv = self.create_service(ControlCommand, 'compute_control_force', self.compute_control_callback)
 
         # Controller parameters
-        self.Kp = 40.0  # Proportional gain
-        self.Kd = 10.0  # Derivative gain
+        self.Kp = 10.0  # Proportional gain
+        self.Kd = 1.00  # Derivative gain
         self.setpoint = 10.0  # Desired position
 
         self.get_logger().info('Controller Service Node has been started and is ready to compute control forces.')
