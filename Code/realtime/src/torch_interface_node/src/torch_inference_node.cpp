@@ -122,7 +122,7 @@ private:
 
     // Member variables
     // Inside your TorchInferenceNode class
-    std::string model_path_ = "/home/ali/Documents/University/master-thesis/Code/realtime/models/pi_model_traced.pt";
+    std::string model_path_ = "/home/ali/Documents/University/master-thesis/Code/realtime/src/torch_interface_node/model/pi_model_traced.pt";
 
     torch::jit::script::Module module_;
     at::Tensor input_tensor_;
