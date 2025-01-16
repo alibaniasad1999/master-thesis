@@ -44,7 +44,7 @@ class MassSpringDamperEnv:
         # clip action
         # np.clip(action, -1, 1)
         # Apply control action and simulate one time step using Euler integration
-        force = action[0] # * self.action_space.high[0]
+        force = action # * self.action_space.high[0]
         position, velocity = self.state
 
         acceleration = (force - self.c * velocity - self.k * position) / self.m
