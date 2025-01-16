@@ -9,6 +9,32 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
+# Include Torch
+# Assuming LibTorch is installed in /usr/local/libtorch
+# Adjust the path as necessary
+set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
+find_package(Torch REQUIRED)
+
+
+include_directories(
+        include
+)
+
+add_executable(torch_inference_node src/torch_inference_node.cpp)
+
+ament_target_dependencies(torch_inference_node rclcpp)
+
+# Link against Torch libraries
+target_link_libraries(torch_inference_node "${TORCH_LIBRARIES}")
+
+# For C++11 or higher
+set_property(TARGET torch_inference_node PROPERTY CXX_STANDARD 14)
+
+install(TARGETS
+        torch_inference_node
+        DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
