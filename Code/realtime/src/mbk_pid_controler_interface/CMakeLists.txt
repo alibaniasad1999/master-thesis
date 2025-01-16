@@ -9,7 +9,17 @@ endif()
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+rosidl_generate_interfaces(${PROJECT_NAME}
+"srv/ControlCommand.srv"
+)
+ament_export_dependencies(rosidl_default_runtime)
+
+Excerpt From
+ROS 2 From Scratch
+Edouard Renard;
+https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewBook?id=0
+This material may be protected by copyright.
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
