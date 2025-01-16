@@ -14,7 +14,7 @@ find_package(rclcpp REQUIRED)
 # Adjust the path as necessary
 #set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
 set(CMAKE_PREFIX_PATH "/home/ali/libtorch")
-#set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
+set(Torch_DIR "/home/ali/libtorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 
 
