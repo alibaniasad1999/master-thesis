@@ -10,14 +10,17 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(mbk_pid_controler_interface REQUIRED)
 
-# Set the correct paths for Torch
+set(CMAKE_INSTALL_RPATH "home/ali/libtorch/lib")
+
+# Ensure that RPATH is used for installed targets
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+# Include Torch
+# Assuming LibTorch is installed in /usr/local/libtorch
+# Adjust the path as necessary
+#set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
 set(CMAKE_PREFIX_PATH "/home/ali/libtorch")
 set(Torch_DIR "/home/ali/libtorch/share/cmake/Torch")
-
-# Ensure the path is correct
-message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
-message(STATUS "Torch_DIR: ${Torch_DIR}")
-
 # Find Torch
 find_package(Torch REQUIRED)
 
@@ -26,13 +29,16 @@ include_directories(
     include
 )
 
-add_executable(controller_service_node_cpp src/sac_mbk_controler.cpp)
+add_executable(sac_controler_node src/sac_mbk_controler.cpp)
 
-ament_target_dependencies(controller_service_node_cpp rclcpp mbk_pid_controler_interface Torch)
+ament_target_dependencies(sac_controler_node rclcpp)
 
-install(TARGETS
-    controller_service_node_cpp
-    DESTINATION lib/${PROJECT_NAME})
+# Link against Torch libraries
+target_link_libraries(torch_inference_node "${TORCH_LIBRARIES}")
+
+# For C++11 or higher
+set_property(TARGET torch_inference_node PROPERTY CXX_STANDARD 14)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
