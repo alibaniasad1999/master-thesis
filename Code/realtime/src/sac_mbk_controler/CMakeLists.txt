@@ -8,13 +8,7 @@ endif()
 # Find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(mbk_pid_controler_interface REQUIRED)  # Make sure to find the service package
-
-set(CMAKE_INSTALL_RPATH "/home/ali/libtorch/lib")
-
-# Ensure that RPATH is used for installed targets
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+find_package(mbk_pid_controler_interface REQUIRED)
 
 # Set the correct path for Torch
 set(CMAKE_PREFIX_PATH "/home/ali/libtorch")
@@ -23,26 +17,33 @@ set(Torch_DIR "/home/ali/libtorch/share/cmake/Torch")
 # Find Torch
 find_package(Torch REQUIRED)
 
-# Include directories
+# Include directories (if needed)
 include_directories(
     include
-    ${mbk_pid_controler_interface_INCLUDE_DIRS}  # Ensure service headers are included
+    ${mbk_pid_controler_interface_INCLUDE_DIRS}  # Ensure the service headers are included
 )
 
+# Define the executable
 add_executable(sac_controler_node src/sac_mbk_controler.cpp)
 
-# Link against required dependencies
+# Link dependencies to the executable
 ament_target_dependencies(sac_controler_node
     rclcpp
-    mbk_pid_controler_interface  # Include the service package
-    Torch  # Link against Torch libraries
+    mbk_pid_controler_interface  # Add the service dependency
+    Torch  # Link against Torch
 )
 
-# Link against Torch libraries
+# Link Torch libraries
 target_link_libraries(sac_controler_node "${TORCH_LIBRARIES}")
 
-# For C++11 or higher
+# Specify C++11 or higher
 set_property(TARGET sac_controler_node PROPERTY CXX_STANDARD 14)
+
+# Install the executable
+install(TARGETS
+    sac_controler_node
+    DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
