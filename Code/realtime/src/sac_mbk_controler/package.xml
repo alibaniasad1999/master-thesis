@@ -11,6 +11,8 @@
   <build_depend>mbk_pid_controler_interface</build_depend>
 
   <depend>rclcpp</depend>
+  <!-- System Dependencies -->
+  <depend>torch</depend> <!-- Ensure Torch is available -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
