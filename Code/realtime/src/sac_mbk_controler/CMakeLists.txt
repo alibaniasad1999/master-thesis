@@ -9,7 +9,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(mbk_pid_controler_interface REQUIRED)  # Make sure to find the service package
-find_package(Torch REQUIRED)
 
 set(CMAKE_INSTALL_RPATH "/home/ali/libtorch/lib")
 
