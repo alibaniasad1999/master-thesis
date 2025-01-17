@@ -1,9 +1,0 @@
-# Control Command Service
-
-# Request
-float64 position
-float64 velocity
-
----
-# Response
-float64 control_force

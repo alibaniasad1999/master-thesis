@@ -31,10 +31,10 @@ class ControllerServiceNode(Node):
         error = self.setpoint - current_position
 
         # Compute the integral error
-        self.integral_error += error
+        self.integral_error += error*0.01
 
         # Compute control force using a proportional controller
-        control_force = self.Kp * error - self.Kd * current_velocity + self.Ki * self.integral_error
+        control_force = self.Kp * error - self.Kd * current_velocity - self.Ki * self.integral_error
 
         self.get_logger().info(f'Computed control force: {control_force}')
 
