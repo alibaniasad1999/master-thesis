@@ -34,10 +34,10 @@ add_executable(sac_controler_node src/sac_mbk_controler.cpp)
 ament_target_dependencies(sac_controler_node rclcpp)
 
 # Link against Torch libraries
-target_link_libraries(torch_inference_node "${TORCH_LIBRARIES}")
+target_link_libraries(sac_controler_node "${TORCH_LIBRARIES}")
 
 # For C++11 or higher
-set_property(TARGET torch_inference_node PROPERTY CXX_STANDARD 14)
+set_property(TARGET sac_controler_node  PROPERTY CXX_STANDARD 14)
 
 
 if(BUILD_TESTING)
