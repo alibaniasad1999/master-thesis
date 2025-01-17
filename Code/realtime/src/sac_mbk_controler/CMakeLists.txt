@@ -5,37 +5,34 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# Find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(mbk_pid_controler_interface REQUIRED)
 
-set(CMAKE_INSTALL_RPATH "home/ali/libtorch/lib")
-
-# Ensure that RPATH is used for installed targets
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-# Include Torch
-# Assuming LibTorch is installed in /usr/local/libtorch
-# Adjust the path as necessary
-#set(Torch_DIR "/usr/ali/libtorch/share/cmake/Torch")
+# Set the correct paths for Torch
 set(CMAKE_PREFIX_PATH "/home/ali/libtorch")
 set(Torch_DIR "/home/ali/libtorch/share/cmake/Torch")
+
+# Ensure the path is correct
+message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+message(STATUS "Torch_DIR: ${Torch_DIR}")
+
+# Find Torch
 find_package(Torch REQUIRED)
 
-
+# Include directories (if needed)
 include_directories(
-        include
+    include
 )
 
 add_executable(controller_service_node_cpp src/sac_mbk_controler.cpp)
 
-ament_target_dependencies(controller_service_node_cpp rclcpp mbk_pid_controler_interface)
+ament_target_dependencies(controller_service_node_cpp rclcpp mbk_pid_controler_interface Torch)
 
 install(TARGETS
-        controller_service_node_cpp
-        DESTINATION lib/${PROJECT_NAME})
-
+    controller_service_node_cpp
+    DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
