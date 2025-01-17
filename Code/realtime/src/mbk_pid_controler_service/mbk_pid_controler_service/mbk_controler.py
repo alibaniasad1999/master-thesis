@@ -14,6 +14,8 @@ class ControllerServiceNode(Node):
         # Controller parameters
         self.Kp = 10.0  # Proportional gain
         self.Kd = 1.00  # Derivative gain
+        self.Ki = 1.00 # Integral gain
+        self.integral_error = 0
         self.setpoint = 10.0  # Desired position
 
         self.get_logger().info('Controller Service Node has been started and is ready to compute control forces.')
@@ -28,8 +30,11 @@ class ControllerServiceNode(Node):
         # Compute the error
         error = self.setpoint - current_position
 
+        # Compute the integral error
+        self.integral_error += error
+
         # Compute control force using a proportional controller
-        control_force = self.Kp * error - self.Kd * current_velocity
+        control_force = self.Kp * error - self.Kd * current_velocity + self.Ki * self.integral_error
 
         self.get_logger().info(f'Computed control force: {control_force}')
 
