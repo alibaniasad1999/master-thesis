@@ -8,6 +8,16 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+ find_package(mbk_pid_controler_interface REQUIRED)
+
+add_executable(controller_service_node_cpp src/sac_mbk_controler.cpp)
+
+ament_target_dependencies(controller_service_node_cpp rclcpp mbk_pid_controler_interface)
+
+install(TARGETS
+        controller_service_node_cpp
+        DESTINATION lib/${PROJECT_NAME})
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
