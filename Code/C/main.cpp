@@ -2,6 +2,7 @@
 #include <torch/torch.h>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 int main() {
     // Check if CUDA is available
@@ -41,9 +42,25 @@ int main() {
     // Create a tensor with random values
     torch::Tensor input_tensor = torch::rand({1, 2})*1000;
 
+    auto start = std::chrono::high_resolution_clock::now();
     // Perform inference
     torch::jit::IValue output_tensor = module.forward({input_tensor});
+    auto stop = std::chrono::high_resolution_clock::now();
     std::cout << "Output tensor: " << output_tensor << std::endl;
+
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << "Inference time: " << duration.count() << " microseconds" << std::endl;
+
+    for (int i = 0; i<=100; i++) {
+        auto start = std::chrono::high_resolution_clock::now();
+        // Perform inference
+        torch::jit::IValue output_tensor = module.forward({input_tensor});
+        auto stop = std::chrono::high_resolution_clock::now();
+        std::cout << "Output tensor: " << output_tensor << std::endl;
+
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        std::cout << "Inference time: " << duration.count() << " microseconds" << std::endl;
+    }
 
     // output tuple to tensor
     torch::Tensor output = output_tensor.toTuple()->elements()[0].toTensor();
