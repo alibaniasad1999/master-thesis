@@ -59,6 +59,8 @@ private:
         // Perform inference
         try {
             torch::jit::IValue output = module_.forward({input_tensor});
+            // print the output tensor
+            std::cout << "Output tensor: " << output << std::endl;
             auto outputs = output.toTuple();
             // Extract the control force from the model output
             // at::Tensor output_tensor = output.toTensor();

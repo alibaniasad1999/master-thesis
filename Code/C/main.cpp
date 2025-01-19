@@ -39,7 +39,7 @@ int main() {
     }
 
     // Create a tensor with random values
-    torch::Tensor input_tensor = torch::rand({1, 2});
+    torch::Tensor input_tensor = torch::rand({1, 2})*1000;
 
     // Perform inference
     torch::jit::IValue output_tensor = module.forward({input_tensor});
