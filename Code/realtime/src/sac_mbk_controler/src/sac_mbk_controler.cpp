@@ -59,6 +59,7 @@ private:
         // Perform inference
         try {
             RCLCPP_INFO(this->get_logger(), "Computing control force from Torch model");
+            std::cout << "Input tensor: " << input_tensor << std::endl;
             torch::jit::IValue output = module_.forward({input_tensor});
             // print the output tensor in ros
             std::cout << "Output tensor: " << output << std::endl;
