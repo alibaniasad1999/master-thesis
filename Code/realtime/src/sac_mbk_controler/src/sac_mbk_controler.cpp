@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 class ControllerServiceNode : public rclcpp::Node {
 public:
-    ControllerServiceNode() : Node("controller_service_node"), model_path_("/path/to/your/model.pt") {
+    ControllerServiceNode() : Node("controller_service_node"), model_path_("/home/ali/Documents/University/master-thesis/Code/realtime/src/sac_mbk_controler/src/model/sac_mbk_pi_model.pt") {
         RCLCPP_INFO(this->get_logger(), "Initializing Controller Service Node");
 
         // Load the Torch model
@@ -59,9 +59,10 @@ private:
         // Perform inference
         try {
             torch::jit::IValue output = module_.forward({input_tensor});
-
+            auto outputs = output.toTuple();
             // Extract the control force from the model output
-            at::Tensor output_tensor = output.toTensor();
+            // at::Tensor output_tensor = output.toTensor();
+            at::Tensor output_tensor = outputs->elements()[0].toTensor();
             float control_force = output_tensor.item<float>();
 
             RCLCPP_INFO(this->get_logger(), "Computed control force from Torch model: %f", control_force);
