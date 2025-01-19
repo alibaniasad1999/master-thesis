@@ -60,7 +60,11 @@ private:
         try {
             RCLCPP_INFO(this->get_logger(), "Computing control force from Torch model");
             std::cout << "Input tensor: " << input_tensor << std::endl;
+            auto start = high_resolution_clock::now();
             torch::jit::IValue output = module_.forward({input_tensor});
+            auto stop = high_resolution_clock::now();
+            auto duration = duration_cast<microseconds>(stop - start);
+            RCLCPP_INFO(this->get_logger(), "Time taken by inference: %ld microseconds", duration.count());
             // print the output tensor in ros
             std::cout << "Output tensor: " << output << std::endl;
             auto outputs = output.toTuple();
