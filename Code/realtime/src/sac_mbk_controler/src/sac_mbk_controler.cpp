@@ -54,7 +54,7 @@ private:
 
         // Prepare the input tensor for the model
         // We assume the model expects a 1D tensor with position and velocity as inputs
-        at::Tensor input_tensor = torch::tensor({current_position, current_velocity}, at::kFloat);
+        at::Tensor input_tensor = torch::tensor({{current_position, current_velocity}}, at::kFloat);
 
         // Perform inference
         try {
