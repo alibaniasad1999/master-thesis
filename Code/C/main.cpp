@@ -51,6 +51,12 @@ int main() {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Inference time: " << duration.count() << " microseconds" << std::endl;
 
+    float kp = 10.0;
+    float ki = 0.1;
+    float kd = 0.01;
+
+    float force = 0.0;
+
     for (int i = 0; i<=100; i++) {
         auto start = std::chrono::high_resolution_clock::now();
         // Perform inference
@@ -60,6 +66,13 @@ int main() {
 
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
         std::cout << "Inference time: " << duration.count() << " microseconds" << std::endl;
+
+        auto start_pid = std::chrono::high_resolution_clock::now();
+        // Perform inference
+        force += 1 * kp + 1 * ki + 1 * kd;
+        auto stop_pid = std::chrono::high_resolution_clock::now();
+        auto duration_ = std::chrono::duration_cast<std::chrono::microseconds>(stop_pid - start_pid);
+        std::cout << "PID time: " << duration_.count() << " microseconds" << std::endl;
     }
 
     // output tuple to tensor
