@@ -105,7 +105,7 @@ class ModelServiceNode(Node):
         if self.time_step <= 0.0:
             self.get_logger().warn(f'Invalid time_step ({self.time_step}). Setting to default 1.0s.')
             self.time_step = 1.0
-
+        self.control_force_ = 0
         # Create a client for the 'compute_control_force' service
         self.client = self.create_client(ControlCommand, 'compute_control_force')
         while not self.client.wait_for_service(timeout_sec=1.0):
@@ -181,15 +181,16 @@ class ModelServiceNode(Node):
     def publish_callback(self):
         # Publish the position, velocity, and control force
         position_msg = Float64()
-        position_msg.data = self.position
+        position_msg.data = float(self.position)
         self.position_pub.publish(position_msg)
+        print(position_msg)
 
         velocity_msg = Float64()
-        velocity_msg.data = self.velocity
+        velocity_msg.data = float(self.velocity)
         self.velocity_pub.publish(velocity_msg)
 
         control_force_msg = Float64()
-        control_force_msg.data = self.control_force_
+        control_force_msg.data = float(self.control_force_)
         self.control_force_pub.publish(control_force_msg)
 
         self.get_logger().info(f'Published -> Position: {self.position}, Velocity: {self.velocity}, Control Force: {self.control_force_}')
