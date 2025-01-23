@@ -6,6 +6,7 @@ import numpy as np
 from typing import Any
 import time
 from mbk_pid_controler_interface.srv import ControlCommand
+from std_msgs.msg import Float64
 
 class MassSpringDamperEnv:
 
@@ -125,6 +126,12 @@ class ModelServiceNode(Node):
 
         self.get_logger().info('Model Service Node has been started.')
 
+        # publish the position, velocity and control force
+        self.position_pub = self.create_publisher(Float64, 'position', 10)
+        self.velocity_pub = self.create_publisher(Float64, 'velocity', 10)
+        self.control_force_pub = self.create_publisher(Float64, 'control_force', 10)
+        self.publish_timer = self.create_timer(self.time_step, self.publish_callback)
+
 
 
     def timer_callback(self):
@@ -156,6 +163,7 @@ class ModelServiceNode(Node):
         try:
             response = future.result()
             control_force = response.control_force
+            self.control_force_ = control_force  # Publish the control force
             self.get_logger().info(f'Received control force: {control_force}')
 
             # Update the model's state based on the control force
@@ -169,6 +177,22 @@ class ModelServiceNode(Node):
         self.position, self.velocity = state
 
         self.get_logger().info(f'Updated state -> Position: {self.position}, Velocity: {self.velocity}')
+
+    def publish_callback(self):
+        # Publish the position, velocity, and control force
+        position_msg = Float64()
+        position_msg.data = self.position
+        self.position_pub.publish(position_msg)
+
+        velocity_msg = Float64()
+        velocity_msg.data = self.velocity
+        self.velocity_pub.publish(velocity_msg)
+
+        control_force_msg = Float64()
+        control_force_msg.data = self.control_force_
+        self.control_force_pub.publish(control_force_msg)
+
+        self.get_logger().info(f'Published -> Position: {self.position}, Velocity: {self.velocity}, Control Force: {self.control_force_}')
 
 def main(args=None):
     rclpy.init(args=args)
