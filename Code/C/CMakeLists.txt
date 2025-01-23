@@ -5,6 +5,8 @@ project(C_Torch)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(Torch_STATIC ON) # Make sure static linking is enabled
+
 # Option 1: Using CMAKE_PREFIX_PATH
 # This helps CMake locate LibTorch without setting Torch_DIR explicitly
 # Replace the path below with your actual LibTorch path

@@ -22,6 +22,12 @@ public:
 
         try {
             module_ = torch::jit::load(model_path_);
+            // warmup model with 100 iteration
+            for (int i = 0; i < 100; ++i) {
+              // random number
+              torch::Tensor input_tensor = torch::rand({1, 2})
+              torch::jit::IValue output_tensor = module.forward({input_tensor});
+            }
             RCLCPP_INFO(this->get_logger(), "Model loaded successfully.");
         } catch (const c10::Error& e) {
             RCLCPP_ERROR(this->get_logger(), "Error loading the model: %s", e.what());
