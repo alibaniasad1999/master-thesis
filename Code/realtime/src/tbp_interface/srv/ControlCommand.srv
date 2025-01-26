@@ -1,0 +1,12 @@
+# Control Command Service
+
+# Request
+float64 position_x
+float64 position_y
+float64 velocity_x
+float64 velocity_y
+
+---
+# Response
+float64 control_force_x
+float64 control_force_y
