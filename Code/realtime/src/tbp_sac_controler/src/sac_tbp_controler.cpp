@@ -25,7 +25,7 @@ public:
             // warmup model with 100 iteration
             for (int i = 0; i < 100; ++i) {
               // random number
-              torch::Tensor input_tensor = torch::rand({1, 2});
+              torch::Tensor input_tensor = torch::rand({1, 4});
               torch::jit::IValue output_tensor = module_.forward({input_tensor});
             }
             RCLCPP_INFO(this->get_logger(), "Model loaded successfully.");
@@ -80,8 +80,8 @@ private:
             // Extract the control force from the model output
             // at::Tensor output_tensor = output.toTensor();
             at::Tensor output_tensor = outputs->elements()[0].toTensor();
-            float control_force_x = output_tensor[0].item<float>();
-            float control_force_y = output_tensor[1].item<float>();
+            float control_force_x = output_tensor[0][0].item<float>();
+            float control_force_y = output_tensor[0][1].item<float>();
 
             RCLCPP_INFO(this->get_logger(), "Computed control force from Torch model: control force x: %f, control force y: %f", control_force_x, control_force_y);
 
