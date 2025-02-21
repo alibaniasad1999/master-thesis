@@ -80,15 +80,19 @@ private:
             // Extract the control force from the model output
             // at::Tensor output_tensor = output.toTensor();
             at::Tensor output_tensor = outputs->elements()[0].toTensor();
-            float control_force = output_tensor.item<float>();
+            float control_force_x = output_tensor[0].item<float>();
+            float control_force_y = output_tensor[1].item<float>();
 
-            RCLCPP_INFO(this->get_logger(), "Computed control force from Torch model: %f", control_force);
+            RCLCPP_INFO(this->get_logger(), "Computed control force from Torch model: control force x: %f, control force y: %f", control_force_x, control_force_y);
+
 
             // Set the response
-            response->control_force = control_force;
+            response->control_force_x = control_force_x;
+            response->control_force_y = control_force_y;
         } catch (const c10::Error& e) {
             RCLCPP_ERROR(this->get_logger(), "Error during inference: %s", e.what());
-            response->control_force = 0.0;
+            response->control_force_x = 0.0;
+            response->control_force_y = 0.0;
         }
     }
 
