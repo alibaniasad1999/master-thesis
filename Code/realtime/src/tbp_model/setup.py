@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'tbp_model = tbp_model.TBP_model:main',
         ],
     },
 )
