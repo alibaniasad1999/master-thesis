@@ -24,7 +24,7 @@ include_directories(
 )
 
 # Define the executable
-add_executable(tbp_sac_controler src/sac_tbp_controler.cpp)
+add_executable(sac_controler_node src/sac_tbp_controler.cpp)
 
 # Link dependencies to the executable
 ament_target_dependencies(sac_controler_node
@@ -34,14 +34,14 @@ ament_target_dependencies(sac_controler_node
 )
 
 # Link Torch libraries
-target_link_libraries(tbp_sac_controler "${TORCH_LIBRARIES}")
+target_link_libraries(sac_controler_node "${TORCH_LIBRARIES}")
 
 # Specify C++11 or higher
-set_property(TARGET tbp_sac_controler PROPERTY CXX_STANDARD 14)
+set_property(TARGET sac_controler_node PROPERTY CXX_STANDARD 14)
 
 # Install the executable
 install(TARGETS
-    tbp_sac_controler
+    sac_controler_node
     DESTINATION lib/${PROJECT_NAME}
 )
 
