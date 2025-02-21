@@ -37,7 +37,7 @@ public:
 
         // Create the service server
         service_ = this->create_service<tbp_interface::srv::ControlCommand>(
-            "compute_control_force", std::bind(&ControllerServiceNode::compute_control_callback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, placeholders::_4))
+            "compute_control_force", std::bind(&ControllerServiceNode::compute_control_callback, this, std::placeholders::_1, std::placeholders::_2));
 
         RCLCPP_INFO(this->get_logger(), "Controller Service Node is ready to compute control forces using Torch model.");
     }

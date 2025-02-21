@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 import numpy as np
 import pandas as pd
-from tbp_model.srv import ControlCommand
+from tbp_interface.srv import ControlCommand
 from std_msgs.msg import Float64
 
 # three body problem env
