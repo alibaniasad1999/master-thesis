@@ -10,13 +10,13 @@
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
     "device":	"cpu",
-    "env_fn":	"<function <lambda> at 0x1630ee660>",
+    "env_fn":	"<function <lambda> at 0x1635b1c60>",
     "epochs_":	50,
     "exp_name":	"ddpg",
     "gamma_":	0.99,
     "logger_kwargs_":	{
         "exp_name":	"ddpg",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/data/ddpg/ddpg_s0"
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/DG/data/ddpg/ddpg_s0"
     },
     "max_ep_len":	6000,
     "num_test_episodes":	10,
@@ -31,7 +31,7 @@
     "save_freq":	1,
     "seed_":	0,
     "self":	{
-        "<__main__.DDPG object at 0x162cefc10>":	{
+        "<__main__.DDPG object at 0x16261ecd0>":	{
             "ac":	{
                 "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=4, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=2, bias=True)\n      (5): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=6, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=1, bias=True)\n      (5): Identity()\n    )\n  )\n)":	{
                     "_backward_hooks":	{},
@@ -873,15 +873,15 @@
             "epochs":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x162d1cd50>":	{
+                "<utils.logx.EpochLogger object at 0x1666a2f90>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ddpg",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/data/ddpg/ddpg_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/DG/data/ddpg/ddpg_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/data/ddpg/ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/DDPG/DG/data/ddpg/ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -997,7 +997,7 @@
                 }
             },
             "replay_buffer":	{
-                "<__main__.ReplayBuffer object at 0x162c8ae10>":	{
+                "<__main__.ReplayBuffer object at 0x1635f80d0>":	{
                     "act_buf":	"[[0. 0.]\n [0. 0.]\n [0. 0.]\n ...\n [0. 0.]\n [0. 0.]\n [0. 0.]]",
                     "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
                     "max_size":	1000000,
