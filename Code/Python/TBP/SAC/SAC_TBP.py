@@ -689,7 +689,7 @@ class SAC:
     def save(self, filepath='model/'):
         if not os.path.isdir(filepath):
             os.mkdir(filepath)
-        # Check the device of the model
+        # Check the device_ of the model
         if self.ac.pi.device.type == 'cuda':
             torch.save(self.ac.pi.state_dict(), filepath + 'actor_cuda.pth')
             torch.save(self.ac.q1.state_dict(), filepath + 'q1_cuda.pth')
@@ -705,7 +705,7 @@ class SAC:
     def load(self, filepath='model/', load_device=torch.device("cpu")):
         # check if the model is available
         if os.path.isfile(filepath + 'actor_cpu.pth') or os.path.isfile(filepath + 'actor_cuda.pth'):
-             # Check the device of the model
+             # Check the device_ of the model
             device_class = 'cpu' if os.path.isfile(filepath + 'actor_cpu.pth') else 'cuda'
             actor_file = 'actor_cpu.pth' if device_class == 'cpu' else 'actor_cuda.pth'
             q1_file = 'q1_cpu.pth' if device_class == 'cpu' else 'q1_cuda.pth'
