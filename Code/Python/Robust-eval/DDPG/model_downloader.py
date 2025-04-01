@@ -17,17 +17,9 @@ os.environ["OMPI_MCA_shmem"] = "posix"  # Try forcing a different shmem mechanis
 ssl._create_default_https_context = ssl._create_unverified_context
 
 def download_file(filename_: str):
-    df = pd.read_csv('trajectory.csv')
-    df.head()
-    # df to numpy array
-    data = df.to_numpy()
-    print(data.shape)
-    trajectory = np.delete(data, 2, 1)
-    trajectory = np.delete(trajectory, -1, 1)
-    # Download trajectory.csv if it doesn't exist
     trajectory_file = "trajectory.csv"
     trajectory_url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/SAC/trajectory.csv"
-
+    # Download trajectory.csv if it doesn't exist
 
     if not os.path.isfile(trajectory_file):
         print(f"Downloading {trajectory_file} ...")
@@ -35,6 +27,14 @@ def download_file(filename_: str):
         print(f"{trajectory_file} downloaded.")
     else:
         print(f"{trajectory_file} already exists.")
+
+    df = pd.read_csv('trajectory.csv')
+    df.head()
+    # df to numpy array
+    data = df.to_numpy()
+    print(data.shape)
+    trajectory = np.delete(data, 2, 1)
+    trajectory = np.delete(trajectory, -1, 1)
 
     # Environment downloader
     env_file = 'TBP.py'
