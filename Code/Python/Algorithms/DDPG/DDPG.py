@@ -17,16 +17,6 @@ from torch.optim import Adam
 
 logging.getLogger('matplotlib.font_manager').setLevel(level=logging.CRITICAL)
 
-# Download trajectory.csv if it doesn't exist
-trajectory_file = "trajectory.csv"
-trajectory_url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/SAC/trajectory.csv"
-
-if not os.path.isfile(trajectory_file):
-    print(f"Downloading {trajectory_file} ...")
-    urllib.request.urlretrieve(trajectory_url, trajectory_file)
-    print(f"{trajectory_file} downloaded.")
-else:
-    print(f"{trajectory_file} already exists.")
 
 # Create 'utils' directory and download required files if it doesn't exist
 utils_dir = "utils"
@@ -303,7 +293,7 @@ class DDPG:
                 self.logger.log_tabular('LossQ', average_only=True)
                 self.logger.log_tabular('Time', time.time() - start_time)
                 self.logger.dump_tabular()
-                self.test()
+                # self.test()
 
     def test(self, fun_mode=False, save_data=False): # test only work for three boody problem
         o, _ = self.env.reset()
