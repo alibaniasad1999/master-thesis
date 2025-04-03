@@ -156,7 +156,7 @@ def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None,
             del kwargs['env_name']
 
         # Fork into multiple processes
-        # mpi_fork(num_cpu)
+        mpi_fork(num_cpu)
 
         # Run thunk
         thunk(**kwargs)
