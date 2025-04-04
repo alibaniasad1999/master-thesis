@@ -18,14 +18,58 @@
 
 عملکرد الگوریتم‌ها با روش‌های مرجع مقایسه شده تا برتری‌ها و محدودیت‌های آن‌ها مشخص گردد.
 
+
 \begin{figure}[H]
 	\centering
-	\myviolinplot{plots/ddpg/violin_plot/initial_condition_shift.dat}{0}{4}{-5}{5}{Zero_Sum_DDPG,Standard_DDPG}{Zero Sum DDPG, Standard DDPG}
-\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی
-	 \lr{DDPG}
-	  در شرایط اولیه تصادفی
-	 }
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/initial_condition_shift}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در شرایط اولیه تصادفی}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/actuator_disturbance}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در حضور اغتشاش در عملگرها}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/model_mismatch}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در مواجهه با عدم تطابق مدل}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/partial_observation}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در شرایط مشاهده ناقص}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/sensor_noise}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در حضور نویز حسگر}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{plots/ddpg/violin_plot/time_delay}
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در شرایط تأخیر زمانی}
+\end{figure}
 
 
 
+\begin{figure}[H]
+	\centering
+	
+	% سطر اول
+	\subfloat[شرایط اولیه تصادفی]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/initial_condition_shift.pdf}}%
+	\subfloat[اغتشاش در عملگرها]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/actuator_disturbance.pdf}}%
+	\subfloat[عدم تطابق مدل]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/model_mismatch.pdf}}\\[1ex]
+	
+	% سطر دوم
+	\subfloat[مشاهده ناقص]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/partial_observation.pdf}}%
+	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/sensor_noise.pdf}}%
+	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/time_delay.pdf}}
+	
+	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در سناریوهای مختلف}
+	\label{fig:ddpg_robustness_violin}
 \end{figure}
