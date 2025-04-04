@@ -20,6 +20,8 @@
 \usepackage{siunitx}        % <-- required in preamble
 \pgfplotsset{compat=newest} % <-- optional in preamble
 \usepackage{subfiles}
+\usepackage{scontents}
+\usepackage{tikzviolinplots}
 \tikzset{
 	frame/.style={
 		rectangle, draw,
@@ -281,6 +283,36 @@ Path=styles/fonts/
 	{\begin{wrapfigure}{l}{\IfValueTF{#3}{#3}{#2}}
 	\centering\includegraphics[width=#2]{figs/#1}\end{wrapfigure}}
 
+\newcommand{\myviolinplot}[7]{%
+	\begin{tikzpicture}
+		\violinsetoptions[
+		data points,
+		scaled,
+		]{
+			xmin=#2,xmax=#3,
+			ymin=#4,ymax=#5,
+			title={},
+			xlabel={},
+			ylabel={Normalized Cumulative Reward},
+			xlabel style={yshift = {-2*height("a")}},
+			ymajorgrids=true,
+		}
+		\violinplotwholefile[%
+		primary color=blue,
+		secondary color=orange,
+		indexes={#6},
+		spacing=2.0,
+		labels={%
+			#7
+		},
+		col sep=space,
+		dataset size=2pt,
+		dataset mark=diamond*,
+		dataset fill=blue!50!white,
+		dataset fill opacity=1.0,
+		]{#1}
+	\end{tikzpicture}
+} % end of \myviolinplot command
 %% This is the vertical rule that is inserted
 %\def\therule{\makebox[\algorithmicindent][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
 %
