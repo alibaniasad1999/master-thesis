@@ -533,7 +533,7 @@ class DG_DDPG:
         if not os.path.isdir(filepath):
             os.mkdir(filepath)
         # Check the device_ of the model
-        if self.device == 'cuda':
+        if self.device.type == 'cuda':
             torch.save(self.ac.pi.state_dict(), filepath + 'actor_cuda.pth')
             torch.save(self.ac.q.state_dict(), filepath + 'q_cuda.pth')
         else:
