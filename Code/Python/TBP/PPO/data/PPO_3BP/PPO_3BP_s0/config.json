@@ -1,15 +1,15 @@
 {
     "ac_kwargs":	{
         "hidden_sizes":	[
-            64,
-            64
+            32,
+            32
         ]
     },
     "clip_ratio":	0.2,
     "env":	{
         "<ThreeBodyEnv instance>":	{
             "action_space":	{
-                "Box(-0.4, 0.4, (2,), float32)":	{
+                "Box(-4.0, 4.0, (2,), float32)":	{
                     "_np_random":	null,
                     "_shape":	[
                         2
@@ -17,16 +17,16 @@
                     "bounded_above":	"[ True  True]",
                     "bounded_below":	"[ True  True]",
                     "dtype":	"float32",
-                    "high":	"[0.4 0.4]",
-                    "high_repr":	"0.4",
-                    "low":	"[-0.4 -0.4]",
-                    "low_repr":	"-0.4"
+                    "high":	"[4. 4.]",
+                    "high_repr":	"4.0",
+                    "low":	"[-4. -4.]",
+                    "low_repr":	"-4.0"
                 }
             },
-            "dt":	0.01,
+            "dt":	0.001,
             "error_range":	0.01,
-            "final_range":	0.01,
-            "max_steps":	1000,
+            "final_range":	0.001,
+            "max_steps":	6000,
             "mu":	0.012277471,
             "observation_space":	{
                 "Box(-1.0, 1.0, (4,), float32)":	{
@@ -49,6 +49,7 @@
                 -Infinity,
                 Infinity
             ],
+            "second_player":	true,
             "state":	"[0. 0. 0. 0.]",
             "steps":	0,
             "trajectory":	"[[ 0.87018   -0.05954   -0.010536  -0.17494  ]\n [ 0.87017   -0.059636  -0.0106    -0.17474  ]\n [ 0.87017   -0.059732  -0.010664  -0.17454  ]\n ...\n [ 1.1173    -0.054316  -0.008781   0.15223  ]\n [ 1.1173    -0.054233  -0.0087365  0.15236  ]\n [ 1.1172    -0.054149  -0.0086921  0.1525   ]]"
@@ -66,18 +67,18 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x1311ca7d0>":	{
+        "<__main__.PPO object at 0x12e96acd0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
-                    64,
-                    64
+                    32,
+                    32
                 ]
             },
             "clip_ratio":	0.2,
             "env":	{
                 "<ThreeBodyEnv instance>":	{
                     "action_space":	{
-                        "Box(-0.4, 0.4, (2,), float32)":	{
+                        "Box(-4.0, 4.0, (2,), float32)":	{
                             "_np_random":	null,
                             "_shape":	[
                                 2
@@ -85,16 +86,16 @@
                             "bounded_above":	"[ True  True]",
                             "bounded_below":	"[ True  True]",
                             "dtype":	"float32",
-                            "high":	"[0.4 0.4]",
-                            "high_repr":	"0.4",
-                            "low":	"[-0.4 -0.4]",
-                            "low_repr":	"-0.4"
+                            "high":	"[4. 4.]",
+                            "high_repr":	"4.0",
+                            "low":	"[-4. -4.]",
+                            "low_repr":	"-4.0"
                         }
                     },
-                    "dt":	0.01,
+                    "dt":	0.001,
                     "error_range":	0.01,
-                    "final_range":	0.01,
-                    "max_steps":	1000,
+                    "final_range":	0.001,
+                    "max_steps":	6000,
                     "mu":	0.012277471,
                     "observation_space":	{
                         "Box(-1.0, 1.0, (4,), float32)":	{
@@ -117,6 +118,7 @@
                         -Infinity,
                         Infinity
                     ],
+                    "second_player":	true,
                     "state":	"[0. 0. 0. 0.]",
                     "steps":	0,
                     "trajectory":	"[[ 0.87018   -0.05954   -0.010536  -0.17494  ]\n [ 0.87017   -0.059636  -0.0106    -0.17474  ]\n [ 0.87017   -0.059732  -0.010664  -0.17454  ]\n ...\n [ 1.1173    -0.054316  -0.008781   0.15223  ]\n [ 1.1173    -0.054233  -0.0087365  0.15236  ]\n [ 1.1172    -0.054149  -0.0086921  0.1525   ]]"
@@ -125,7 +127,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x131183f50>":	{
+                "<__main__.EpochLogger object at 0x12d4a1d10>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
@@ -147,14 +149,14 @@
             "pi_lr":	0.0003,
             "save_freq":	10,
             "seed":	0,
-            "steps_per_epoch":	4000,
+            "steps_per_epoch":	10000,
             "target_kl":	0.01,
             "train_pi_iters":	80,
             "train_v_iters":	80,
             "vf_lr":	0.001
         }
     },
-    "steps_per_epoch":	4000,
+    "steps_per_epoch":	10000,
     "target_kl":	0.01,
     "train_pi_iters":	80,
     "train_v_iters":	80,
