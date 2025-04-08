@@ -67,7 +67,7 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<__main__.PPO object at 0x12e96acd0>":	{
+        "<__main__.PPO object at 0x122d9bbd0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -127,7 +127,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<__main__.EpochLogger object at 0x12d4a1d10>":	{
+                "<__main__.EpochLogger object at 0x1232cf7d0>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
