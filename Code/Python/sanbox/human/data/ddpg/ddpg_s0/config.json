@@ -11,7 +11,7 @@
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
     "device_":	"cpu",
-    "env_fn":	"<function <lambda> at 0x15ca30180>",
+    "env_fn":	"<function <lambda> at 0x16199c2c0>",
     "epochs_":	50,
     "exp_name":	"ddpg",
     "gamma_":	0.99,
@@ -32,7 +32,7 @@
     "save_freq":	1,
     "seed_":	0,
     "self":	{
-        "<DDPG.DDPG object at 0x15cf9e650>":	{
+        "<DDPG.DDPG object at 0x11fa82ad0>":	{
             "ac":	{
                 "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=376, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=17, bias=True)\n      (7): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=393, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=1, bias=True)\n      (7): Identity()\n    )\n  )\n)":	{
                     "_backward_hooks":	{},
@@ -1086,19 +1086,19 @@
                                             },
                                             "camera_id":	null,
                                             "camera_name":	null,
-                                            "data":	"<mujoco._structs.MjData object at 0x15cff7e30>",
+                                            "data":	"<mujoco._structs.MjData object at 0x161f70db0>",
                                             "frame_skip":	5,
                                             "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/humanoid.xml",
                                             "height":	480,
                                             "init_qpos":	"[0.  0.  1.4 1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n 0.  0.  0.  0.  0.  0. ]",
                                             "init_qvel":	"[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]",
-                                            "model":	"<mujoco._structs.MjModel object at 0x15cf9d130>",
+                                            "model":	"<mujoco._structs.MjModel object at 0x1619d0670>",
                                             "mujoco_renderer":	{
-                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x15651d750>":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x161eefc10>":	{
                                                     "_viewers":	{},
                                                     "_vopt":	{},
                                                     "camera_id":	0,
-                                                    "data":	"<mujoco._structs.MjData object at 0x15cff7e30>",
+                                                    "data":	"<mujoco._structs.MjData object at 0x161f70db0>",
                                                     "default_cam_config":	{
                                                         "distance":	4.0,
                                                         "elevation":	-20.0,
@@ -1107,7 +1107,7 @@
                                                     },
                                                     "height":	480,
                                                     "max_geom":	1000,
-                                                    "model":	"<mujoco._structs.MjModel object at 0x15cf9d130>",
+                                                    "model":	"<mujoco._structs.MjModel object at 0x1619d0670>",
                                                     "viewer":	null,
                                                     "width":	480
                                                 }
@@ -1157,7 +1157,7 @@
             "epochs":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x15ca7b9d0>":	{
+                "<utils.logx.EpochLogger object at 0x167283910>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ddpg",
                     "first_row":	true,
@@ -1285,7 +1285,7 @@
                 }
             },
             "replay_buffer":	{
-                "<DDPG.ReplayBuffer object at 0x15ca0c910>":	{
+                "<DDPG.ReplayBuffer object at 0x161f0ce10>":	{
                     "act_buf":	"[[0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n ...\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]]",
                     "device":	"cpu",
                     "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
@@ -1375,19 +1375,19 @@
                                             },
                                             "camera_id":	null,
                                             "camera_name":	null,
-                                            "data":	"<mujoco._structs.MjData object at 0x161aee430>",
+                                            "data":	"<mujoco._structs.MjData object at 0x1662b45b0>",
                                             "frame_skip":	5,
                                             "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/humanoid.xml",
                                             "height":	480,
                                             "init_qpos":	"[0.  0.  1.4 1.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.\n 0.  0.  0.  0.  0.  0. ]",
                                             "init_qvel":	"[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]",
-                                            "model":	"<mujoco._structs.MjModel object at 0x161aee470>",
+                                            "model":	"<mujoco._structs.MjModel object at 0x1662b78f0>",
                                             "mujoco_renderer":	{
-                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x161aee6d0>":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x166992810>":	{
                                                     "_viewers":	{},
                                                     "_vopt":	{},
                                                     "camera_id":	0,
-                                                    "data":	"<mujoco._structs.MjData object at 0x161aee430>",
+                                                    "data":	"<mujoco._structs.MjData object at 0x1662b45b0>",
                                                     "default_cam_config":	{
                                                         "distance":	4.0,
                                                         "elevation":	-20.0,
@@ -1396,7 +1396,7 @@
                                                     },
                                                     "height":	480,
                                                     "max_geom":	1000,
-                                                    "model":	"<mujoco._structs.MjModel object at 0x161aee470>",
+                                                    "model":	"<mujoco._structs.MjModel object at 0x1662b78f0>",
                                                     "viewer":	null,
                                                     "width":	480
                                                 }
