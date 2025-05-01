@@ -94,7 +94,7 @@ Processed results, tables, and plots are saved within the `Code/` notebooks and 
 
 If you use this work, please cite:
 
-> Ali Bani Asad. "Robust Reinforcement Learning Differential Game Guidance in Low-Thrust, Multi-Body Dynamical Environments." Master's Thesis, [Your University], 2025.
+> Ali Bani Asad. "Robust Reinforcement Learning Differential Game Guidance in Low-Thrust, Multi-Body Dynamical Environments." Master's Thesis, Sharif University of Technology, 2025.
 
 ---
 
