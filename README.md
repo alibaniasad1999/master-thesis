@@ -9,12 +9,11 @@ This repository hosts the complete set of materials for the master's thesis by A
 ## 📂 Repository Structure
 
 - **`.idea/`**: IDE configuration files.
-- **`Article/`**: LaTeX source for the full thesis document.
+- **`Report/`**: LaTeX source for the full thesis document.
 - **`Code/`**: Jupyter notebooks and supporting Python modules for simulations, training, and analysis.
 - **`Figure/ TBP/`**: Figures and images referenced throughout the thesis (To Be Prepared).
 - **`Presentation/`**: Slide deck for the thesis defense.
 - **`Proposal/`**: Initial research proposal and timeline.
-- **`Report/`**: Interim and final reports in PDF format.
 - **`.gitignore`**: Files and directories ignored by Git.
 - **`qodana.yaml`**: Configuration for static code analysis (Qodana).
 - **`requirements.txt`**: Python package dependencies.
