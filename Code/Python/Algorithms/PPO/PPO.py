@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import torch
 from torch.optim import Adam
 import urllib.request
+import pandas as pd
 
 
 # Create 'utils' directory and download required files if it doesn't exist
@@ -35,7 +36,7 @@ else:
 
 import numpy as np
 import scipy.signal
-from gym.spaces import Box, Discrete
+from gymnasium.spaces import Box, Discrete
 
 import torch
 import torch.nn as nn
@@ -148,13 +149,16 @@ class MLPGaussianActor(Actor):
         self.log_std = torch.nn.Parameter(torch.as_tensor(log_std))
         self.mu_net = mlp([obs_dim] + list(hidden_sizes) + [act_dim], activation)
 
-    def _distribution(self, obs):
+    def _distribution(self, obs, deterministic=False):
         mu = self.mu_net(obs)
         std = torch.exp(self.log_std)
+        if deterministic:
+            epsilon = 1e-6
+            std = torch.zeros_like(std) + epsilon
         return Normal(mu, std)
 
     def _log_prob_from_distribution(self, pi, act):
-        return pi.log_prob(act).sum(axis=-1)  # Last axis sum needed for Torch Normal distribution
+        return pi.log_prob(act).sum(axis=-1)    # Last axis sum needed for Torch Normal distribution
 
 
 class MLPCritic(nn.Module):
@@ -164,13 +168,15 @@ class MLPCritic(nn.Module):
         self.v_net = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
 
     def forward(self, obs):
-        return torch.squeeze(self.v_net(obs), -1)  # Critical to ensure v has right shape.
+        return torch.squeeze(self.v_net(obs), -1) # Critical to ensure v has right shape.
+
 
 
 class MLPActorCritic(nn.Module):
 
+
     def __init__(self, observation_space, action_space,
-                 hidden_sizes=(64, 64), activation=nn.Tanh):
+                 hidden_sizes=(64,64), activation=nn.Tanh):
         super().__init__()
 
         obs_dim = observation_space.shape[0]
@@ -182,11 +188,11 @@ class MLPActorCritic(nn.Module):
             self.pi = MLPCategoricalActor(obs_dim, action_space.n, hidden_sizes, activation)
 
         # build value function
-        self.v = MLPCritic(obs_dim, hidden_sizes, activation)
+        self.v  = MLPCritic(obs_dim, hidden_sizes, activation)
 
-    def step(self, obs):
+    def step(self, obs, deterministic=False):
         with torch.no_grad():
-            pi = self.pi._distribution(obs)
+            pi = self.pi._distribution(obs, deterministic=deterministic)
             a = pi.sample()
             logp_a = self.pi._log_prob_from_distribution(pi, a)
             v = self.v(obs)
@@ -296,6 +302,7 @@ class PPO:
         self.logger_kwargs = logger_kwargs or {}
         setup_pytorch_for_mpi()
         self.save_freq = save_freq
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         """
             Proximal Policy Optimization (by clipping),
 
@@ -558,62 +565,110 @@ class PPO:
             self.logger.dump_tabular()
 
 
-    def test(self, fun_mode=False, deterministic=True):
+    def test(self, fun_mode=False, deterministic=True, save_data=False):
         o, _ = self.env.reset()
         states = []
         actions = []
         while True:
             a, _, _ = self.ac.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
-            actions.append(a*20)
-            o, _, d, _, _ = self.env.step(a)
-            states.append(o*40-20)
+            actions.append(a)
+            o, _, d, _, position = self.env.step(a)
+            states.append(position)
             if d:
                 break
         dt = self.env.dt
         time = np.arange(0, len(states)*dt, dt)
+        state_array = np.array(states)
+        action_array = np.array(actions)
 
+        # save trajectory and actions to csv
+        if not os.path.exists('results/') and save_data:
+            os.makedirs('results/')
+
+        # numpy to pandas with header
+        state_df = pd.DataFrame(state_array, columns=['x', 'y', 'xdot', 'ydot'])
+        action_df = pd.DataFrame(action_array, columns=['ax', 'ay'])
+
+        # save to csv
+        if save_data:
+            state_df.to_csv('results/state.csv', index=False)
+            action_df.to_csv('results/action.csv', index=False)
+            print(colorize("Data saved to results folder 😜", 'green', bold=True))
+
+        df = pd.read_csv('trajectory.csv')
+        # df to numpy array
+        data = df.to_numpy()
+        print(data.shape)
+        trajectory = np.delete(data, 2, 1)
+        trajectory = np.delete(trajectory, -1, 1)
 
         if fun_mode:
             # Use XKCD style for hand-drawn look
             with plt.xkcd():
-                plt.plot(time, states)
-                plt.xlabel("Time (sec)")
-                plt.ylabel("State")
-                plt.legend(["position", "velocity", "integral error"])
+                plt.plot(state_array[:, 0], state_array[:, 1], label='State')
+                plt.plot(trajectory[:, 0], trajectory[:, 1], label='Trajectory')
+                plt.legend()
                 plt.show()
             with plt.xkcd():
-                plt.plot(time, actions)
+                plt.plot(time, action_array)
                 plt.xlabel("Time (sec)")
                 plt.ylabel("action (N)")
                 plt.show()
         else:
-            plt.plot(time, states)
-            plt.xlabel("Time (sec)")
-            plt.ylabel("State")
-            plt.legend(["position", "velocity", "integral error"])
+            plt.plot(state_array[:, 0], state_array[:, 1], label='State')
+            plt.plot(trajectory[:, 0], trajectory[:, 1], label='Trajectory')
+            plt.legend()
+            # axis equalor
+            plt.axis('equal')
+
             plt.show()
 
-            plt.plot(time, actions)
+            plt.plot(action_array)
             plt.xlabel("Time (sec)")
             plt.ylabel("action (N)")
-            plt.show()
+            plt.show()# save trajectory and actions to csv
+        if not os.path.exists('results/') and save_data:
+            os.makedirs('results/')
+
+
 
     # save actor critic
-    def save(self, filepath='model/actor_critic_torch.pth'):
-        if not os.path.exists('model/'):
-            os.makedirs('model/')
-        torch.save({
-            'actor_state_dict': self.ac.pi.state_dict(),
-            'critic_state_dict': self.ac.v.state_dict(),
-        }, filepath)
-        print(colorize(f"Model saved to {filepath} 🔥🪐🥺🤭", 'green'))
+    def save(self, filepath='model/'):
+        if not os.path.isdir(filepath):
+            os.mkdir(filepath)
+        # Check the device_ of the model
+        if self.device == 'cuda':
+            torch.save(self.ac.pi.state_dict(), filepath + 'actor_cuda.pth')
+            torch.save(self.ac.q.state_dict(), filepath + 'q_cuda.pth')
+        else:
+            torch.save(self.ac.pi.state_dict(), filepath + 'actor_cpu.pth')
+            torch.save(self.ac.q.state_dict(), filepath + 'q_cpu.pth')
+        print(colorize(f"Model saved successfully! 🥰😎", 'blue', bold=True))
 
     # load actor critic
-    def load(self, filepath='model/actor_critic_torch.pth'):
-        checkpoint = torch.load(filepath)
-        self.ac.pi.load_state_dict(checkpoint['actor_state_dict'])
-        self.ac.v.load_state_dict(checkpoint['critic_state_dict'])
-        print(colorize(f"Model loaded from {filepath} 🔥😎😌🥰", 'green'))
+    def load(self, filepath='model/', load_device=torch.device("cpu"), from_device_to_load='cpu'):
+        self.start_steps = 0  # does not distarct the loaded model
+        # check if the model is available
+        if os.path.isfile(filepath + 'actor_cpu.pth') or os.path.isfile(filepath + 'actor_cuda.pth'):
+            # Check the device_ of the model
+            if from_device_to_load == 'cpu':
+                actor_file = 'actor_cpu.pth'
+                q_file = 'q_cpu.pth'
+            else:
+                actor_file = 'actor_cuda.pth'
+                q_file = 'q_cuda.pth'
 
+            if from_device_to_load == 'cpu' and load_device.type == 'cuda':
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cuda')))
+                self.ac.q.load_state_dict(torch.load(filepath + q_file, map_location=torch.device('cuda')))
+            elif from_device_to_load == 'cuda' and load_device.type == 'cpu':
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cpu')))
+                self.ac.q.load_state_dict(torch.load(filepath + q_file, map_location=torch.device('cpu')))
+            else:
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file))
+                self.ac.q.load_state_dict(torch.load(filepath + q_file))
+            print(colorize(f"Model loaded successfully and device is {load_device}! 🥰😎", 'blue', bold=True))
+        else:
+            print(colorize("Model not found! 😱🥲", 'red', bold=True))
 
 
