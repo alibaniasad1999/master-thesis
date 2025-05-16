@@ -78,7 +78,7 @@ def combined_shape(length, shape=None):
     return (length, shape) if np.isscalar(shape) else (length, *shape)
 
 
-def mlp(sizes, activation, output_activation=nn.Identity):
+def mlp(sizes, activation, output_activation=nn.Tanh):
     layers = []
     for j in range(len(sizes) - 1):
         act = activation if j < len(sizes) - 2 else output_activation
@@ -176,7 +176,7 @@ class MLPActorCritic(nn.Module):
 
 
     def __init__(self, observation_space, action_space,
-                 hidden_sizes=(64,64), activation=nn.Tanh):
+                 hidden_sizes=(64,64), activation=nn.ReLU):
         super().__init__()
 
         obs_dim = observation_space.shape[0]
@@ -195,8 +195,9 @@ class MLPActorCritic(nn.Module):
             pi = self.pi._distribution(obs, deterministic=deterministic)
             a = pi.sample()
             logp_a = self.pi._log_prob_from_distribution(pi, a)
+            # a*=4
             v = self.v(obs)
-        return a.numpy(), v.numpy(), logp_a.numpy()
+        return a.numpy()*4, v.numpy(), logp_a.numpy() #TODO: fix it later
 
     def act(self, obs):
         return self.step(obs)[0]
@@ -282,8 +283,8 @@ class PPOBuffer:
 
 class PPO:
     def __init__(self, env, ac_kwargs=None, seed=0,
-        steps_per_epoch=4000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
-        vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=1000,
+        steps_per_epoch=30000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
+        vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=30000,
         target_kl=0.01, logger_kwargs=None, save_freq=10):
         self.env = env
         self.ac_kwargs = ac_kwargs or {}
@@ -475,9 +476,9 @@ class PPO:
             self.pi_optimizer.zero_grad()
             loss_pi, pi_info = self.compute_loss_pi(data)
             kl = mpi_avg(pi_info['kl'])
-            if kl > 1.5 * self.target_kl:
-                self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
-                break
+            # if kl > 1.5 * self.target_kl:
+            #     self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
+            #     break
             loss_pi.backward()
             mpi_avg_grads(self.ac.pi)  # average grads across MPI processes
             self.pi_optimizer.step()

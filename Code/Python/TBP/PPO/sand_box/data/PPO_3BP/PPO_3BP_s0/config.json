@@ -63,12 +63,12 @@
         "exp_name":	"PPO_3BP",
         "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/sand_box/data/PPO_3BP/PPO_3BP_s0"
     },
-    "max_ep_len":	1000,
+    "max_ep_len":	30000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<PPO.PPO object at 0x11254a090>":	{
+        "<PPO.PPO object at 0x1580a5590>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -130,7 +130,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x155b5d4d0>":	{
+                "<utils.logx.EpochLogger object at 0x14c129d50>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
@@ -148,18 +148,18 @@
                 "exp_name":	"PPO_3BP",
                 "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/TBP/PPO/sand_box/data/PPO_3BP/PPO_3BP_s0"
             },
-            "max_ep_len":	1000,
+            "max_ep_len":	30000,
             "pi_lr":	0.0003,
             "save_freq":	10,
             "seed":	0,
-            "steps_per_epoch":	10000,
+            "steps_per_epoch":	30000,
             "target_kl":	0.01,
             "train_pi_iters":	80,
             "train_v_iters":	80,
             "vf_lr":	0.001
         }
     },
-    "steps_per_epoch":	10000,
+    "steps_per_epoch":	30000,
     "target_kl":	0.01,
     "train_pi_iters":	80,
     "train_v_iters":	80,

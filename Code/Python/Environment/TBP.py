@@ -68,7 +68,7 @@ class ThreeBodyEnv(gym.Env):
 
         # force = action[0] * env.state[2:] + action[1] * env.state[:2]
         # clip action
-        action = np.clip(action, self.action_space.high, self.action_space.low)
+        action = np.clip(action, self.action_space.low, self.action_space.high)
 
         a_x = action[0] / 100
         a_y = action[1] / 100
