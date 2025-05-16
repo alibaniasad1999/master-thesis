@@ -1,35 +1,201 @@
-from PPO_utilz import *
-import os.path as osp, atexit, os
-import sys
+
+import os
 import time
-import json
-import string
-import base64
-import warnings
-import psutil
-import zlib
-import subprocess
-from textwrap import dedent
-from subprocess import CalledProcessError
 
 # Third-party imports
 import numpy as np
-import joblib
-import cloudpickle
-import scipy.signal
 import matplotlib.pyplot as plt
-from tqdm import trange
-from mpi4py import MPI
-import gymnasium as gym
-from gymnasium.spaces import Box, Discrete
-from gymnasium import spaces
 
 # PyTorch imports
 import torch
-import torch.nn as nn
 from torch.optim import Adam
+import urllib.request
+
+
+# Create 'utils' directory and download required files if it doesn't exist
+utils_dir = "utils"
+if not os.path.isdir(utils_dir):
+    os.makedirs(utils_dir)
+    print(f"Directory '{utils_dir}' created.")
+
+    files = {"logx.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/utils/logx.py",
+        "mpi_tools.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/utils/mpi_tools.py",
+        "serialization_utils.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/utils/serialization_utils.py",
+        "run_utils.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/utils/run_utils.py",
+        "user_config.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/user_config.py",
+         "mpi_pytorch.py": "https://raw.githubusercontent.com/alibaniasad1999/spinningup/master/spinup/utils/mpi_pytorch.py"}
+
+    for filename, url in files.items():
+        dest = os.path.join(utils_dir, filename)
+        print(f"Downloading {filename} ...")
+        urllib.request.urlretrieve(url, dest)
+        print(f"{filename} downloaded.")
+else:
+    print(f"Directory '{utils_dir}' already exists.")
+
+import numpy as np
+import scipy.signal
+from gym.spaces import Box, Discrete
+
+import torch
+import torch.nn as nn
 from torch.distributions.normal import Normal
 from torch.distributions.categorical import Categorical
+from utils.mpi_pytorch import setup_pytorch_for_mpi, sync_params, mpi_avg_grads
+from utils.mpi_tools import mpi_fork, mpi_avg, proc_id, mpi_statistics_scalar, num_procs
+from utils.logx import EpochLogger
+
+color2num = dict(
+    gray=30,
+    red=31,
+    green=32,
+    yellow=33,
+    blue=34,
+    magenta=35,
+    cyan=36,
+    white=37,
+    crimson=38
+)
+
+def colorize(string, color, bold=False, highlight=False):
+    """
+    Colorize a string.
+
+    This function was originally written by John Schulman.
+    """
+    attr = []
+    num = color2num[color]
+    if highlight: num += 10
+    attr.append(str(num))
+    if bold: attr.append('1')
+    return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+
+
+def combined_shape(length, shape=None):
+    if shape is None:
+        return (length,)
+    return (length, shape) if np.isscalar(shape) else (length, *shape)
+
+
+def mlp(sizes, activation, output_activation=nn.Identity):
+    layers = []
+    for j in range(len(sizes) - 1):
+        act = activation if j < len(sizes) - 2 else output_activation
+        layers += [nn.Linear(sizes[j], sizes[j + 1]), act()]
+    return nn.Sequential(*layers)
+
+
+def count_vars(module):
+    return sum([np.prod(p.shape) for p in module.parameters()])
+
+
+def discount_cumsum(x, discount):
+    """
+    magic from rllab for computing discounted cumulative sums of vectors.
+
+    input:
+        vector x,
+        [x0,
+         x1,
+         x2]
+
+    output:
+        [x0 + discount * x1 + discount^2 * x2,
+         x1 + discount * x2,
+         x2]
+    """
+    return scipy.signal.lfilter([1], [1, float(-discount)], x[::-1], axis=0)[::-1]
+
+
+class Actor(nn.Module):
+
+    def _distribution(self, obs):
+        raise NotImplementedError
+
+    def _log_prob_from_distribution(self, pi, act):
+        raise NotImplementedError
+
+    def forward(self, obs, act=None):
+        # Produce action distributions for given observations, and
+        # optionally compute the log likelihood of given actions under
+        # those distributions.
+        pi = self._distribution(obs)
+        logp_a = None
+        if act is not None:
+            logp_a = self._log_prob_from_distribution(pi, act)
+        return pi, logp_a
+
+
+class MLPCategoricalActor(Actor):
+
+    def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
+        super().__init__()
+        self.logits_net = mlp([obs_dim] + list(hidden_sizes) + [act_dim], activation)
+
+    def _distribution(self, obs):
+        logits = self.logits_net(obs)
+        return Categorical(logits=logits)
+
+    def _log_prob_from_distribution(self, pi, act):
+        return pi.log_prob(act)
+
+
+class MLPGaussianActor(Actor):
+
+    def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
+        super().__init__()
+        log_std = -0.5 * np.ones(act_dim, dtype=np.float32)
+        self.log_std = torch.nn.Parameter(torch.as_tensor(log_std))
+        self.mu_net = mlp([obs_dim] + list(hidden_sizes) + [act_dim], activation)
+
+    def _distribution(self, obs):
+        mu = self.mu_net(obs)
+        std = torch.exp(self.log_std)
+        return Normal(mu, std)
+
+    def _log_prob_from_distribution(self, pi, act):
+        return pi.log_prob(act).sum(axis=-1)  # Last axis sum needed for Torch Normal distribution
+
+
+class MLPCritic(nn.Module):
+
+    def __init__(self, obs_dim, hidden_sizes, activation):
+        super().__init__()
+        self.v_net = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
+
+    def forward(self, obs):
+        return torch.squeeze(self.v_net(obs), -1)  # Critical to ensure v has right shape.
+
+
+class MLPActorCritic(nn.Module):
+
+    def __init__(self, observation_space, action_space,
+                 hidden_sizes=(64, 64), activation=nn.Tanh):
+        super().__init__()
+
+        obs_dim = observation_space.shape[0]
+
+        # policy builder depends on action space
+        if isinstance(action_space, Box):
+            self.pi = MLPGaussianActor(obs_dim, action_space.shape[0], hidden_sizes, activation)
+        elif isinstance(action_space, Discrete):
+            self.pi = MLPCategoricalActor(obs_dim, action_space.n, hidden_sizes, activation)
+
+        # build value function
+        self.v = MLPCritic(obs_dim, hidden_sizes, activation)
+
+    def step(self, obs):
+        with torch.no_grad():
+            pi = self.pi._distribution(obs)
+            a = pi.sample()
+            logp_a = self.pi._log_prob_from_distribution(pi, a)
+            v = self.v(obs)
+        return a.numpy(), v.numpy(), logp_a.numpy()
+
+    def act(self, obs):
+        return self.step(obs)[0]
+
+
 
 
 class PPOBuffer:

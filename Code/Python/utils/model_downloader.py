@@ -96,7 +96,7 @@ def download_zs_ddpg_script() -> None:
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
 
-def download_models() -> None:
+def download_ddpg_models() -> None:
     """
     Downloads only the standard model files (from the 'model' directory).
     """
@@ -118,7 +118,7 @@ def download_models() -> None:
         download_file(url, file_path, use_wget=True)
 
 
-def download_zs_models() -> None:
+def download_ddpg_zs_models() -> None:
     """
     Downloads only the zero‑sum model files (from the 'model_zs' directory).
     """
@@ -140,6 +140,17 @@ def download_zs_models() -> None:
     for url in urls_model_zs:
         file_path = os.path.join(model_zs_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
+
+def download_ppo_script() -> None:
+    """
+    Downloads only the PPO.py script.
+    """
+    ppo_script = "PPO.py"
+    ppo_url = (
+        "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/refs/heads/main/"
+    "Code/Python/Algorithms/PPO/PPO.py"
+    )
+    download_file(ppo_url, ppo_script, use_wget=True)
 
 
 def download_everything(input_keywords) -> np.ndarray:
@@ -169,9 +180,11 @@ def download_everything(input_keywords) -> np.ndarray:
     if "ZS_DDPG" in keywords:
         download_zs_ddpg_script()
     if "MODELS" in keywords:
-        download_models()
+        download_ddpg_models()
     if "ZS_MODELS" in keywords:
-        download_zs_models()
+        download_ddpg_zs_models()
+    if "PPO" in keywords:
+        download_ppo_script()
 
     return trajectory
 
