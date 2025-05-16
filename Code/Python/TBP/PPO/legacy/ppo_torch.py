@@ -74,7 +74,7 @@ def get_script_dir():
     except NameError:
         # Fallback for environments where __file__ is not defined
         # This assumes the current working directory is the script directory
-        return osp.abspath('.')
+        return osp.abspath('..')
 
 # Where experiment outputs are saved by default:
 DEFAULT_DATA_DIR = osp.join(
