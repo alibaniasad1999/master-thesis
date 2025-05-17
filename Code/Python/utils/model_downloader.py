@@ -205,6 +205,8 @@ def download_everything(input_keywords) -> np.ndarray:
         download_ddpg_zs_models()
     if "PPO" in keywords:
         download_ppo_script()
+    if "PPO_models" in keywords:
+        download_ppo_models()
 
     return trajectory
 
