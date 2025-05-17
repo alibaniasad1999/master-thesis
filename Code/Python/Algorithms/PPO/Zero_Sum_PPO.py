@@ -794,14 +794,14 @@ class ZS_PPO:
                 v_file = 'v_1_cuda.pth'
 
             if from_device_to_load == 'cpu' and load_device.type == 'cuda':
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cuda')))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cuda')))
+                self.ac_1.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cuda')))
+                self.ac_1.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cuda')))
             elif from_device_to_load == 'cuda' and load_device.type == 'cpu':
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cpu')))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cpu')))
+                self.ac_1.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cpu')))
+                self.ac_1.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cpu')))
             else:
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file))
+                self.ac_1.pi.load_state_dict(torch.load(filepath + actor_file))
+                self.ac_1.v.load_state_dict(torch.load(filepath + v_file))
             print(colorize(f"Model of second player loaded successfully and device is {load_device}! 🥰😎", 'blue', bold=True))
         else:
             print(colorize("Model not found! 😱🥲", 'red', bold=True))
