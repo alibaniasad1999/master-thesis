@@ -490,7 +490,7 @@ class ZS_PPO:
         return ((self.ac.v(obs) - ret) ** 2).mean()
 
 
-    def update(self, first_player=True)
+    def update(self, first_player=True):
         data = self.buf.get()
         data_1 = self.buf.get(player=1)
 
@@ -532,6 +532,7 @@ class ZS_PPO:
         # Value function learning
         for i in range(self.train_v_iters):
             if not first_player:
+                print(colorize("first player not learning", 'blue'))
                 break
             self.vf_optimizer.zero_grad()
             loss_v = self.compute_loss_v(data)
