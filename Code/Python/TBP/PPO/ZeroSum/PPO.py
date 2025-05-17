@@ -214,37 +214,27 @@ class PPOBuffer:
     def __init__(self, obs_dim, act_dim, size, gamma=0.99, lam=0.95):
         self.obs_buf = np.zeros(combined_shape(size, obs_dim), dtype=np.float32)
         self.act_buf = np.zeros(combined_shape(size, act_dim), dtype=np.float32)
-        self.act_buf_1 = np.zeros(combined_shape(size, act_dim), dtype=np.float32)
         self.adv_buf = np.zeros(size, dtype=np.float32)
-        self.adv_buf_1 = np.zeros(size, dtype=np.float32)
         self.rew_buf = np.zeros(size, dtype=np.float32)
-        self.rew_buf_1 = np.zeros(size, dtype=np.float32)
         self.ret_buf = np.zeros(size, dtype=np.float32)
-        self.ret_buf_1 = np.zeros(size, dtype=np.float32)
         self.val_buf = np.zeros(size, dtype=np.float32)
-        self.val_buf_1 = np.zeros(size, dtype=np.float32)
         self.logp_buf = np.zeros(size, dtype=np.float32)
-        self.logp_buf_1 = np.zeros(size, dtype=np.float32)
         self.gamma, self.lam = gamma, lam
         self.ptr, self.path_start_idx, self.max_size = 0, 0, size
 
-    def store(self, obs, act, rew, val, logp, act_1, rew_1, val_1, logp_1):
+    def store(self, obs, act, rew, val, logp):
         """
         Append one timestep of agent-environment interaction to the buffer.
         """
         assert self.ptr < self.max_size  # buffer has to have room so you can store
         self.obs_buf[self.ptr] = obs
         self.act_buf[self.ptr] = act
-        self.act_buf_1[self.ptr] = act_1
         self.rew_buf[self.ptr] = rew
-        self.rew_buf_1[self.ptr] = rew_1
         self.val_buf[self.ptr] = val
-        self.val_buf_1[self.ptr] = val_1
         self.logp_buf[self.ptr] = logp
-        self.logp_buf_1[self.ptr] = logp_1
         self.ptr += 1
 
-    def finish_path(self, last_val=0, last_val_1=0):
+    def finish_path(self, last_val=0):
         """
         Call this at the end of a trajectory, or when one gets cut off
         by an epoch ending. This looks back in the buffer to where the
@@ -262,23 +252,18 @@ class PPOBuffer:
 
         path_slice = slice(self.path_start_idx, self.ptr)
         rews = np.append(self.rew_buf[path_slice], last_val)
-        rews_1 = np.append(self.rew_buf_1[path_slice], last_val_1)
         vals = np.append(self.val_buf[path_slice], last_val)
-        vals_1 = np.append(self.val_buf_1[path_slice], last_val_1)
 
         # the next two lines implement GAE-Lambda advantage calculation
         deltas = rews[:-1] + self.gamma * vals[1:] - vals[:-1]
         self.adv_buf[path_slice] = discount_cumsum(deltas, self.gamma * self.lam)
-        deltas_1 = rews_1[:-1] + self.gamma * vals_1[1:] - vals_1[:-1]
-        self.adv_buf_1[path_slice] = discount_cumsum(deltas_1, self.gamma)
 
         # the next line computes rewards-to-go, to be targets for the value function
         self.ret_buf[path_slice] = discount_cumsum(rews, self.gamma)[:-1]
-        self.ret_buf_1[path_slice] = discount_cumsum(rews_1, self.gamma)[:-1]
 
         self.path_start_idx = self.ptr
 
-    def get(self, player = 0):
+    def get(self):
         """
         Call this at the end of an epoch to get all of the data from
         the buffer, with advantages appropriately normalized (shifted to have
@@ -287,24 +272,18 @@ class PPOBuffer:
         assert self.ptr == self.max_size  # buffer has to be full before you can get
         self.ptr, self.path_start_idx = 0, 0
         # the next two lines implement the advantage normalization trick
-        if player == 0:
-            adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf)
-            self.adv_buf = (self.adv_buf - adv_mean) / adv_std
-            data = dict(obs=self.obs_buf, act=self.act_buf, ret=self.ret_buf,
-                        adv=self.adv_buf, logp=self.logp_buf)
-        else:
-            adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf_1)
-            self.adv_buf_1 = (self.adv_buf_1 - adv_mean) / adv_std
-            data = dict(obs=self.obs_buf, act_1=self.act_buf, ret_1=self.ret_buf,
-                        adv_1=self.adv_buf_1, logp_1=self.logp_buf_1)
+        adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf)
+        self.adv_buf = (self.adv_buf - adv_mean) / adv_std
+        data = dict(obs=self.obs_buf, act=self.act_buf, ret=self.ret_buf,
+                    adv=self.adv_buf, logp=self.logp_buf)
         return {k: torch.as_tensor(v, dtype=torch.float32) for k, v in data.items()}
 
 
 
-class ZS_PPO:
+class PPO:
     def __init__(self, env, ac_kwargs=None, seed=0,
         steps_per_epoch=30000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
-        vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=30000,
+        vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=1000,
         target_kl=0.01, logger_kwargs=None, save_freq=10):
         self.env = env
         self.ac_kwargs = ac_kwargs or {}
@@ -440,8 +419,6 @@ class ZS_PPO:
 
         # Create actor-critic module
         self.ac = MLPActorCritic(self.env.observation_space, self.env.action_space, **self.ac_kwargs)
-        # second player
-        self.ac_1 = MLPActorCritic(self.env.observation_space, self.env.action_space, **self.ac_kwargs)
 
         # Sync params across processes
         sync_params(self.ac)
@@ -457,13 +434,9 @@ class ZS_PPO:
         # Set up optimizers for policy and value function
         self.pi_optimizer = Adam(self.ac.pi.parameters(), lr=pi_lr)
         self.vf_optimizer = Adam(self.ac.v.parameters(), lr=vf_lr)
-        # second player
-        self.pi_optimizer_1 = Adam(self.ac_1.pi.parameters(), lr=pi_lr)
-        self.vf_optimizer_1 = Adam(self.ac_1.pi.parameters(), lr=vf_lr)
 
         # Set up model saving
         self.logger.setup_pytorch_saver(self.ac)
-        self.logger.setup_pytorch_saver(self.ac_1)
 
     # Set up function for computing PPO policy loss
     def compute_loss_pi(self, data):
@@ -490,22 +463,15 @@ class ZS_PPO:
         return ((self.ac.v(obs) - ret) ** 2).mean()
 
 
-    def update(self, first_player=True)
+    def update(self):
         data = self.buf.get()
-        data_1 = self.buf.get(player=1)
 
         pi_l_old, pi_info_old = self.compute_loss_pi(data) # Loss pi before
         pi_l_old = pi_l_old.item()
         v_l_old = self.compute_loss_v(data).item()
-        # second player
-        pi_l_old_1, pi_info_old_1 = self.compute_loss_pi(data_1)
-        pi_l_old_1 = pi_l_old_1.item()
-        v_l_old_1 = self.compute_loss_v(data_1).item()
 
         # Train policy with multiple steps of gradient descent
         for i in range(self.train_pi_iters):
-            if not first_player:
-                break
             self.pi_optimizer.zero_grad()
             loss_pi, pi_info = self.compute_loss_pi(data)
             kl = mpi_avg(pi_info['kl'])
@@ -515,60 +481,25 @@ class ZS_PPO:
             loss_pi.backward()
             mpi_avg_grads(self.ac.pi)  # average grads across MPI processes
             self.pi_optimizer.step()
-        # second player learning loop
-        for i in range(self.train_pi_iters):
-            self.pi_optimizer_1.zero_grad()
-            loss_pi, pi_info_1 = self.compute_loss_pi(data_1)
-            kl = mpi_avg(pi_info_1['kl'])
-            if kl > 1.5 * self.target_kl:
-                self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
-                break
-            loss_pi.backward()
-            mpi_avg_grads(self.ac_1.pi)
-            self.pi_optimizer_1.step()
 
         self.logger.store(StopIter=i)
 
         # Value function learning
         for i in range(self.train_v_iters):
-            if not first_player:
-                break
             self.vf_optimizer.zero_grad()
             loss_v = self.compute_loss_v(data)
             loss_v.backward()
             mpi_avg_grads(self.ac.v)  # average grads across MPI processes
             self.vf_optimizer.step()
-        # second player learning loop
-        for i in range(self.train_v_iters):
-            self.vf_optimizer_1.zero_grad()
-            loss_v_1 = self.compute_loss_v(data)
-            loss_v_1.backward()
-            mpi_avg_grads(self.ac.v)
-            self.vf_optimizer_1.step()
 
         # Log changes from update
         kl, ent, cf = pi_info['kl'], pi_info_old['ent'], pi_info['cf']
-        kl_1, ent_1, cf_1 = pi_info_1['kl'], pi_info_old_1['ent'], pi_info_1['cf']
-        if not first_player:
-            self.logger.store(LossPi=0, LossV=0,
-                            KL=0, Entropy=0, ClipFrac=0,
-                            DeltaLossPi=0,
-                            DeltaLossV=0,
-                            LossPi_1=pi_l_old_1, LossV_1=v_l_old_1,
-                            KL_1=kl_1, Entropy_1=ent_1, ClipFrac_1=cf_1,
-                            DeltaLossPi_1=(loss_pi_1.item() - pi_l_old_1),
-                            DeltaLossV_1=(loss_v_1.item() - v_l_old_1))
-        else:
-            self.logger.store(LossPi=pi_l_old, LossV=v_l_old,
-                            KL=kl, Entropy=ent, ClipFrac=cf,
-                            DeltaLossPi=(loss_pi.item() - pi_l_old),
-                            DeltaLossV=(loss_v.item() - v_l_old),
-                            LossPi_1=pi_l_old_1, LossV_1=v_l_old_1,
-                            KL_1=kl_1, Entropy_1=ent_1, ClipFrac_1=cf_1,
-                            DeltaLossPi_1=(loss_pi_1.item() - pi_l_old_1),
-                            DeltaLossV_1=(loss_v_1.item() - v_l_old_1))
+        self.logger.store(LossPi=pi_l_old, LossV=v_l_old,
+                        KL=kl, Entropy=ent, ClipFrac=cf,
+                        DeltaLossPi=(loss_pi.item() - pi_l_old),
+                        DeltaLossV=(loss_v.item() - v_l_old))
 
-    def train(self, first_player_learning_epoch=50):
+    def train(self):
         # Prepare for interaction with environment
         start_time = time.time()
         o, _ = self.env.reset()
@@ -578,16 +509,14 @@ class ZS_PPO:
         for epoch in range(self.epochs):
             for t in range(self.local_steps_per_epoch):
                 a, v, logp = self.ac.step(torch.as_tensor(o, dtype=torch.float32))
-                a_1, v_1, logp_1 = self.ac_1.step(torch.as_tensor(o, dtype=torch.float32))
 
-                next_o, r, d, _, _ = self.env.step(a, a_1)
+                next_o, r, d, _, _ = self.env.step(a)
                 ep_ret += r
                 ep_len += 1
 
-                # save and log act_1, rew_1, val_1, logp_1
-                self.buf.store(o, a, r, v, logp, a_1, -r, v_1, logp_1)
+                # save and log
+                self.buf.store(o, a, r, v, logp)
                 self.logger.store(VVals=v)
-                self.logger.store(VVals_1=v_1)
 
                 # Update obs (critical!)
                 o = next_o
@@ -602,11 +531,9 @@ class ZS_PPO:
                     # if trajectory didn't reach terminal state, bootstrap value target
                     if timeout or epoch_ended:
                         _, v, _ = self.ac.step(torch.as_tensor(o, dtype=torch.float32))
-                        _, v_1, _ = self.ac.step(torch.as_tensor(o, dtype=torch.float32))
                     else:
                         v = 0
-                        v_1 = 0
-                    self.buf.finish_path(v, v_1)
+                    self.buf.finish_path(v)
                     if terminal:
                         # only save EpRet / EpLen if the trajectory finished
                         self.logger.store(EpRet=ep_ret, EpLen=ep_len)
@@ -625,16 +552,11 @@ class ZS_PPO:
             self.logger.log_tabular('EpRet', with_min_and_max=True)
             self.logger.log_tabular('EpLen', average_only=True)
             self.logger.log_tabular('VVals', with_min_and_max=True)
-            self.logger.log_tabular('VVlas_1', with_min_and_max=True)
             self.logger.log_tabular('TotalEnvInteracts', (epoch + 1) * self.steps_per_epoch)
             self.logger.log_tabular('LossPi', average_only=True)
-            self.logger.log_tabular('LossPi_1', average_only=True)
             self.logger.log_tabular('LossV', average_only=True)
-            self.logger.log_tabular('LossV_1', average_only=True)
             self.logger.log_tabular('DeltaLossPi', average_only=True)
-            self.logger.log_tabular('DeltaLossPi_1', average_only=True)
             self.logger.log_tabular('DeltaLossV', average_only=True)
-            self.logger.log_tabular('DeltaLossV_1', average_only=True)
             self.logger.log_tabular('Entropy', average_only=True)
             self.logger.log_tabular('KL', average_only=True)
             self.logger.log_tabular('ClipFrac', average_only=True)
@@ -643,18 +565,14 @@ class ZS_PPO:
             self.logger.dump_tabular()
 
 
-    def test(self, fun_mode=False, deterministic=True, save_data=False, second_player=False):
+    def test(self, fun_mode=False, deterministic=True, save_data=False):
         o, _ = self.env.reset()
         states = []
         actions = []
         while True:
             a, _, _ = self.ac.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
-            if second_player:
-                a_1, _, _ = self.ac_1.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
-                o, _, d, _, position = self.env.step(a, a_1)
             actions.append(a)
-            if not second_player:
-                o, _, d, _, position = self.env.step(a)
+            o, _, d, _, position = self.env.step(a)
             states.append(position)
             if d:
                 break
@@ -727,19 +645,6 @@ class ZS_PPO:
             torch.save(self.ac.v.state_dict(), filepath + 'v_cpu.pth')
         print(colorize(f"Model saved successfully! 🥰😎", 'blue', bold=True))
 
-    def save_1(self, filepath='model/'):
-        if not os.path.isdir(filepath):
-            os.mkdir(filepath)
-        # Check device
-        if self.device == 'cuda':
-            torch.save(self.ac_1.pi.state_dict(), filepath + 'actor_1_cuda.pth')
-            torch.save(self.ac_1.v.state_dict(), filepath + 'v_1_cuda.pth')
-        else:
-            torch.save(self.ac_1.pi.state_dict(), filepath + 'actor_1_cpu.pth')
-            torch.save(self.ac_1.v.state_dict(), filepath + 'v_1_cpu.pth')
-
-        print(colorize(f"Model second player saved successfully! 🥰😎", 'blue', bold=True))
-
     # load actor critic
     def load(self, filepath='model/', load_device=torch.device("cpu"), from_device_to_load='cpu'):
         self.start_steps = 0  # does not distarct the loaded model
@@ -767,29 +672,3 @@ class ZS_PPO:
             print(colorize("Model not found! 😱🥲", 'red', bold=True))
 
 
-
-    # load actor critic
-    def load_1(self, filepath='model/', load_device=torch.device("cpu"), from_device_to_load='cpu'):
-        self.start_steps = 0  # does not distarct the loaded model
-        # check if the model is available
-        if os.path.isfile(filepath + 'actor_1_cpu.pth') or os.path.isfile(filepath + 'actor_1_cuda.pth'):
-            # Check the device_ of the model
-            if from_device_to_load == 'cpu':
-                actor_file = 'actor_1_cpu.pth'
-                v_file = 'v_1_cpu.pth'
-            else:
-                actor_file = 'actor_1_cuda.pth'
-                v_file = 'v_1_cuda.pth'
-
-            if from_device_to_load == 'cpu' and load_device.type == 'cuda':
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cuda')))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cuda')))
-            elif from_device_to_load == 'cuda' and load_device.type == 'cpu':
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cpu')))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cpu')))
-            else:
-                self.ac.pi.load_state_dict(torch.load(filepath + actor_file))
-                self.ac.v.load_state_dict(torch.load(filepath + v_file))
-            print(colorize(f"Model of second player loaded successfully and device is {load_device}! 🥰😎", 'blue', bold=True))
-        else:
-            print(colorize("Model not found! 😱🥲", 'red', bold=True))

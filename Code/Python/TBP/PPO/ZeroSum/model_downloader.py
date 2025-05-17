@@ -172,17 +172,6 @@ def download_ppo_script() -> None:
     )
     download_file(ppo_url, ppo_script, use_wget=True)
 
-def download_zs_ppo_script() -> None:
-    """
-    Downloads only the Zero_Sum_PPO.py script.
-    """
-    zero_sum_script = "Zero_Sum_PPO.py"
-    zero_sum_url = (
-        "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/refs/heads/main/"
-        "Code/Python/Algorithms/PPO/Zero_Sum_PPO.py"
-    )
-    download_file(zero_sum_url, zero_sum_script, use_wget=True)
-
 
 def download_everything(input_keywords) -> np.ndarray:
     """
@@ -218,8 +207,6 @@ def download_everything(input_keywords) -> np.ndarray:
         download_ppo_script()
     if "PPO_models" in keywords:
         download_ppo_models()
-    if "ZS_PPO" in keywords:
-        download_zs_ppo_script()
 
     return trajectory
 
