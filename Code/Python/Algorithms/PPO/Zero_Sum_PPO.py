@@ -625,11 +625,16 @@ class PPO:
             self.logger.log_tabular('EpRet', with_min_and_max=True)
             self.logger.log_tabular('EpLen', average_only=True)
             self.logger.log_tabular('VVals', with_min_and_max=True)
+            self.logger.log_tabular('VVlas_1', with_min_and_max=True)
             self.logger.log_tabular('TotalEnvInteracts', (epoch + 1) * self.steps_per_epoch)
             self.logger.log_tabular('LossPi', average_only=True)
+            self.logger.log_tabular('LossPi_1', average_only=True)
             self.logger.log_tabular('LossV', average_only=True)
+            self.logger.log_tabular('LossV_1', average_only=True)
             self.logger.log_tabular('DeltaLossPi', average_only=True)
+            self.logger.log_tabular('DeltaLossPi_1', average_only=True)
             self.logger.log_tabular('DeltaLossV', average_only=True)
+            self.logger.log_tabular('DeltaLossV_1', average_only=True)
             self.logger.log_tabular('Entropy', average_only=True)
             self.logger.log_tabular('KL', average_only=True)
             self.logger.log_tabular('ClipFrac', average_only=True)
@@ -638,14 +643,18 @@ class PPO:
             self.logger.dump_tabular()
 
 
-    def test(self, fun_mode=False, deterministic=True, save_data=False):
+    def test(self, fun_mode=False, deterministic=True, save_data=False, second_player=False):
         o, _ = self.env.reset()
         states = []
         actions = []
         while True:
             a, _, _ = self.ac.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
+            if second_player:
+                a_1, _, _ = self.ac_1.step(torch.as_tensor(o, dtype=torch.float32), deterministic=deterministic)
+                o, _, d, _, position = self.env.step(a, a_1)
             actions.append(a)
-            o, _, d, _, position = self.env.step(a)
+            if not second_player:
+                o, _, d, _, position = self.env.step(a)
             states.append(position)
             if d:
                 break
@@ -718,6 +727,19 @@ class PPO:
             torch.save(self.ac.v.state_dict(), filepath + 'v_cpu.pth')
         print(colorize(f"Model saved successfully! 🥰😎", 'blue', bold=True))
 
+    def save_1(self, filepath='model/'):
+        if not os.path.isdir(filepath):
+            os.mkdir(filepath)
+        # Check device
+        if self.device == 'cuda':
+            torch.save(self.ac_1.pi.state_dict(), filepath + 'actor_1_cuda.pth')
+            torch.save(self.ac_1.v.state_dict(), filepath + 'v_1_cuda.pth')
+        else:
+            torch.save(self.ac_1.pi.state_dict(), filepath + 'actor_1_cpu.pth')
+            torch.save(self.ac_1.v.state_dict(), filepath + 'v_1_cpu.pth')
+
+        print(colorize(f"Model second player saved successfully! 🥰😎", 'blue', bold=True))
+
     # load actor critic
     def load(self, filepath='model/', load_device=torch.device("cpu"), from_device_to_load='cpu'):
         self.start_steps = 0  # does not distarct the loaded model
@@ -741,5 +763,33 @@ class PPO:
                 self.ac.pi.load_state_dict(torch.load(filepath + actor_file))
                 self.ac.v.load_state_dict(torch.load(filepath + v_file))
             print(colorize(f"Model loaded successfully and device is {load_device}! 🥰😎", 'blue', bold=True))
+        else:
+            print(colorize("Model not found! 😱🥲", 'red', bold=True))
+
+
+
+    # load actor critic
+    def load_1(self, filepath='model/', load_device=torch.device("cpu"), from_device_to_load='cpu'):
+        self.start_steps = 0  # does not distarct the loaded model
+        # check if the model is available
+        if os.path.isfile(filepath + 'actor_1_cpu.pth') or os.path.isfile(filepath + 'actor_1_cuda.pth'):
+            # Check the device_ of the model
+            if from_device_to_load == 'cpu':
+                actor_file = 'actor_1_cpu.pth'
+                v_file = 'v_1_cpu.pth'
+            else:
+                actor_file = 'actor_1_cuda.pth'
+                v_file = 'v_1_cuda.pth'
+
+            if from_device_to_load == 'cpu' and load_device.type == 'cuda':
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cuda')))
+                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cuda')))
+            elif from_device_to_load == 'cuda' and load_device.type == 'cpu':
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file, map_location=torch.device('cpu')))
+                self.ac.v.load_state_dict(torch.load(filepath + v_file, map_location=torch.device('cpu')))
+            else:
+                self.ac.pi.load_state_dict(torch.load(filepath + actor_file))
+                self.ac.v.load_state_dict(torch.load(filepath + v_file))
+            print(colorize(f"Model of second player loaded successfully and device is {load_device}! 🥰😎", 'blue', bold=True))
         else:
             print(colorize("Model not found! 😱🥲", 'red', bold=True))
