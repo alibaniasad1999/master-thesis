@@ -278,7 +278,7 @@ class PPOBuffer:
 
         self.path_start_idx = self.ptr
 
-    def get(self, player = 0):
+    def get(self):
         """
         Call this at the end of an epoch to get all of the data from
         the buffer, with advantages appropriately normalized (shifted to have
@@ -467,11 +467,15 @@ class ZS_PPO:
         self.logger.setup_pytorch_saver(self.ac_1)
 
     # Set up function for computing PPO policy loss
-    def compute_loss_pi(self, data):
+    def compute_loss_pi(self, data, player=0): #  TODO: fix this functions for two different actor and critic
+
         obs, act, adv, logp_old = data['obs'], data['act'], data['adv'], data['logp']
 
         # Policy loss
-        pi, logp = self.ac.pi(obs, act)
+        if player==0:
+            pi, logp = self.ac.pi(obs, act)
+        else:
+            pi, logp = self.ac_1.pi(obs, act)
         ratio = torch.exp(logp - logp_old)
         clip_adv = torch.clamp(ratio, 1 - self.clip_ratio, 1 + self.clip_ratio) * adv
         loss_pi = -(torch.min(ratio * adv, clip_adv)).mean()
@@ -486,9 +490,12 @@ class ZS_PPO:
         return loss_pi, pi_info
 
     # Set up function for computing value loss
-    def compute_loss_v(self, data):
+    def compute_loss_v(self, data, player=0):
         obs, ret = data['obs'], data['ret']
-        return ((self.ac.v(obs) - ret) ** 2).mean()
+        if player==0:
+            return ((self.ac.v(obs) - ret) ** 2).mean()
+        else:
+            return ((self.ac_1.v(obs) - ret) ** 2).mean()
 
 
     def update(self, first_player=True):
@@ -520,7 +527,7 @@ class ZS_PPO:
         # second player learning loop
         for i in range(self.train_pi_iters):
             self.pi_optimizer_1.zero_grad()
-            loss_pi_1, pi_info_1 = self.compute_loss_pi(data_1)
+            loss_pi_1, pi_info_1 = self.compute_loss_pi(data_1, player=1)
             kl = mpi_avg(pi_info_1['kl'])
             if kl > 1.5 * self.target_kl:
                 self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
@@ -543,7 +550,7 @@ class ZS_PPO:
         # second player learning loop
         for i in range(self.train_v_iters):
             self.vf_optimizer_1.zero_grad()
-            loss_v_1 = self.compute_loss_v(data)
+            loss_v_1 = self.compute_loss_v(data_1, player=1)
             loss_v_1.backward()
             mpi_avg_grads(self.ac.v)
             self.vf_optimizer_1.step()
