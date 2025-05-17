@@ -1,0 +1,167 @@
+{
+    "ac_kwargs":	{
+        "hidden_sizes":	[
+            32,
+            32
+        ]
+    },
+    "clip_ratio":	0.2,
+    "env":	{
+        "<ThreeBodyEnv instance>":	{
+            "action_space":	{
+                "Box(-4.0, 4.0, (2,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        2
+                    ],
+                    "bounded_above":	"[ True  True]",
+                    "bounded_below":	"[ True  True]",
+                    "dtype":	"float32",
+                    "high":	"[4. 4.]",
+                    "high_repr":	"4.0",
+                    "low":	"[-4. -4.]",
+                    "low_repr":	"-4.0"
+                }
+            },
+            "dt":	0.001,
+            "error_range":	0.01,
+            "final_range":	0.001,
+            "max_steps":	6000,
+            "mu":	0.012277471,
+            "observation_space":	{
+                "Box(-1.0, 1.0, (4,), float32)":	{
+                    "_np_random":	null,
+                    "_shape":	[
+                        4
+                    ],
+                    "bounded_above":	"[ True  True  True  True]",
+                    "bounded_below":	"[ True  True  True  True]",
+                    "dtype":	"float32",
+                    "high":	"[1. 1. 1. 1.]",
+                    "high_repr":	"1.0",
+                    "low":	"[-1. -1. -1. -1.]",
+                    "low_repr":	"-1.0"
+                }
+            },
+            "position":	"[ 0.87018  -0.05954  -0.010536 -0.17494 ]",
+            "render_logic":	false,
+            "reward_range":	[
+                -Infinity,
+                Infinity
+            ],
+            "second_player":	true,
+            "state":	"[0. 0. 0. 0.]",
+            "steps":	0,
+            "trajectory":	"[[ 0.87018   -0.05954   -0.010536  -0.17494  ]\n [ 0.87017   -0.059636  -0.0106    -0.17474  ]\n [ 0.87017   -0.059732  -0.010664  -0.17454  ]\n ...\n [ 1.1173    -0.054316  -0.008781   0.15223  ]\n [ 1.1173    -0.054233  -0.0087365  0.15236  ]\n [ 1.1172    -0.054149  -0.0086921  0.1525   ]]"
+        }
+    },
+    "epochs":	50,
+    "exp_name":	"PPO_3BP",
+    "gamma":	0.99,
+    "lam":	0.97,
+    "logger_kwargs":	{
+        "exp_name":	"PPO_3BP",
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/PPO/initial_condition_shift/data/PPO_3BP/PPO_3BP_s0"
+    },
+    "max_ep_len":	1000,
+    "pi_lr":	0.0003,
+    "save_freq":	10,
+    "seed":	0,
+    "self":	{
+        "<PPO.PPO object at 0x15421a3d0>":	{
+            "ac_kwargs":	{
+                "hidden_sizes":	[
+                    32,
+                    32
+                ]
+            },
+            "clip_ratio":	0.2,
+            "device":	"cpu",
+            "env":	{
+                "<ThreeBodyEnv instance>":	{
+                    "action_space":	{
+                        "Box(-4.0, 4.0, (2,), float32)":	{
+                            "_np_random":	null,
+                            "_shape":	[
+                                2
+                            ],
+                            "bounded_above":	"[ True  True]",
+                            "bounded_below":	"[ True  True]",
+                            "dtype":	"float32",
+                            "high":	"[4. 4.]",
+                            "high_repr":	"4.0",
+                            "low":	"[-4. -4.]",
+                            "low_repr":	"-4.0"
+                        }
+                    },
+                    "dt":	0.001,
+                    "error_range":	0.01,
+                    "final_range":	0.001,
+                    "max_steps":	6000,
+                    "mu":	0.012277471,
+                    "observation_space":	{
+                        "Box(-1.0, 1.0, (4,), float32)":	{
+                            "_np_random":	null,
+                            "_shape":	[
+                                4
+                            ],
+                            "bounded_above":	"[ True  True  True  True]",
+                            "bounded_below":	"[ True  True  True  True]",
+                            "dtype":	"float32",
+                            "high":	"[1. 1. 1. 1.]",
+                            "high_repr":	"1.0",
+                            "low":	"[-1. -1. -1. -1.]",
+                            "low_repr":	"-1.0"
+                        }
+                    },
+                    "position":	"[ 0.87018  -0.05954  -0.010536 -0.17494 ]",
+                    "render_logic":	false,
+                    "reward_range":	[
+                        -Infinity,
+                        Infinity
+                    ],
+                    "second_player":	true,
+                    "state":	"[0. 0. 0. 0.]",
+                    "steps":	0,
+                    "trajectory":	"[[ 0.87018   -0.05954   -0.010536  -0.17494  ]\n [ 0.87017   -0.059636  -0.0106    -0.17474  ]\n [ 0.87017   -0.059732  -0.010664  -0.17454  ]\n ...\n [ 1.1173    -0.054316  -0.008781   0.15223  ]\n [ 1.1173    -0.054233  -0.0087365  0.15236  ]\n [ 1.1172    -0.054149  -0.0086921  0.1525   ]]"
+                }
+            },
+            "epochs":	50,
+            "gamma":	0.99,
+            "lam":	0.97,
+            "logger":	{
+                "<utils.logx.EpochLogger object at 0x11c0364d0>":	{
+                    "epoch_dict":	{},
+                    "exp_name":	"PPO_3BP",
+                    "first_row":	true,
+                    "log_current_row":	{},
+                    "log_headers":	[],
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/PPO/initial_condition_shift/data/PPO_3BP/PPO_3BP_s0",
+                    "output_file":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/PPO/initial_condition_shift/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                            "mode":	"w"
+                        }
+                    }
+                }
+            },
+            "logger_kwargs":	{
+                "exp_name":	"PPO_3BP",
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/PPO/initial_condition_shift/data/PPO_3BP/PPO_3BP_s0"
+            },
+            "max_ep_len":	1000,
+            "pi_lr":	0.0003,
+            "save_freq":	10,
+            "seed":	0,
+            "steps_per_epoch":	30000,
+            "target_kl":	0.01,
+            "train_pi_iters":	80,
+            "train_v_iters":	80,
+            "vf_lr":	0.001
+        }
+    },
+    "steps_per_epoch":	30000,
+    "target_kl":	0.01,
+    "train_pi_iters":	80,
+    "train_v_iters":	80,
+    "vf_lr":	0.001
+}
