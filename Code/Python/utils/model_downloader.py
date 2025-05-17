@@ -123,8 +123,8 @@ def download_ppo_models() -> None:
     """
     model_dir = "model"
     urls_model = [
-        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/model/actor_cpu.pth",
-        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/model/v_cpu.pth"
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/Standard/model/actor_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/Standard/model/v_cpu.pth"
     ]
     if not os.path.isdir(model_dir):
         os.makedirs(model_dir)

@@ -287,17 +287,18 @@ class PPOBuffer:
         assert self.ptr == self.max_size  # buffer has to be full before you can get
         self.ptr, self.path_start_idx = 0, 0
         # the next two lines implement the advantage normalization trick
-        if player == 0:
-            adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf)
-            self.adv_buf = (self.adv_buf - adv_mean) / adv_std
-            data = dict(obs=self.obs_buf, act=self.act_buf, ret=self.ret_buf,
-                        adv=self.adv_buf, logp=self.logp_buf)
-        else:
-            adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf_1)
-            self.adv_buf_1 = (self.adv_buf_1 - adv_mean) / adv_std
-            data = dict(obs=self.obs_buf, act_1=self.act_buf, ret_1=self.ret_buf,
-                        adv_1=self.adv_buf_1, logp_1=self.logp_buf_1)
-        return {k: torch.as_tensor(v, dtype=torch.float32) for k, v in data.items()}
+        # if player == 0:
+        adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf)
+        self.adv_buf = (self.adv_buf - adv_mean) / adv_std
+        data = dict(obs=self.obs_buf, act=self.act_buf, ret=self.ret_buf,
+                    adv=self.adv_buf, logp=self.logp_buf)
+        # else:
+        adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf_1)
+        self.adv_buf_1 = (self.adv_buf_1 - adv_mean) / adv_std
+        data_1 = dict(obs=self.obs_buf, act=self.act_buf_1, ret=self.ret_buf_1,
+                    adv=self.adv_buf_1, logp=self.logp_buf_1)
+        return ({k: torch.as_tensor(v, dtype=torch.float32) for k, v in data.items()},
+                {k: torch.as_tensor(v, dtype=torch.float32) for k, v in data_1.items()})
 
 
 
@@ -305,7 +306,7 @@ class ZS_PPO:
     def __init__(self, env, ac_kwargs=None, seed=0,
         steps_per_epoch=30000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
         vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=30000,
-        target_kl=0.01, logger_kwargs=None, save_freq=10):
+        target_kl=0.1, logger_kwargs=None, save_freq=10):
         self.env = env
         self.ac_kwargs = ac_kwargs or {}
         self.seed = seed
@@ -491,8 +492,8 @@ class ZS_PPO:
 
 
     def update(self, first_player=True):
-        data = self.buf.get()
-        data_1 = self.buf.get(player=1)
+        data, data_1 = self.buf.get()
+        # data_1 = self.buf.get(player=1)
 
         pi_l_old, pi_info_old = self.compute_loss_pi(data) # Loss pi before
         pi_l_old = pi_l_old.item()
@@ -505,6 +506,7 @@ class ZS_PPO:
         # Train policy with multiple steps of gradient descent
         for i in range(self.train_pi_iters):
             if not first_player:
+                print(colorize("no first player was in the learning", 'red'))
                 break
             self.pi_optimizer.zero_grad()
             loss_pi, pi_info = self.compute_loss_pi(data)
@@ -518,12 +520,12 @@ class ZS_PPO:
         # second player learning loop
         for i in range(self.train_pi_iters):
             self.pi_optimizer_1.zero_grad()
-            loss_pi, pi_info_1 = self.compute_loss_pi(data_1)
+            loss_pi_1, pi_info_1 = self.compute_loss_pi(data_1)
             kl = mpi_avg(pi_info_1['kl'])
             if kl > 1.5 * self.target_kl:
                 self.logger.log('Early stopping at step %d due to reaching max kl.' % i)
                 break
-            loss_pi.backward()
+            loss_pi_1.backward()
             mpi_avg_grads(self.ac_1.pi)
             self.pi_optimizer_1.step()
 
@@ -547,7 +549,10 @@ class ZS_PPO:
             self.vf_optimizer_1.step()
 
         # Log changes from update
-        kl, ent, cf = pi_info['kl'], pi_info_old['ent'], pi_info['cf']
+        if not first_player:
+            kl, ent, cf = 0, 0, 0
+        else:
+            kl, ent, cf = pi_info['kl'], pi_info_old['ent'], pi_info['cf']
         kl_1, ent_1, cf_1 = pi_info_1['kl'], pi_info_old_1['ent'], pi_info_1['cf']
         if not first_player:
             self.logger.store(LossPi=0, LossV=0,
@@ -618,14 +623,14 @@ class ZS_PPO:
                 self.logger.save_state({'env': self.env}, None)
 
             # Perform PPO update!
-            self.update()
+            self.update(first_player=first_player_learning_epoch<epoch)
 
             # Log info about epoch
             self.logger.log_tabular('Epoch', epoch)
             self.logger.log_tabular('EpRet', with_min_and_max=True)
             self.logger.log_tabular('EpLen', average_only=True)
             self.logger.log_tabular('VVals', with_min_and_max=True)
-            self.logger.log_tabular('VVlas_1', with_min_and_max=True)
+            self.logger.log_tabular('VVals_1', with_min_and_max=True)
             self.logger.log_tabular('TotalEnvInteracts', (epoch + 1) * self.steps_per_epoch)
             self.logger.log_tabular('LossPi', average_only=True)
             self.logger.log_tabular('LossPi_1', average_only=True)
