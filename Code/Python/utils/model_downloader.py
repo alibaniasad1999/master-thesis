@@ -285,6 +285,8 @@ def download_everything(input_keywords) -> np.ndarray:
         download_ppo_zs_models()
     if "SAC" in keywords:
         download_sac_script()
+    if "SAC_MODELS" in keywords:
+        download_sac_models()
 
     return trajectory
 
