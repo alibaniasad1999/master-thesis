@@ -571,7 +571,7 @@ class SAC:  # TODO: fix device
             # Use XKCD style for hand-drawn look
             with plt.xkcd():
                 plt.plot(state_array[:, 0], state_array[:, 1], label='State')
-                plt.plot(trajectory[:, 0], trajectory[:, 1], label='Trajectory')
+                plt.plot(self.env.trajectory[:, 0], self.env.trajectory[:, 1], label='Trajectory')
                 plt.legend()
                 plt.show()
             with plt.xkcd():
@@ -581,7 +581,7 @@ class SAC:  # TODO: fix device
                 plt.show()
         else:
             plt.plot(state_array[:, 0], state_array[:, 1], label='State')
-            plt.plot(trajectory[:, 0], trajectory[:, 1], label='Trajectory')
+            plt.plot(self.env.trajectory[:, 0], self.env.trajectory[:, 1], label='Trajectory')
             plt.legend()
             plt.show()
 
