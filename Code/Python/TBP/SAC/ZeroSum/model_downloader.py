@@ -47,7 +47,7 @@ def download_tbp() -> np.ndarray:
     trajectory_file = "trajectory.csv"
     trajectory_url = (
         "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/"
-        "main/Code/Python/TBP/legacy/SAC/trajectory.csv"
+        "main/Code/Python/TBP/SAC/trajectory.csv"
     )
     download_file(trajectory_url, trajectory_file, use_wget=False)
 
