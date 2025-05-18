@@ -195,17 +195,6 @@ def download_ppo_script() -> None:
     )
     download_file(ppo_url, ppo_script, use_wget=True)
 
-def download_sac_script() -> None:
-    """
-    Downloads only the SAC.py script.
-    """
-    sac_script = "SAC.py"
-    sac_url = (
-        "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/refs/heads/main/"
-        "Code/Python/Algorithms/SAC/SAC.py"
-    )
-    download_file(sac_url, sac_script, use_wget=True)
-
 def download_zs_ppo_script() -> None:
     """
     Downloads only the Zero_Sum_PPO.py script.
@@ -256,8 +245,6 @@ def download_everything(input_keywords) -> np.ndarray:
         download_zs_ppo_script()
     if "ZS_PPO_MODELS" in keywords:
         download_ppo_zs_models()
-    if "SAC" in keywords:
-        download_sac_script()
 
     return trajectory
 
