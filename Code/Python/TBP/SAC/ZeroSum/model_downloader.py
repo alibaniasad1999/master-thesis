@@ -47,7 +47,7 @@ def download_tbp() -> np.ndarray:
     trajectory_file = "trajectory.csv"
     trajectory_url = (
         "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/"
-        "main/Code/Python/TBP/SAC/trajectory.csv"
+        "main/Code/Python/TBP/SAC/legacy/trajectory.csv"
     )
     download_file(trajectory_url, trajectory_file, use_wget=False)
 
@@ -218,6 +218,33 @@ def download_zs_ppo_script() -> None:
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
 
+
+def download_sac_models() -> None:
+    """
+    Downloads only the standard model files (from the 'model' directory).
+    """
+    model_dir = "model"
+    urls_model = [
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/Standard/model/actor_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/Standard/model/q1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/Standard/model/q2_cpu.pth"
+    ]
+    if not os.path.isdir(model_dir):
+        os.makedirs(model_dir)
+        print(f"Directory '{model_dir}' created.")
+    else:
+        if not os.listdir(model_dir):
+            print(f"Directory '{model_dir}' exists but is empty.")
+        else:
+            print(f"Directory '{model_dir}' already exists and is not empty.")
+    for url in urls_model:
+        file_path = os.path.join(model_dir, os.path.basename(url))
+        download_file(url, file_path, use_wget=True)
+
+
+
+
+
 def download_everything(input_keywords) -> np.ndarray:
     """
     Downloads files based on the provided keyword(s). Accepted keywords (case-insensitive):
@@ -258,6 +285,8 @@ def download_everything(input_keywords) -> np.ndarray:
         download_ppo_zs_models()
     if "SAC" in keywords:
         download_sac_script()
+    if "SAC_MODELS" in keywords:
+        download_sac_models()
 
     return trajectory
 

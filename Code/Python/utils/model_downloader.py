@@ -242,6 +242,19 @@ def download_sac_models() -> None:
         download_file(url, file_path, use_wget=True)
 
 
+def download_zs_sac_script() -> None:
+    """
+    Downloads only the Zero_Sum_SAC.py script.
+    """
+    zero_sum_script = "Zero_Sum_SAC.py"
+    zero_sum_url = (
+        "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/refs/heads/main/"
+        "Code/Python/Algorithms/SAC/Zero_Sum_SAC.py"
+    )
+    download_file(zero_sum_url, zero_sum_script, use_wget=True)
+
+
+
 
 
 
@@ -287,6 +300,9 @@ def download_everything(input_keywords) -> np.ndarray:
         download_sac_script()
     if "SAC_MODELS" in keywords:
         download_sac_models()
+    if "ZS_SAC" in keywords:
+        download_zs_sac_script()
+
 
     return trajectory
 
