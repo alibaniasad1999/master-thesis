@@ -618,7 +618,7 @@ class ZS_SAC:
                 print(colorize("updating 🥰", 'blue', bold=True))
                 for j in range(self.num_updates):
                     batch = self.replay_buffer.sample_batch(self.batch_size)
-                    self.update(data=batch, first_player=0 if j < first_player_epoch_learning else 1)
+                    self.update(data=batch, first_player=0 if t < first_player_epoch_learning * self.steps_per_epoch  else 1)
 
             # End of epoch handling
             if (t + 1) % self.steps_per_epoch == 0:
