@@ -253,6 +253,28 @@ def download_zs_sac_script() -> None:
     )
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
+def download_sac_zs_models() -> None:
+    """
+    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    """
+    model_zs_dir = "model_zs"
+    urls_model_zs = [
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/actor_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/actor_1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/q1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/q1_1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/q2_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/q2_1_cpu.pth"
+    ]
+    if not os.path.isdir(model_zs_dir):
+        os.makedirs(model_zs_dir)
+        print(f"Directory '{model_zs_dir}' created.")
+    else:
+        if not os.listdir(model_zs_dir):
+            print(f"Directory '{model_zs_dir}' exists but is empty.")
+        else:
+            print(f"Directory '{model_zs_dir}' already exists and is not empty.")
+
 
 
 
@@ -302,6 +324,8 @@ def download_everything(input_keywords) -> np.ndarray:
         download_sac_models()
     if "ZS_SAC" in keywords:
         download_zs_sac_script()
+    if "ZS_SAC_MODELS" in keywords:
+        download_sac_zs_models()
 
 
     return trajectory
@@ -317,3 +341,4 @@ if __name__ == "__main__":
     result = download_everything(user_input)
     if result is not None:
         print("Processed trajectory array shape:", result.shape)
+
