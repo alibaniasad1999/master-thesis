@@ -1,0 +1,43 @@
+\documentclass[tikz, border=5pt]{standalone}
+
+% Required packages
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{tikzviolinplots}
+\pgfplotsset{compat=1.18}
+
+% Custom command for violin plot
+\newcommand{\myviolinplot}[7]{%
+	\begin{tikzpicture}
+		\violinsetoptions[
+		data points,
+		scaled,
+		]{
+			xmin=#2,xmax=#3,
+			ymin=#4,ymax=#5,
+			title={},
+			xlabel={},
+			ylabel={Normalized Cumulative Reward},
+			xlabel style={yshift = {-2*height("a")}},
+			ymajorgrids=true,
+		}
+		\violinplotwholefile[%
+		primary color=blue,
+		secondary color=orange,
+		indexes={#6},
+		spacing=2.0,
+		labels={#7},
+		col sep=space,
+		dataset size=2pt,
+		dataset mark=diamond*,
+		dataset fill=blue!50!white,
+		dataset fill opacity=1.0,
+		]{#1}
+	\end{tikzpicture}%
+}
+
+\begin{document}
+	
+	\myviolinplot{sensor_noise.dat}{0}{4}{-5}{70}{Zero_Sum_sac,Standard_sac}{Zero Sum SAC, Standard SAC}
+	
+\end{document}
