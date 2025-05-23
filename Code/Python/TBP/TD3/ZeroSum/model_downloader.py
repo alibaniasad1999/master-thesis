@@ -311,17 +311,6 @@ def download_td3_models() -> None:
         file_path = os.path.join(model_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
 
-def download_zs_td3_script() -> None:
-    """
-    Downloads only the Zero_Sum_TD3.py script.
-    """
-    zero_sum_script = "Zero_Sum_TD3.py"
-    zero_sum_url = (
-        "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/refs/heads/main/"
-        "Code/Python/Algorithms/TD3/Zero_Sum_TD3.py"
-    )
-    download_file(zero_sum_url, zero_sum_script, use_wget=True)
-
 
 
 
