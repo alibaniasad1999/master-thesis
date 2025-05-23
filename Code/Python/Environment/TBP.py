@@ -6,7 +6,7 @@ from gymnasium import spaces
 from matplotlib import pyplot as plt
 
 if not os.path.isfile("trajectory.csv"):
-    url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/SAC/trajectory.csv"
+    url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/Environment/trajectory.csv"
     print("Downloading trajectory.csv...")
     urllib.request.urlretrieve(url, "trajectory.csv")
     print("Download complete.")
