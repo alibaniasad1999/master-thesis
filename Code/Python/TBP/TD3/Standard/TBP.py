@@ -6,7 +6,7 @@ from gymnasium import spaces
 from matplotlib import pyplot as plt
 
 if not os.path.isfile("trajectory.csv"):
-    url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/SAC/trajectory.csv"
+    url = "https://raw.githubusercontent.com/alibaniasad1999/master-thesis/main/Code/Python/TBP/Environment/trajectory.csv"
     print("Downloading trajectory.csv...")
     urllib.request.urlretrieve(url, "trajectory.csv")
     print("Download complete.")
@@ -67,6 +67,10 @@ class ThreeBodyEnv(gym.Env):
         ydot = self.position[3]
 
         # force = action[0] * env.state[2:] + action[1] * env.state[:2]
+        # clip action
+        action = np.clip(action, self.action_space.low, self.action_space.high)
+        action_2 = np.clip(action_2, self.action_space.low, self.action_space.high)
+
         a_x = action[0] / 100
         a_y = action[1] / 100
         # add second player action
