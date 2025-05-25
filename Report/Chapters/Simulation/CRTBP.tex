@@ -1,4 +1,4 @@
-\section{مسئله سه‌جسمی محدود دایره‌ای}
+%\section{مسئله سه‌جسمی محدود دایره‌ای}
 
 %مسئله عمومی سه‌جسمی مسیرهای سه جسم پرجرم دلخواه را بررسی می‌کند که تحت تأثیر جاذبه متقابل قرار دارند. با این حال، این مسئله به مراتب عمومی‌تر از آن چیزی است که طراحان مأموریت‌های عملیاتی نیاز دارند. دو ساده‌سازی رایج وجود دارد که برای قابل دسترس‌تر و کاربردی‌تر کردن این مسئله در مسیرهای واقعی معمولاً انجام می‌شود. این ساده‌سازی‌ها عبارتند از:
 %\begin{enumerate}
@@ -15,82 +15,82 @@
 \pgfmathsetmacro{\Phi}{-160}
 \pgfmathsetmacro{\Theta}{-90}
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		%Grid
-		%		\draw[thin, dotted] (0,0) grid (8,8);
-		%		\foreach \i in {1,...,8}
-		%		{
-			%			\node at (\i,-2ex) {\i};	
-			%		}
-		%		\foreach \i in {1,...,8}
-		%		{
-			%			\node at (-2ex,\i) {\i};	
-			%		}
-		%		\node at (-2ex,-2ex) {0};
-		
-		% Coordinates
-		\coordinate (earth) at (1,2);
-		\coordinate (moon) at (8,1);
-		\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
-		\coordinate (A) at (-.5,.5);
-		\coordinate (B) at (8.5,-0.5);
-		
-		% Earth
-		\draw[thick, fill=black!30, draw=black!30
-		] (earth) circle (\r);
-		\node[inner sep=0pt] (Earth_c) at (earth) {\includegraphics[width=1.8cm]{../Figure/TBP/Earth.png}};
-		% Text
-		\node[below, shift={(0,-0.8)}] at (earth) {$m_1$};
-		\node (a) at (A) {Earth};
-		
-		% Moon
-		\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
-		\node[inner sep=0pt] (moon_c) at (moon) {\includegraphics[width=.5cm]{../Figure/TBP/Moon.png}};
-		% Text 
-		\node[below, shift={(0,-0.4)}] at (MOON) {$m_2$};
-		\node (b) at (B) {Moon};
-		
-		% Lines
-		% \draw[-latex] (earth) -- (MOON) node[pos=.55, below left] {$\vb{r}_o$};
-		% \draw[-latex] (earth) -- (earth-point1) node [pos=0.6, left] {$\vb{r}$};
-		\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
-		\draw[-stealth] (b) to[bend left=-30] (MOON);
-		\draw[dashed, black] (earth) -- (MOON.center);
-		
-		% center of mass 0.25 from earth
-		\coordinate (center) at ($(earth)!0.3!(MOON)$);
-		% small circle
-		\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
-		% add satellite with shift
-		\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
-		% \node at ($(center)!0.5!(MOON)+(0,2)$) {\faSatellite};
-		% shift coordinate
-		\node (satellite) at (satellite) {\faSatellite};
-		
-		% connect earth to satellite r1
-		\draw[-stealth] (earth) -- (satellite) node[pos=0.5, above] {$\vb{r}_1$};   
-		% connect moon to satellite r2
-		\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
-		% connect center of mass to satellite r
-		\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
-		% add line to show satellite is in between
-		\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
-		\draw[-stealth] (c) to[bend left=30] (satellite);
-		
-		
-		
-		
-		
-		% % Angles
-		% \pic[draw, "$\theta$", angle eccentricity=2.5, angle radius=5pt] {angle = moon--earth--earth-point1};
-		
-		% % Point
-		% \draw[fill=black] (earth) circle (1pt) node[below, shift={(0,-0.1)}] {$\mathrm{O}$};
-	\end{tikzpicture}
-	\caption{هندسه مسئله سه بدنه محدود}
-\end{figure}
+%\begin{figure}[H]
+%	\centering
+%	\begin{tikzpicture}
+%		%Grid
+%		%		\draw[thin, dotted] (0,0) grid (8,8);
+%		%		\foreach \i in {1,...,8}
+%		%		{
+%			%			\node at (\i,-2ex) {\i};	
+%			%		}
+%		%		\foreach \i in {1,...,8}
+%		%		{
+%			%			\node at (-2ex,\i) {\i};	
+%			%		}
+%		%		\node at (-2ex,-2ex) {0};
+%		
+%		% Coordinates
+%		\coordinate (earth) at (1,2);
+%		\coordinate (moon) at (8,1);
+%		\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
+%		\coordinate (A) at (-.5,.5);
+%		\coordinate (B) at (8.5,-0.5);
+%		
+%		% Earth
+%		\draw[thick, fill=black!30, draw=black!30
+%		] (earth) circle (\r);
+%		\node[inner sep=0pt] (Earth_c) at (earth) {\includegraphics[width=1.8cm]{../Figure/TBP/Earth.png}};
+%		% Text
+%		\node[below, shift={(0,-0.8)}] at (earth) {$m_1$};
+%		\node (a) at (A) {Earth};
+%		
+%		% Moon
+%		\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
+%		\node[inner sep=0pt] (moon_c) at (moon) {\includegraphics[width=.5cm]{../Figure/TBP/Moon.png}};
+%		% Text 
+%		\node[below, shift={(0,-0.4)}] at (MOON) {$m_2$};
+%		\node (b) at (B) {Moon};
+%		
+%		% Lines
+%		% \draw[-latex] (earth) -- (MOON) node[pos=.55, below left] {$\vb{r}_o$};
+%		% \draw[-latex] (earth) -- (earth-point1) node [pos=0.6, left] {$\vb{r}$};
+%		\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
+%		\draw[-stealth] (b) to[bend left=-30] (MOON);
+%		\draw[dashed, black] (earth) -- (MOON.center);
+%		
+%		% center of mass 0.25 from earth
+%		\coordinate (center) at ($(earth)!0.3!(MOON)$);
+%		% small circle
+%		\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
+%		% add satellite with shift
+%		\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
+%		% \node at ($(center)!0.5!(MOON)+(0,2)$) {\faSatellite};
+%		% shift coordinate
+%		\node (satellite) at (satellite) {\faSatellite};
+%		
+%		% connect earth to satellite r1
+%		\draw[-stealth] (earth) -- (satellite) node[pos=0.5, above] {$\vb{r}_1$};   
+%		% connect moon to satellite r2
+%		\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
+%		% connect center of mass to satellite r
+%		\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
+%		% add line to show satellite is in between
+%		\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
+%		\draw[-stealth] (c) to[bend left=30] (satellite);
+%		
+%		
+%		
+%		
+%		
+%		% % Angles
+%		% \pic[draw, "$\theta$", angle eccentricity=2.5, angle radius=5pt] {angle = moon--earth--earth-point1};
+%		
+%		% % Point
+%		% \draw[fill=black] (earth) circle (1pt) node[below, shift={(0,-0.1)}] {$\mathrm{O}$};
+%	\end{tikzpicture}
+%	\caption{هندسه مسئله سه بدنه محدود}
+%\end{figure}
 
 
 
@@ -102,153 +102,153 @@
 
 
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		% Coordinates
-		\coordinate (earth) at (1,2);
-		\coordinate (moon) at (8,1);
-		\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
-		\coordinate (A) at (-.5,.5);
-		\coordinate (B) at (8.5,-0.5);
-		
-		% Earth
-		\draw[thick, fill=black!30, draw=black!30
-		] (earth) circle (\r);
-		\node[inner sep=0pt] (Earth_c) at (earth) {\includegraphics[width=1.8cm]{../Figure/TBP/Earth.png}};
-		% Text
-		\node[below, shift={(0,-0.8)}] at (earth) {$m_1$};
-		\node (a) at (A) {Earth};
-		
-		% Moon
-		\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
-		\node[inner sep=0pt] (moon_c) at (moon) {\includegraphics[width=.5cm]{../Figure/TBP/Moon.png}};
-		% Text 
-		\node[below, shift={(0,-0.4)}] at (MOON) {$m_2$};
-		\node (b) at (B) {Moon};
-		
-		% Lines
-		\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
-		\draw[-stealth] (b) to[bend left=-30] (MOON);
-		\draw[dashed, black] (earth) -- (MOON.center);
-		
-		% center of mass 0.25 from earth
-		\coordinate (center) at ($(earth)!0.3!(MOON)$);
-		% small circle
-		\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
-		
-		% Calculate direction from Earth to Moon
-		\pgfmathsetmacro{\xDiff}{8 - 1} % X difference between Moon and Earth
-		\pgfmathsetmacro{\yDiff}{1 - 2} % Y difference between Moon and Earth
-		\pgfmathsetmacro{\angle}{atan2(\yDiff,\xDiff)} % Angle of the line
-		
-		% Add axes at center of mass
-		\draw[->, thick] (center) -- ++(\angle:2) node[above, shift={(0,0.2)}] {X-axis};
-		\draw[->, thick] (center) -- ++(\angle+90:2) node[above] {Y-axis};
-		
-		% add satellite with shift
-		\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
-		\node (satellite) at (satellite) {\faSatellite};
-		
-		% connect earth to satellite r1
-		\draw[-stealth] (earth) -- (satellite) node[pos=0.3, above] {$\vb{r}_1$};   
-		% connect moon to satellite r2
-		\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
-		% connect center of mass to satellite r
-		\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
-		% add line to show satellite is in between
-		\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
-		\draw[-stealth] (c) to[bend left=30] (satellite);
-		
-	\end{tikzpicture}
-	\caption{هندسه مسئله سه بدنه محدود}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{table}[H]
-	\centering
-	\caption{مقادیر عددی برای مسئله سه‌جسمی محدود (سیستم زمین-ماه)}
-	\begin{tabular}{|c|c|c|}
-		\hline
-		پارامتر & توصیف & مقدار عددی \\
-		\hline
-		$m_1$ & جرم زمین & $5.972 \times 10^{24}\,\mathrm{kg}$ \\
-		$m_2$ & جرم ماه & $7.348 \times 10^{22}\,\mathrm{kg}$ \\
-		$\mu$ & نسبت جرمی & $0.0121505856$ \\
-		$\omega$ & سرعت زاویه‌ای سیستم & $2.6617 \times 10^{-6}\,\mathrm{rad/s}$ \\
-		\hline
-	\end{tabular}
-	\label{tab:params}
-\end{table}
-
-
-در مسئله‌ی سه‌جسمی محدود دایره‌ای (\lr{CRTBP}) دو جرم بزرگ زمین و ماه در حال گردش دایره‌ای حول مرکز جرم مشترک هستند و جرم سوم فضاپیما که بسیار کوچک و تقریباً بی‌اثر است، تحت تاثیر گرانش آن دو حرکت می‌کند. فرض شده است که جرم سوم آن‌قدر کوچک است که تاثیری بر حرکت دو جرم اصلی ندارد. برای تحلیل این مسئله، یک دستگاه مختصات چرخان هم‌دوران با دو جرم اصلی انتخاب شده است به‌طوری‌که مرکز مختصات در مرکز جرم سیستم باشد و محور $x$ خط واصل دو جرم و محور $y$ عمود بر آن در صفحه‌ی حرکت باشد (صفحه‌ی مداری دو جرم اصلی). سرعت زاویه‌ای چرخش این دستگاه برابر سرعت مداری دو جرم اصلی ( $\omega=1$ در دستگاه بی‌بعد) در نظر گرفته شده است. واحد طول برابر با فاصله‌ی بین دو جرم اصلی و واحد زمان چنان انتخاب شده است که دوره‌ی مداری دو جرم اصلی $2\pi$ (و در نتیجه $\omega=1$) شود. همچنین مجموع جرم‌های دو جرم اصلی برابر یک در نظر گرفته شده است. بر این اساس اگر $\mu$ نسبت جرمی جرم دوم (کوچک‌تر) باشد ($\mu=\dfrac{m_2}{m_1+m_2}$)، آن‌گاه جرم اول $m_1=1-\mu$ و جرم دوم $m_2=\mu$ خواهد بود. در مبدأ مختصات چرخان که مرکز جرم است، موقعیت جرم اول روی محور $x$ برابر $(-\mu,\,0)$ و جرم دوم برابر $(1-\mu,\,0)$ است.  
-
-در این چارچوب مرجع چرخان، جرم سوم یک **لاگرانژی** (تابع لاگرانژ) دارد که شامل انرژی جنبشی آن و پتانسیل گرانشی دو جرم اصلی به‌همراه پتانسیل موثر مرکزگرا (ناشی از چارچوب غیرلخت) است. با نرمال‌سازی ثابت گرانش به $G=1$، می‌توان **لاگرانژی** سیستم را به صورت زیر نوشت
-\cite{vallado2001fundamentals}:
-
-$$ 
-L = T - V = \dfrac{1}{2}\Big(\dot{x}^2+\dot{y}^2+\dot{z}^2\Big)-\Bigg[-\dfrac{1-\mu}{r_1}-\dfrac{\mu}{r_2}-\dfrac{1}{2}(x^2+y^2)\Bigg]~, 
-$$
-
-که در آن $T$ انرژی جنبشی ذره‌ی کوچک و $V$ پتانسیل آن است. عبارت داخل کروشه در واقع پتانسیل گرانشی دو جرم اصلی به‌همراه پتانسیل گریز از مرکز (با علامت منفی) است: به‌ترتیب $-\dfrac{1-\mu}{r_1}$ و $-\dfrac{\mu}{r_2}$ پتانسیل گرانشی جرم‌های اول و دوم در نقطه‌ی $(x,y,z)$ ذره‌ی کوچک (با فواصل $r_1$ و $r_2$ تا آن دو جرم)، و $-\dfrac{1}{2}(x^2+y^2)$ پتانسیل سانتریفیوژ معادل در دستگاه چرخان است. بنابراین تابع لاگرانژ را می‌توان به صورت جمع انرژی جنبشی و «پتانسیل موثر» زیر نوشت:
-
-$$
-L = \dfrac{1}{2}\Big(\dot{x}^2+\dot{y}^2+\dot{z}^2\Big)+(1-\mu)\dfrac{1}{r_1}+\mu\dfrac{1}{r_2}+\dfrac{1}{2}(x^2+y^2)~,
-$$
-
-که در آن $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ فاصله‌ی جرم سوم از جرم اول و $r_2=\sqrt{(x-1+\mu)^2+y^2+z^2}$ فاصله از جرم دوم است. اکنون با به‌کارگیری اصل کمینه‌کردن کنش ($\delta S=0$) و نوشتن معادلات اویلر-لاگرانژ برای مختصات $x, y, z$، معادلات حرکت در این دستگاه به‌دست می‌آیند. شرط اویلر-لاگرانژ برای هر مختصه (مثلاً $x$) به شکل $\dfrac{d}{dt}\dfrac{\partial L}{\partial \dot{x}} - \dfrac{\partial L}{\partial x}=0$ نوشته می‌شود. مشتقات لازم را محاسبه می‌کنیم:
-
-- $\displaystyle \dfrac{\partial L}{\partial \dot{x}} = \dot{x}$، پس $\dfrac{d}{dt}\dfrac{\partial L}{\partial \dot{x}} = \ddot{x}$،  
-- $\displaystyle \dfrac{\partial L}{\partial x} = (1-\mu)\,\dfrac{\partial}{\partial x}\dfrac{1}{r_1} + \mu\,\dfrac{\partial}{\partial x}\dfrac{1}{r_2} + \dfrac{\partial}{\partial x}\Big(\dfrac{1}{2}x^2\Big)$ 
-
-با توجه به $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ و $r_2=\sqrt{(x-1+\mu)^2+y^2+z^2}$، مشتق‌های جزئی پتانسیل‌ها عبارتند از:
-
-$$ 
-\dfrac{\partial}{\partial x}\dfrac{1}{r_1} = -\dfrac{x+\mu}{r_1^3}~, \qquad 
-\dfrac{\partial}{\partial x}\dfrac{1}{r_2} = -\dfrac{x-(1-\mu)}{r_2^3}~, \qquad 
-\dfrac{\partial}{\partial x}\Big(\dfrac{1}{2}x^2\Big) = x~. 
-$$
-
-بنابراین:
-
-$$ 
-\dfrac{\partial L}{\partial x} = -(1-\mu)\dfrac{x+\mu}{r_1^3} - \mu\,\dfrac{x-(1-\mu)}{r_2^3} + x~. 
-$$
-
-با قرار دادن این در معادله‌ی اویلر-لاگرانژ $\ddot{x} - \dfrac{\partial L}{\partial x}=0$، معادله‌ی $x$ به‌دست می‌آید. به‌طور مشابه برای $y$ و $z$ نیز عمل می‌کنیم. بدین‌ترتیب، **معادلات لاگرانژ (معادلات حرکت)** در دستگاه چرخان برای ذره‌ی سوم به صورت زیر حاصل می‌شوند:
-
-$$ 
-\begin{cases}
-	\displaystyle \ddot{x} - 2\,\dot{y} = x - \dfrac{1-\mu}{r_1^3}(x+\mu) - \dfrac{\mu}{r_2^3}\Big(x-(1-\mu)\Big)~,  \\[2ex]
-	\displaystyle \ddot{y} + 2\,\dot{x} = y - \dfrac{1-\mu}{r_1^3}\,y - \dfrac{\mu}{r_2^3}\,y~,  \\[2ex]
-	\displaystyle \ddot{z} = -\,\dfrac{1-\mu}{r_1^3}\,z - \dfrac{\mu}{r_2^3}\,z~, 
-\end{cases}
-$$
-
-که در آن $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ و $r_2=\sqrt{\big(x-(1-\mu)\big)^2+y^2+z^2}$ همان‌گونه که تعریف شد. این معادلات لاگرانژ حاصل اصل کمینه‌سازی کنش هستند و معادلات کامل حرکت جرم سوم (با جرم ناچیز) را تحت گرانش دو جرم اولیه در حالت دایره‌ای بیان می‌کنند. توجه شود که وجود ترم‌های کورولیس ($2\,\dot{y}$ در معادله $x$ و $2\,\dot{x}$ در معادله $y$) نتیجه‌ی استفاده از دستگاه مرجع چرخان است. همچنین می‌توان این معادلات را به شکل برداری $ \ddot{\mathbf{r}} + 2\,\mathbf{\omega}\times \dot{\mathbf{r}} = \nabla \Omega(\mathbf{r})$ نیز بیان کرد که در آن $\Omega(x,y,z) = \dfrac{1}{2}(x^2+y^2) + \dfrac{1-\mu}{r_1} + \dfrac{\mu}{r_2}$ پتانسیل موثر در دستگاه چرخان است و گرادیان آن نیروهای موثر (گرانشی و گریز از مرکز) را نتیجه می‌دهد.
-
-
-
-
-
+%\begin{figure}[H]
+%	\centering
+%	\begin{tikzpicture}
+%		% Coordinates
+%		\coordinate (earth) at (1,2);
+%		\coordinate (moon) at (8,1);
+%		\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
+%		\coordinate (A) at (-.5,.5);
+%		\coordinate (B) at (8.5,-0.5);
+%		
+%		% Earth
+%		\draw[thick, fill=black!30, draw=black!30
+%		] (earth) circle (\r);
+%		\node[inner sep=0pt] (Earth_c) at (earth) {\includegraphics[width=1.8cm]{../Figure/TBP/Earth.png}};
+%		% Text
+%		\node[below, shift={(0,-0.8)}] at (earth) {$m_1$};
+%		\node (a) at (A) {Earth};
+%		
+%		% Moon
+%		\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
+%		\node[inner sep=0pt] (moon_c) at (moon) {\includegraphics[width=.5cm]{../Figure/TBP/Moon.png}};
+%		% Text 
+%		\node[below, shift={(0,-0.4)}] at (MOON) {$m_2$};
+%		\node (b) at (B) {Moon};
+%		
+%		% Lines
+%		\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
+%		\draw[-stealth] (b) to[bend left=-30] (MOON);
+%		\draw[dashed, black] (earth) -- (MOON.center);
+%		
+%		% center of mass 0.25 from earth
+%		\coordinate (center) at ($(earth)!0.3!(MOON)$);
+%		% small circle
+%		\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
+%		
+%		% Calculate direction from Earth to Moon
+%		\pgfmathsetmacro{\xDiff}{8 - 1} % X difference between Moon and Earth
+%		\pgfmathsetmacro{\yDiff}{1 - 2} % Y difference between Moon and Earth
+%		\pgfmathsetmacro{\angle}{atan2(\yDiff,\xDiff)} % Angle of the line
+%		
+%		% Add axes at center of mass
+%		\draw[->, thick] (center) -- ++(\angle:2) node[above, shift={(0,0.2)}] {X-axis};
+%		\draw[->, thick] (center) -- ++(\angle+90:2) node[above] {Y-axis};
+%		
+%		% add satellite with shift
+%		\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
+%		\node (satellite) at (satellite) {\faSatellite};
+%		
+%		% connect earth to satellite r1
+%		\draw[-stealth] (earth) -- (satellite) node[pos=0.3, above] {$\vb{r}_1$};   
+%		% connect moon to satellite r2
+%		\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
+%		% connect center of mass to satellite r
+%		\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
+%		% add line to show satellite is in between
+%		\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
+%		\draw[-stealth] (c) to[bend left=30] (satellite);
+%		
+%	\end{tikzpicture}
+%	\caption{هندسه مسئله سه بدنه محدود}
+%\end{figure}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%\begin{table}[H]
+%	\centering
+%	\caption{مقادیر عددی برای مسئله سه‌جسمی محدود (سیستم زمین-ماه)}
+%	\begin{tabular}{|c|c|c|}
+%		\hline
+%		پارامتر & توصیف & مقدار عددی \\
+%		\hline
+%		$m_1$ & جرم زمین & $5.972 \times 10^{24}\,\mathrm{kg}$ \\
+%		$m_2$ & جرم ماه & $7.348 \times 10^{22}\,\mathrm{kg}$ \\
+%		$\mu$ & نسبت جرمی & $0.0121505856$ \\
+%		$\omega$ & سرعت زاویه‌ای سیستم & $2.6617 \times 10^{-6}\,\mathrm{rad/s}$ \\
+%		\hline
+%	\end{tabular}
+%	\label{tab:params}
+%\end{table}
+%
+%
+%در مسئله‌ی سه‌جسمی محدود دایره‌ای (\lr{CRTBP}) دو جرم بزرگ زمین و ماه در حال گردش دایره‌ای حول مرکز جرم مشترک هستند و جرم سوم فضاپیما که بسیار کوچک و تقریباً بی‌اثر است، تحت تاثیر گرانش آن دو حرکت می‌کند. فرض شده است که جرم سوم آن‌قدر کوچک است که تاثیری بر حرکت دو جرم اصلی ندارد. برای تحلیل این مسئله، یک دستگاه مختصات چرخان هم‌دوران با دو جرم اصلی انتخاب شده است به‌طوری‌که مرکز مختصات در مرکز جرم سیستم باشد و محور $x$ خط واصل دو جرم و محور $y$ عمود بر آن در صفحه‌ی حرکت باشد (صفحه‌ی مداری دو جرم اصلی). سرعت زاویه‌ای چرخش این دستگاه برابر سرعت مداری دو جرم اصلی ( $\omega=1$ در دستگاه بی‌بعد) در نظر گرفته شده است. واحد طول برابر با فاصله‌ی بین دو جرم اصلی و واحد زمان چنان انتخاب شده است که دوره‌ی مداری دو جرم اصلی $2\pi$ (و در نتیجه $\omega=1$) شود. همچنین مجموع جرم‌های دو جرم اصلی برابر یک در نظر گرفته شده است. بر این اساس اگر $\mu$ نسبت جرمی جرم دوم (کوچک‌تر) باشد ($\mu=\dfrac{m_2}{m_1+m_2}$)، آن‌گاه جرم اول $m_1=1-\mu$ و جرم دوم $m_2=\mu$ خواهد بود. در مبدأ مختصات چرخان که مرکز جرم است، موقعیت جرم اول روی محور $x$ برابر $(-\mu,\,0)$ و جرم دوم برابر $(1-\mu,\,0)$ است.  
+%
+%در این چارچوب مرجع چرخان، جرم سوم یک **لاگرانژی** (تابع لاگرانژ) دارد که شامل انرژی جنبشی آن و پتانسیل گرانشی دو جرم اصلی به‌همراه پتانسیل موثر مرکزگرا (ناشی از چارچوب غیرلخت) است. با نرمال‌سازی ثابت گرانش به $G=1$، می‌توان **لاگرانژی** سیستم را به صورت زیر نوشت
+%\cite{vallado2001fundamentals}:
+%
+%$$ 
+%L = T - V = \dfrac{1}{2}\Big(\dot{x}^2+\dot{y}^2+\dot{z}^2\Big)-\Bigg[-\dfrac{1-\mu}{r_1}-\dfrac{\mu}{r_2}-\dfrac{1}{2}(x^2+y^2)\Bigg]~, 
+%$$
+%
+%که در آن $T$ انرژی جنبشی ذره‌ی کوچک و $V$ پتانسیل آن است. عبارت داخل کروشه در واقع پتانسیل گرانشی دو جرم اصلی به‌همراه پتانسیل گریز از مرکز (با علامت منفی) است: به‌ترتیب $-\dfrac{1-\mu}{r_1}$ و $-\dfrac{\mu}{r_2}$ پتانسیل گرانشی جرم‌های اول و دوم در نقطه‌ی $(x,y,z)$ ذره‌ی کوچک (با فواصل $r_1$ و $r_2$ تا آن دو جرم)، و $-\dfrac{1}{2}(x^2+y^2)$ پتانسیل سانتریفیوژ معادل در دستگاه چرخان است. بنابراین تابع لاگرانژ را می‌توان به صورت جمع انرژی جنبشی و «پتانسیل موثر» زیر نوشت:
+%
+%$$
+%L = \dfrac{1}{2}\Big(\dot{x}^2+\dot{y}^2+\dot{z}^2\Big)+(1-\mu)\dfrac{1}{r_1}+\mu\dfrac{1}{r_2}+\dfrac{1}{2}(x^2+y^2)~,
+%$$
+%
+%که در آن $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ فاصله‌ی جرم سوم از جرم اول و $r_2=\sqrt{(x-1+\mu)^2+y^2+z^2}$ فاصله از جرم دوم است. اکنون با به‌کارگیری اصل کمینه‌کردن کنش ($\delta S=0$) و نوشتن معادلات اویلر-لاگرانژ برای مختصات $x, y, z$، معادلات حرکت در این دستگاه به‌دست می‌آیند. شرط اویلر-لاگرانژ برای هر مختصه (مثلاً $x$) به شکل $\dfrac{d}{dt}\dfrac{\partial L}{\partial \dot{x}} - \dfrac{\partial L}{\partial x}=0$ نوشته می‌شود. مشتقات لازم را محاسبه می‌کنیم:
+%
+%- $\displaystyle \dfrac{\partial L}{\partial \dot{x}} = \dot{x}$، پس $\dfrac{d}{dt}\dfrac{\partial L}{\partial \dot{x}} = \ddot{x}$،  
+%- $\displaystyle \dfrac{\partial L}{\partial x} = (1-\mu)\,\dfrac{\partial}{\partial x}\dfrac{1}{r_1} + \mu\,\dfrac{\partial}{\partial x}\dfrac{1}{r_2} + \dfrac{\partial}{\partial x}\Big(\dfrac{1}{2}x^2\Big)$ 
+%
+%با توجه به $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ و $r_2=\sqrt{(x-1+\mu)^2+y^2+z^2}$، مشتق‌های جزئی پتانسیل‌ها عبارتند از:
+%
+%$$ 
+%\dfrac{\partial}{\partial x}\dfrac{1}{r_1} = -\dfrac{x+\mu}{r_1^3}~, \qquad 
+%\dfrac{\partial}{\partial x}\dfrac{1}{r_2} = -\dfrac{x-(1-\mu)}{r_2^3}~, \qquad 
+%\dfrac{\partial}{\partial x}\Big(\dfrac{1}{2}x^2\Big) = x~. 
+%$$
+%
+%بنابراین:
+%
+%$$ 
+%\dfrac{\partial L}{\partial x} = -(1-\mu)\dfrac{x+\mu}{r_1^3} - \mu\,\dfrac{x-(1-\mu)}{r_2^3} + x~. 
+%$$
+%
+%با قرار دادن این در معادله‌ی اویلر-لاگرانژ $\ddot{x} - \dfrac{\partial L}{\partial x}=0$، معادله‌ی $x$ به‌دست می‌آید. به‌طور مشابه برای $y$ و $z$ نیز عمل می‌کنیم. بدین‌ترتیب، **معادلات لاگرانژ (معادلات حرکت)** در دستگاه چرخان برای ذره‌ی سوم به صورت زیر حاصل می‌شوند:
+%
+%$$ 
+%\begin{cases}
+%	\displaystyle \ddot{x} - 2\,\dot{y} = x - \dfrac{1-\mu}{r_1^3}(x+\mu) - \dfrac{\mu}{r_2^3}\Big(x-(1-\mu)\Big)~,  \\[2ex]
+%	\displaystyle \ddot{y} + 2\,\dot{x} = y - \dfrac{1-\mu}{r_1^3}\,y - \dfrac{\mu}{r_2^3}\,y~,  \\[2ex]
+%	\displaystyle \ddot{z} = -\,\dfrac{1-\mu}{r_1^3}\,z - \dfrac{\mu}{r_2^3}\,z~, 
+%\end{cases}
+%$$
+%
+%که در آن $r_1=\sqrt{(x+\mu)^2+y^2+z^2}$ و $r_2=\sqrt{\big(x-(1-\mu)\big)^2+y^2+z^2}$ همان‌گونه که تعریف شد. این معادلات لاگرانژ حاصل اصل کمینه‌سازی کنش هستند و معادلات کامل حرکت جرم سوم (با جرم ناچیز) را تحت گرانش دو جرم اولیه در حالت دایره‌ای بیان می‌کنند. توجه شود که وجود ترم‌های کورولیس ($2\,\dot{y}$ در معادله $x$ و $2\,\dot{x}$ در معادله $y$) نتیجه‌ی استفاده از دستگاه مرجع چرخان است. همچنین می‌توان این معادلات را به شکل برداری $ \ddot{\mathbf{r}} + 2\,\mathbf{\omega}\times \dot{\mathbf{r}} = \nabla \Omega(\mathbf{r})$ نیز بیان کرد که در آن $\Omega(x,y,z) = \dfrac{1}{2}(x^2+y^2) + \dfrac{1-\mu}{r_1} + \dfrac{\mu}{r_2}$ پتانسیل موثر در دستگاه چرخان است و گرادیان آن نیروهای موثر (گرانشی و گریز از مرکز) را نتیجه می‌دهد.
+%
+%
+%
+%
+%
 
 
 
@@ -424,3 +424,159 @@ $$
 %
 %
 %
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ------------------------------------------------------------
+%  Snippet for Master Thesis – Circular Restricted Three‑Body Problem
+%  (concise structure: no \paragraph or excessive sectioning)
+% ------------------------------------------------------------
+
+\section{مسئلهٔ سه‌جسمیِ محدودِ دایره‌ای (\lr{CRTBP})}\label{sec:crtbp}
+
+دو جرمِ اصلی—زمین
+با جرم~$m_{1}$ و ماه با جرم~$m_{2}$—روی مدارهایی دایره‌ای و هم‌صفحه پیرامونِ مرکزِ جرمِ مشترک حرکت می‌کنند. جرمِ سوم (فضاپیما با جرمِ ناچیز $m_{3}$) چنان کوچک فرض می‌شود که تأثیرِ گرانشیِ آن بر حرکتِ دو جسمِ اصلی قابل صرفِ نظر است؛ بدین ترتیب «مسئلهٔ سه‌جسمیِ محدودِ دایره‌ای» شکل می‌گیرد.
+
+
+
+\begin{table}[H]
+	\centering
+	\caption{مقادیر عددی برای مسئله سه‌جسمی محدود (سیستم زمین-ماه)}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		پارامتر & توصیف & مقدار عددی \\
+		\hline
+		$m_1$ & جرم زمین & $5.972 \times 10^{24}\,\mathrm{kg}$ \\
+		$m_2$ & جرم ماه & $7.348 \times 10^{22}\,\mathrm{kg}$ \\
+		$\mu$ & نسبت جرمی & $0.0121505856$ \\
+		$\omega$ & سرعت زاویه‌ای سیستم & $2.6617 \times 10^{-6}\,\mathrm{rad/s}$ \\
+		\hline
+	\end{tabular}
+	\label{tab:params}
+\end{table}
+
+
+
+دستگاهِ مختصاتِ چرخانی هم‌دوران با دو جرم برگزیده می‌شود؛ مبدأ در مرکزِ جرمِ سامانه است، محور~$x$ خطِ واصلِ دو جرم و محور~$y$ بر آن عمود (در صفحهٔ مدارها) است. واحدِ طول برابر فاصلهٔ ثابتِ میان دو جرم و واحدِ زمان چنان تعریف می‌شود که دورهٔ مداریِ سامانه $2\pi$ (و در نتیجه $\omega=1$) گردد. همچنین جرم‌ها به گونه‌ای مقیاس می‌شود که $m_{1}+m_{2}=1$. با نسبتِ جرمی
+\begin{equation}
+	\mu\equiv\frac{m_{2}}{m_{1}+m_{2}},
+\end{equation}
+داریم $m_{1}=1-\mu$ و $m_{2}=\mu$ و مکانِ دو جرم در دستگاهِ بی‌بُعد به صورت
+\begin{equation}
+	\mathbf r_{1}=(-\mu,0),\qquad \mathbf r_{2}=(1-\mu,0).
+\end{equation}
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+	% Coordinates
+	\coordinate (earth) at (1,2);
+	\coordinate (moon) at (8,1);
+	\coordinate (earth-point1) at ({\r*cos(\Theta)+1},{\r*sin(\Theta)+2});
+	\coordinate (A) at (-.5,.5);
+	\coordinate (B) at (8.5,-0.5);
+	
+	% Earth
+	\draw[thick, fill=black!30, draw=black!30
+	] (earth) circle (\r);
+	\node[inner sep=0pt] (Earth_c) at (earth) {\includegraphics[width=1.8cm]{../Figure/TBP/Earth.png}};
+	% Text
+	\node[below, shift={(0,-0.8)}] at (earth) {$m_1$};
+	\node (a) at (A) {Earth};
+	
+	% Moon
+	\node[circle, inner sep=5.5pt, fill=black!30] (MOON) at (moon) {};
+	\node[inner sep=0pt] (moon_c) at (moon) {\includegraphics[width=.5cm]{../Figure/TBP/Moon.png}};
+	% Text 
+	\node[below, shift={(0,-0.4)}] at (MOON) {$m_2$};
+	\node (b) at (B) {Moon};
+	
+	% Lines
+	\draw[-stealth] (a) to[bend left=30] ({\r*cos(\Phi)+1},{\r*sin(\Phi)+2});
+	\draw[-stealth] (b) to[bend left=-30] (MOON);
+	\draw[dashed, black] (earth) -- (MOON.center);
+	
+	% center of mass 0.25 from earth
+	\coordinate (center) at ($(earth)!0.3!(MOON)$);
+	% small circle
+	\draw[fill=black] (center) circle (1.5pt) node[below, shift={(0,-0.1)}] {Center of Mass};
+	
+	% Calculate direction from Earth to Moon
+	\pgfmathsetmacro{\xDiff}{8 - 1} % X difference between Moon and Earth
+	\pgfmathsetmacro{\yDiff}{1 - 2} % Y difference between Moon and Earth
+	\pgfmathsetmacro{\angle}{atan2(\yDiff,\xDiff)} % Angle of the line
+	
+	% Add axes at center of mass
+	\draw[->, thick] (center) -- ++(\angle:2) node[above, shift={(0,0.2)}] {X-axis};
+	\draw[->, thick] (center) -- ++(\angle+90:2) node[above] {Y-axis};
+	
+	% add satellite with shift
+	\coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
+	\node (satellite) at (satellite) {\faSatellite};
+	
+	% connect earth to satellite r1
+	\draw[-stealth] (earth) -- (satellite) node[pos=0.3, above] {$\vb{r}_1$};   
+	% connect moon to satellite r2
+	\draw[-stealth] (MOON) -- (satellite) node[pos=0.5, above] {$\vb{r}_2$};
+	% connect center of mass to satellite r
+	\draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
+	% add line to show satellite is in between
+	\node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
+	\draw[-stealth] (c) to[bend left=30] (satellite);
+	
+\end{tikzpicture}
+\caption{هندسه مسئله سه بدنه محدود}
+\end{figure}
+
+
+
+\textbf{لاگرانژ و معادلات حرکت.} با در نظر گرفتن~$G=1$، تابعِ لاگرانژِ جرمِ سوم در دستگاهِ چرخان برابر است با\cite{vallado2001fundamentals}
+\begin{equation}\label{eq:L_crtbp}
+	L=\tfrac12\bigl(\dot x^{2}+\dot y^{2}+\dot z^{2}\bigr)
+	+(1-\mu)\,\frac{1}{r_{1}}+\mu\,\frac{1}{r_{2}}
+	+\tfrac12\bigl(x^{2}+y^{2}\bigr),
+\end{equation}
+که در آن
+\begin{equation}
+	r_{1}=\sqrt{(x+\mu)^{2}+y^{2}+z^{2}},\qquad
+	r_{2}=\sqrt{\bigl(x-1+\mu\bigr)^{2}+y^{2}+z^{2}}.
+\end{equation}
+
+با به‌کارگیری رابطهٔ اویلر–لاگرانژ
+\begin{equation*}
+	\frac{\mathrm d}{\mathrm dt}\frac{\partial L}{\partial \dot q_{i}}-
+	\frac{\partial L}{\partial q_{i}}=0,\qquad q_{i}\in\{x,y,z\},
+\end{equation*}
+معادلاتِ بی‌بُعدِ حرکتِ جرمِ سوم به دست می‌آید:
+\begin{align}
+	\ddot x-2\dot y &=
+	x-\frac{1-\mu}{r_{1}^{3}}(x+\mu)-\frac{\mu}{r_{2}^{3}}\bigl(x-1+\mu\bigr),\\[2pt]
+	\ddot y+2\dot x &=
+	y-\frac{1-\mu}{r_{1}^{3}}\,y-\frac{\mu}{r_{2}^{3}}\,y,\\[2pt]
+	\ddot z &= -\frac{1-\mu}{r_{1}^{3}}\,z-\frac{\mu}{r_{2}^{3}}\,z.
+\end{align}
+یا به نگاشتِ برداری
+\begin{equation}
+	\ddot{\mathbf r}+2\,\boldsymbol\omega\times\dot{\mathbf r}=\nabla\Omega(\mathbf r),\qquad
+	\Omega(x,y,z)=\tfrac12\bigl(x^{2}+y^{2}\bigr)+\frac{1-\mu}{r_{1}}+\frac{\mu}{r_{2}}.
+\end{equation}
+ترم‌های کورولیس~$\pm2\,\dot{\vphantom y}$ پیامد استفاده از چارچوبِ چرخان است.
