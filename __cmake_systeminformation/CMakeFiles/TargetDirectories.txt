@@ -1,2 +1,0 @@
-/Users/Ali/Documents/BAI/Master/master-thesis/__cmake_systeminformation/CMakeFiles/edit_cache.dir
-/Users/Ali/Documents/BAI/Master/master-thesis/__cmake_systeminformation/CMakeFiles/rebuild_cache.dir
