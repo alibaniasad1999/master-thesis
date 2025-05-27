@@ -19,7 +19,7 @@ set(CMAKE_PREFIX_PATH "/Users/Ali/Documents/BAI/BAI_programming/libtorch")
 find_package(Torch REQUIRED)
 
 # Add the executable
-add_executable(C_Torch src/main.cpp)
+add_executable(C_Torch main.cpp)
 
 # Link Torch libraries to the executable
 target_link_libraries(C_Torch "${TORCH_LIBRARIES}")

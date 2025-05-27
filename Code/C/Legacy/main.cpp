@@ -17,7 +17,7 @@ int main() {
     std::cout << tensor << std::endl;
 
     // load model
-    std::string model_path = "../model/sac_mbk_pi_model.pt";
+    std::string model_path = "model/sac_mbk_pi_model.pt";
 
     // Create an ifstream object to check if the file exists
     std::ifstream file(model_path.c_str());
