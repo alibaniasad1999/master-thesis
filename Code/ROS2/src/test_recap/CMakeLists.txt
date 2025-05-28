@@ -13,7 +13,7 @@ find_package(std_msgs REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 add_executable(pub_node src/publish_node.cpp)
-add_executable(sub_node src/subscribe_node.cpp)
+add_executable(sub_node src/subscription_node.cpp)
 ament_target_dependencies(pub_node rclcpp std_msgs)
 ament_target_dependencies(sub_node rclcpp std_msgs)
 if(BUILD_TESTING)
