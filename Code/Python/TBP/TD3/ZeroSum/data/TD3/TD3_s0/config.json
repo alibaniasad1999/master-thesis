@@ -8,7 +8,7 @@
     "act_noise":	0.1,
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
-    "env_fn":	"<function <lambda> at 0x16020ec00>",
+    "env_fn":	"<function <lambda> at 0x15eb12b60>",
     "epochs":	50,
     "exp_name":	"TD3",
     "first_player_start_learning_epoch":	20,
@@ -28,7 +28,7 @@
     "save_freq":	1,
     "seed":	0,
     "self":	{
-        "<Zero_Sum_TD3.ZS_TD3 object at 0x160394a10>":	{
+        "<Zero_Sum_TD3.ZS_TD3 object at 0x15eaf4bd0>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -38,12 +38,12 @@
             "act_noise":	0.1,
             "actor_critic":	"MLPActorCritic",
             "batch_size":	1024,
-            "env_fn":	"<function <lambda> at 0x16020ec00>",
+            "env_fn":	"<function <lambda> at 0x15eb12b60>",
             "epochs":	50,
             "first_player_start_learning_epoch":	20,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x16030b790>":	{
+                "<utils.logx.EpochLogger object at 0x158d3eb10>":	{
                     "epoch_dict":	{},
                     "exp_name":	"TD3",
                     "first_row":	true,

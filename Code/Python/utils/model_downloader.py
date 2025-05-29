@@ -322,6 +322,32 @@ def download_zs_td3_script() -> None:
     )
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
+def download_zs_td3_models() -> None:
+    """
+    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    """
+    model_zs_dir = "model_zs"
+    urls_model_zs = [
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/actor_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/actor_1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/q1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/q1_1_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/q2_cpu.pth",
+        "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/q2_1_cpu.pth"
+    ]
+    if not os.path.isdir(model_zs_dir):
+        os.makedirs(model_zs_dir)
+        print(f"Directory '{model_zs_dir}' created.")
+    else:
+        if not os.listdir(model_zs_dir):
+            print(f"Directory '{model_zs_dir}' exists but is empty.")
+        else:
+            print(f"Directory '{model_zs_dir}' already exists and is not empty.")
+    for url in urls_model_zs:
+        file_path = os.path.join(model_zs_dir, os.path.basename(url))
+        download_file(url, file_path, use_wget=True)
+
+
 
 
 

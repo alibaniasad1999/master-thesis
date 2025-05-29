@@ -432,7 +432,7 @@ class ZS_TD3:
 
     def compute_loss_pi_1(self, data):
         o = data['obs']
-        q1_pi = self.ac_1.q1(o, self.ac.pi(o))
+        q1_pi = self.ac_1.q1(o, self.ac_1.pi(o))
         return -q1_pi.mean()
 
 
