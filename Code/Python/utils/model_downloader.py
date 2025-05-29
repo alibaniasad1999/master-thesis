@@ -405,6 +405,8 @@ def download_everything(input_keywords) -> np.ndarray:
         download_td3_models()
     if "ZS_TD3" in keywords:
         download_zs_td3_script()
+    if "ZS_TD3_MODELS" in keywords:
+        download_zs_td3_models()
 
 
     return trajectory
