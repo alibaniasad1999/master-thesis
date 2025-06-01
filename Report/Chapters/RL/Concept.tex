@@ -7,30 +7,65 @@
   عامل همچنین یک سیگنال پاداش\LTRfootnote{Reward}
    از محیط دریافت می‌کند؛ سیگنالی که به عامل می‌گوید وضعیت تعامل فعلی آن با محیط چقدر خوب یا بد است. هدف عامل بیشینه‌کردن پاداش انباشته خود است که برگشت\LTRfootnote{Return}
     نام دارد. یادگیری تقویتی به روش‌هایی گفته می‌شود که در آن‌ها عامل رفتارهای مناسب برای رسیدن به هدف خود را می‌آموزد. در شکل
-    \ref{fig:agent_env}
+    \ref{fig:agent_env_fa}
     تعامل بین محیط و عامل نشان داده شده‌است.
+%\begin{figure}[H]
+%	\begin{center}
+%\lr{		\begin{tikzpicture}[very thick,node distance = 4cm]
+%			\node [frame] (agent) {Agent};
+%			\node [frame, below=1.2cm of agent] (environment) {Environment};
+%			\draw[line] (agent) -- ++ (3.5,0) |- (environment) 
+%			node[right,pos=0.25,align=left] {action\\ $a_t$};
+%			\coordinate[left=15mm of environment] (P);
+%			\draw[thin,dashed] (P|-environment.north) -- (P|-environment.south);
+%			\draw[line] (environment.200) -- (P |- environment.200)
+%			node[midway,above]{$s_{t+1}$};
+%			\draw[line,thick] (environment.160) -- (P |- environment.160)
+%			node[midway,above]{$r_{t+1}$};
+%			\draw[line] (P |- environment.200) -- ++ (-1.6,0) |- (agent.160)
+%			node[left, pos=0.25, align=right] {state\\ $s_t$};
+%			\draw[line,thick] (P |- environment.160) -- ++ (-1,0) |- (agent.200)
+%			node[right,pos=0.25,align=left] {reward\\ $r_t$};
+%		\end{tikzpicture}}
+%	\end{center}
+%	\caption{حلقه تعامل عامل و محیط}
+%	\label{fig:agent_env}
+%\end{figure}
+
+
+
 \begin{figure}[H]
 	\begin{center}
-\lr{		\begin{tikzpicture}[very thick,node distance = 4cm]
-			\node [frame] (agent) {Agent};
-			\node [frame, below=1.2cm of agent] (environment) {Environment};
-			\draw[line] (agent) -- ++ (3.5,0) |- (environment) 
-			node[right,pos=0.25,align=left] {action\\ $a_t$};
-			\coordinate[left=15mm of environment] (P);
-			\draw[thin,dashed] (P|-environment.north) -- (P|-environment.south);
-			\draw[line] (environment.200) -- (P |- environment.200)
-			node[midway,above]{$s_{t+1}$};
-			\draw[line,thick] (environment.160) -- (P |- environment.160)
-			node[midway,above]{$r_{t+1}$};
-			\draw[line] (P |- environment.200) -- ++ (-1.6,0) |- (agent.160)
-			node[left, pos=0.25, align=right] {state\\ $s_t$};
-			\draw[line,thick] (P |- environment.160) -- ++ (-1,0) |- (agent.200)
-			node[right,pos=0.25,align=left] {reward\\ $r_t$};
-		\end{tikzpicture}}
+	\begin{tikzpicture}[very thick, node distance=4cm]
+				% Colored nodes
+				\node [frame, fill=myblue!15, text=mydarkblue] (agent) {عامل};
+				\node [frame, below=1.2cm of agent, fill=mygreen!15, text=mydarkgreen] (environment) {محیط};
+				% Action (blue)
+				\draw[line, myblue] (agent) -- ++ (3.5,0) |- (environment)
+				node[right, pos=0.25, align=left, text=myblue] {عمل\\ $a_t$};
+				% Separator
+				\coordinate[left=15mm of environment] (P);
+				\draw[thin, dashed, gray] (P|-environment.north) -- (P|-environment.south);
+				% State (green)
+				\draw[line, mygreen] (environment.200) -- (P |- environment.200)
+				node[midway, above, text=mydarkgreen] {$s_{t+1}$};
+				\draw[line, mygreen] (P |- environment.200) -- ++ (-1.6,0) |- (agent.160)
+				node[left, pos=0.25, align=right, text=mydarkgreen] {وضعیت\\ $s_t$};
+				% Reward (red)
+				\draw[line, thick, myred] (environment.160) -- (P |- environment.160)
+				node[midway, above, text=myred] {$r_{t+1}$};
+				\draw[line, thick, myred] (P |- environment.160) -- ++ (-1,0) |- (agent.200)
+				node[right, pos=0.25, align=left, text=myred] {پاداش\\ $r_t$};
+		\end{tikzpicture}
 	\end{center}
 	\caption{حلقه تعامل عامل و محیط}
-	\label{fig:agent_env}
+	\label{fig:agent_env_fa}
 \end{figure}
+
+
+
+
+
 \subsection{حالت و مشاهدات}
 حالت\LTRfootnote{State}
 \((s)\)

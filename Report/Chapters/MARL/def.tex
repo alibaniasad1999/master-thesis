@@ -12,3 +12,146 @@
 
 در این چارچوب، برای هر عامل در \lr{MARL} تابع مطلوبیت خاصی در نظر گرفته شده و بر اساس مشاهدات و تجربیات حاصل از تعاملات، یادگیری سیاست به صورت مستقل انجام می‌شود تا ارزش مطلوبیت به حداکثر برسد، بدون اینکه مستقیماً به مطلوبیت سایر عامل‌ها توجه شود. این فرآیند ممکن است به رقابت یا همکاری میان عامل‌ها منجر گردد.
  با توجه به پیچیدگی تعاملات میان چندین عامل، تحلیل نظریه بازی‌ها به عنوان ابزاری مؤثر برای تصمیم‌گیری در این حوزه به کار گرفته می‌شود. بسته به سناریوهای مختلف، این بازی‌ها در دسته‌بندی‌های متفاوتی قرار داده شده که در بخش‌های بعدی بررسی خواهند شد.
+ 
+ 
+ 
+% \begin{figure}[H]
+% 	\begin{center}
+% 		\lr{		\begin{tikzpicture}[very thick,node distance = 4cm]
+% 				\node [frame] (agent) {Agent};
+% 				\node [frame, below=1.2cm of agent] (environment) {Environment};
+% 				\draw[line] (agent) -- ++ (3.5,0) |- (environment) 
+% 				node[right,pos=0.25,align=left] {action\\ $a_t$};
+% 				\coordinate[left=15mm of environment] (P);
+% 				\draw[thin,dashed] (P|-environment.north) -- (P|-environment.south);
+% 				\draw[line] (environment.200) -- (P |- environment.200)
+% 				node[midway,above]{$s_{t+1}$};
+% 				\draw[line,thick] (environment.160) -- (P |- environment.160)
+% 				node[midway,above]{$r_{t+1}$};
+% 				\draw[line] (P |- environment.200) -- ++ (-1.6,0) |- (agent.160)
+% 				node[left, pos=0.25, align=right] {state\\ $s_t$};
+% 				\draw[line,thick] (P |- environment.160) -- ++ (-1,0) |- (agent.200)
+% 				node[right,pos=0.25,align=left] {reward\\ $r_t$};
+% 		\end{tikzpicture}}
+% 	\end{center}
+% 	\caption{حلقه تعامل عامل و محیط}
+% 	\label{fig:multi-agent_env}
+% \end{figure}
+% 
+% 
+%
+% 
+% 
+%   \begin{figure}[H]
+% 	\centering
+% 	\lr{\begin{tikzpicture}[very thick, node distance=4cm]
+% 		% Define nodes
+% 		\node [frame, minimum height=2em] (agent1) {Agent I};
+% 		\node [frame, below=1.2cm of agent1, minimum height=6em] (environment) {Environment};
+% 		\node [frame, below=1.2cm of environment,minimum height=2em] (agent2) {Agent II};
+% 		% Define coordinate for state/reward lines
+% 		\coordinate[left=15mm of environment] (P);
+% 		% Dashed line separator
+% 		\draw[thick, dashed] (P |- environment.north) -- (P |- environment.south);
+% 		% Agent I connections
+% 		\draw[line] (agent1) -- ++(3.5,0) |- (environment.10) 
+% 		node[right, pos=0.25, align=left] {action I\\ $a_1(t)$};
+% 		\draw[line] (environment.180) -- (P |- environment.180)
+% 		node[midway, above] {\small$s(t+1)$};
+% 		\draw[line, thick] (environment.155) -- (P |- environment.155)
+% 		node[midway, above] {\small$r_1(t+1)$};
+% 		\draw[line] (P |- environment.180) -- ++(-1.6,0) |- (agent1.170)
+% 		node[left, pos=0.25, align=right] {state\\ $s(t)$};
+% 		\draw[line, thick] (P |- environment.155) -- ++(-1,0) |- (agent1.190)
+% 		node[right, pos=0.25, align=left] {reward I\\ $r_1(t)$};
+% 		% Agent II connections
+% 		\draw[line] (agent2) -- ++(3.5,0) |- (environment.350) 
+% 		node[right, pos=0.25, align=left] {action II\\ $a_2(t)$};
+% 		\draw[line, thick] (environment.205) -- (P |- environment.205)
+% 		node[midway, above] {\small$r_2(t+1)$};
+% 		\draw[line] (P |- environment.180) -- ++(-1.6,0) |- (agent2.190)
+% 		node[left, pos=0.25, align=right] {state\\ $s(t)$};
+% 		\draw[line, thick] (P |- environment.205) -- ++(-1,0) |- (agent2.170)
+% 		node[right, pos=0.25, align=left] {reward II\\ $r_2(t)$};
+% 	\end{tikzpicture}}
+% 	 \caption{حلقه تعامل عامل‌های  یادگیری تقویتی چند عاملی با محیط}
+% \end{figure}
+% 
+% 
+% 
+% 
+% 
+% 
+% \begin{figure}[H]
+% 	\centering
+% 	\lr{\begin{tikzpicture}[very thick, node distance=4cm]
+% 		% Define nodes with colors
+% 		\node [frame, minimum height=2em, fill=myblue!15, text=mydarkblue] (agent1) {Agent I};
+% 		\node [frame, below=1.2cm of agent1, minimum height=6em, fill=mygreen!15, text=mydarkgreen] (environment) {Environment};
+% 		\node [frame, below=1.2cm of environment, minimum height=2em, fill=myviolet!15, text=myviolet] (agent2) {Agent II}; 		
+% 		% Define coordinate for state/reward lines
+% 		\coordinate[left=18mm of environment] (P);
+% 		% Dashed line separator
+% 		\draw[thick, dashed] ($(P|-environment.north)+(0,-3mm)$) -- ($(P|-environment.south)+(0,3.8mm)$);
+% 		% Agent I connections - colorized
+% 		\draw[line, myblue] (agent1) -- ++(3.5,0) |- (environment.10) 
+% 		node[right, pos=0.25, align=left, text=myblue] {action I\\ $a_1(t)$};
+% 		\draw[line, mygreen] (environment.180) -- (P |- environment.180)
+% 		node[midway, above, text=mydarkgreen] {$s(t+1)$};
+% 		\draw[line, thick, myred] (environment.155) -- (P |- environment.155)
+% 		node[midway, above, text=myred] {$r_1(t+1)$};
+% 		\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent1.170)
+% 		node[left, pos=0.25, align=right, text=mydarkgreen] {state\\ $s(t)$};
+% 		\draw[line, thick, myred] (P |- environment.155) -- ++(-1,0) |- (agent1.190)
+% 		node[right, pos=0.25, align=left, text=myred] {reward I\\ $r_1(t)$};
+% 		% Agent II connections - colorized
+% 		\draw[line, myviolet] (agent2) -- ++(3.5,0) |- (environment.350) 
+% 		node[right, pos=0.25, align=left, text=myviolet] {action II\\ $a_2(t)$};
+% 		\draw[line, thick, myorange] (environment.205) -- (P |- environment.205)
+% 		node[midway, above, text=myorange] {$r_2(t+1)$};
+% 		\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent2.190)
+% 		node[left, pos=0.25, align=right, text=mydarkgreen] {state\\ $s(t)$};
+% 		\draw[line, thick, myorange] (P |- environment.205) -- ++(-1,0) |- (agent2.170)
+% 		node[right, pos=0.25, align=left, text=myorange] {reward II\\ $r_2(t)$};
+% 	\end{tikzpicture}}
+% 	 \caption{حلقه تعامل عامل‌های  یادگیری تقویتی چند عاملی با محیط}
+% \end{figure}
+ 
+ 
+ 
+ \vspace{10mm}
+ 
+  \begin{figure}[H]
+ 	\centering
+ 	\begin{tikzpicture}[very thick, node distance=4cm]
+ 			% Define nodes with colors
+ 			\node [frame, minimum height=2em, fill=myblue!15, text=mydarkblue] (agent1) {۱ عامل};
+ 			\node [frame, below=1.2cm of agent1, minimum height=6em, fill=mygreen!15, text=mydarkgreen] (environment) {محیط};
+ 			\node [frame, below=1.2cm of environment, minimum height=2em, fill=myviolet!15, text=myviolet] (agent2) {۲ عامل}; 		
+ 			% Define coordinate for state/reward lines
+ 			\coordinate[left=18mm of environment] (P);
+ 			% Dashed line separator
+ 			\draw[thick, dashed] ($(P|-environment.north)+(0,-3mm)$) -- ($(P|-environment.south)+(0,3.8mm)$);
+ 			% Agent I connections - colorized
+ 			\draw[line, myblue] (agent1) -- ++(3.5,0) |- (environment.10) 
+ 			node[right, pos=0.25, align=left, text=myblue] {۱ عمل\\ $a_1(t)$};
+ 			\draw[line, mygreen] (environment.180) -- (P |- environment.180)
+ 			node[midway, above, text=mydarkgreen] {$s(t+1)$};
+ 			\draw[line, thick, myred] (environment.155) -- (P |- environment.155)
+ 			node[midway, above, text=myred] {$r_1(t+1)$};
+ 			\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent1.170)
+ 			node[left, pos=0.25, align=right, text=mydarkgreen] {وضعیت\\ $s(t)$};
+ 			\draw[line, thick, myred] (P |- environment.155) -- ++(-1,0) |- (agent1.190)
+ 			node[right, pos=0.25, align=left, text=myred] {۱ پاداش\\ $r_1(t)$};
+ 			% Agent II connections - colorized
+ 			\draw[line, myviolet] (agent2) -- ++(3.5,0) |- (environment.350) 
+ 			node[right, pos=0.25, align=left, text=myviolet] {۲ عمل\\ $a_2(t)$};
+ 			\draw[line, thick, myorange] (environment.205) -- (P |- environment.205)
+ 			node[midway, above, text=myorange] {$r_2(t+1)$};
+ 			\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent2.190)
+ 			node[left, pos=0.25, align=right, text=mydarkgreen] {وضعیت\\ $s(t)$};
+ 			\draw[line, thick, myorange] (P |- environment.205) -- ++(-1,0) |- (agent2.170)
+ 			node[right, pos=0.25, align=left, text=myorange] {۲ پاداش\\ $r_2(t)$};
+ 	\end{tikzpicture}
+ 	 \caption{حلقه تعامل عامل‌های  یادگیری تقویتی چند عاملی با محیط}
+ \end{figure}
