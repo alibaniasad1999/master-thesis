@@ -1,3 +1,158 @@
 \section{ گرادیان سیاست عمیق قطعی 
 در بازی‌های دو­عاملیِ مجموع‌­صفر
 }
+% insert_edit_into_file("/Users/Ali/Documents/BAI/Master/master-thesis/Report/Chapters/MARL/MADDPG.tex", r"\section{ گرادیان سیاست عمیق قطعی 
+% در بازی‌های دو­عاملیِ مجموع‌­صفر
+% }", """
+% \section{ گرادیان سیاست عمیق قطعی 
+% در بازی‌های دو­عاملیِ مجموع‌­صفر
+% }\label{sec:MADDPG}
+
+گرادیان سیاست عمیق قطعی چند­عاملی\LTRfootnote{Multi-Agent Deep Deterministic Policy Gradient (MADDPG)}
+توسعه‌ای از الگوریتم \lr{DDPG} برای محیط‌های چند­عاملی است. در این بخش، به بررسی این الگوریتم در چارچوب بازی‌های دو­عاملیِ مجموع­‌صفر می‌پردازیم که در آن مجموع پاداش‌های دو عامل همواره صفر است (آنچه یک عامل به دست می‌آورد، عامل دیگر از دست می‌دهد).
+
+\subsection{چالش‌های یادگیری تقویتی در محیط‌های چند­عاملی}
+
+در محیط‌های چند­عاملی، سیاست هر عامل مدام در حال تغییر است، که باعث می‌شود محیط از دید هر عامل غیرایستا\LTRfootnote{Non-stationary} شود. این مسئله چالش بزرگی برای الگوریتم‌های یادگیری تقویتی تک‌عاملی مانند \lr{DDPG} ایجاد می‌کند، زیرا فرض ایستایی محیط را نقض می‌کند.
+
+\lr{MADDPG} با استفاده از رویکرد آموزش متمرکز، اجرای غیرمتمرکز\LTRfootnote{Centralized Training, Decentralized Execution} این مشکل را حل می‌کند. در این رویکرد، هر عامل در زمان آموزش به اطلاعات کامل محیط دسترسی دارد، اما در زمان اجرا تنها از مشاهدات محلی خود استفاده می‌کند.
+
+\subsection{معماری \lr{MADDPG} در بازی‌های مجموع­‌صفر}
+
+در یک بازی دو­عاملیِ مجموع­‌صفر، دو عامل با نمادهای 1 و 2 نشان داده می‌شوند. هر عامل دارای شبکه‌های منحصر به فرد خود است:
+
+\begin{itemize}
+    \item \textbf{شبکه‌های بازیگر:} $\mu_{\theta_1}(o_1)$ و $\mu_{\theta_2}(o_2)$ که مشاهدات محلی $o_1$ و $o_2$ را به اعمال $a_1$ و $a_2$ نگاشت می‌کنند.
+    \item \textbf{شبکه‌های منتقد:} $Q_{\phi_1}(o_1, a_1, a_2)$ و $Q_{\phi_2}(o_2, a_2, a_1)$ که ارزش حالت-عمل را با توجه به مشاهدات و اعمال تمام عامل‌ها تخمین می‌زنند.
+    \item \textbf{شبکه‌های هدف:} مشابه \lr{DDPG}، برای پایدار کردن آموزش از شبکه‌های هدف استفاده می‌شود.
+\end{itemize}
+
+در بازی‌های مجموع­‌صفر، پاداش‌ها رابطه $r_1 + r_2 = 0$ دارند که در آن $r_1$ و $r_2$ پاداش‌های دریافتی عامل‌ها هستند. در نتیجه، $r_2 = -r_1$ است که نمایانگر تضاد کامل منافع بین عامل‌هاست.
+
+\subsection{آموزش \lr{MADDPG} در بازی‌های مجموع­‌صفر}
+
+فرایند آموزش \lr{MADDPG} برای بازی‌های مجموع­‌صفر به شرح زیر است:
+
+\subsubsection{یادگیری تابع \lr{Q}}
+
+برای هر عامل $i \in \{1, 2\}$، تابع \lr{Q} با کمینه کردن خطای میانگین مربعات بلمن به‌روزرسانی می‌شود:
+
+\begin{equation}
+    L(\phi_i, \mathcal{D}) = \underset{(\boldsymbol{o}, \boldsymbol{a}, r_i, \boldsymbol{o}', d) \sim \mathcal{D}}{\mathrm{E}}\left[ 
+    \Bigg( Q_{\phi_i}(o_i, a_1, a_2) - y_i \Bigg)^2
+    \right]
+\end{equation}
+
+که در آن $\boldsymbol{o} = (o_1, o_2)$ بردار مشاهدات، $\boldsymbol{a} = (a_1, a_2)$ بردار اعمال، و $y_i$ هدف برای عامل $i$ است:
+
+\begin{equation}
+    y_i = r_i + \gamma (1 - d) Q_{\phi_{i,\text{targ}}}(o_i', \mu_{\theta_{1,\text{targ}}}(o_1'), \mu_{\theta_{2,\text{targ}}}(o_2'))
+\end{equation}
+
+توجه کنید که منتقد هر عامل به اعمال همه عامل‌ها دسترسی دارد، اما در بازی‌های مجموع­‌صفر، عامل شماره 2 جهت مخالف هدف عامل 1 را دنبال می‌کند.
+
+\subsubsection{یادگیری سیاست}
+
+سیاست هر عامل با بیشینه کردن تابع \lr{Q} مربوط به آن عامل به‌روزرسانی می‌شود:
+
+\begin{equation}
+    \max_{\theta_i} \underset{\boldsymbol{o} \sim \mathcal{D}}{\mathrm{E}}\left[ Q_{\phi_i}(o_i, \mu_{\theta_i}(o_i), \mu_{\theta_{-i}}(o_{-i})) \right]
+\end{equation}
+
+که در آن $-i$ نشان‌دهنده عامل مقابل است. با توجه به ماهیت بازی مجموع­‌صفر، هر عامل تلاش می‌کند تا مطلوبیت خود را افزایش دهد، در حالی که مطلوبیت عامل دیگر به طور همزمان کاهش می‌یابد.
+
+\subsubsection{شبکه‌های هدف و بافر تجربه}
+
+مشابه \lr{DDPG}، برای پایدار کردن آموزش، شبکه‌های هدف با میانگین‌گیری پولیاک به‌روزرسانی می‌شوند:
+
+\begin{align*}
+    \phi_{i,\text{targ}} &\leftarrow \rho \phi_{i,\text{targ}} + (1 - \rho) \phi_i \\
+    \theta_{i,\text{targ}} &\leftarrow \rho \theta_{i,\text{targ}} + (1 - \rho) \theta_i
+\end{align*}
+
+همچنین، از یک بافر تکرار بازی مشترک برای ذخیره تجربیات استفاده می‌شود که شامل وضعیت‌ها، اعمال و پاداش‌های همه عامل‌هاست.
+
+\subsection{اکتشاف در \lr{MADDPG}}
+
+اکتشاف در \lr{MADDPG} مشابه \lr{DDPG} است، اما برای هر عامل به طور جداگانه اعمال می‌شود. در طی آموزش، به اعمال هر عامل نویز اضافه می‌شود:
+
+\begin{equation}
+    a_i = \text{clip}(\mu_{\theta_i}(o_i) + \epsilon_i, a_{\text{Low}}, a_{\text{High}})
+\end{equation}
+
+که در آن $\epsilon_i$ نویز اضافه شده به عامل $i$ است.
+
+\subsection{شبه‌کد \lr{MADDPG} برای بازی‌های دو­عاملیِ مجموع­‌صفر}
+
+\begin{algorithm}[H]
+    \caption{گرادیان سیاست عمیق قطعی چند­عاملی برای بازی‌های مجموع­‌صفر}\label{alg:MADDPG}
+    \begin{algorithmic}[1]
+        \ورودی پارامترهای اولیه سیاست عامل‌ها $(\theta_1, \theta_2)$، پارامترهای تابع \lr{Q} $(\phi_1, \phi_2)$، بافر تکرار بازی خالی $(\mathcal{D})$
+        \State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید: $\theta_{i,\text{targ}} \leftarrow \theta_i$, $\phi_{i,\text{targ}} \leftarrow \phi_i$ برای $i \in \{1, 2\}$
+        
+        \While{همگرایی رخ دهد}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات $(o_1, o_2)$ را دریافت کنید
+            \strut}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، عمل $a_i = \text{clip}(\mu_{\theta_i}(o_i) + \epsilon_i, a_{\text{Low}}, a_{\text{High}})$ را انتخاب کنید، به‌طوری که $\epsilon_i \sim \mathcal{N}$ است
+            \strut}
+            \State اعمال $(a_1, a_2)$ را در محیط اجرا کنید
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات بعدی $(o_1', o_2')$، پاداش‌ها $(r_1, r_2=-r_1)$ و سیگنال پایان $d$ را دریافت کنید
+            \strut}
+            \State تجربه $(o_1, o_2, a_1, a_2, r_1, r_2, o_1', o_2', d)$ را در بافر $\mathcal{D}$ ذخیره کنید
+            \State اگر $d=1$ است، وضعیت محیط را بازنشانی کنید
+            
+            \If{زمان به‌روزرسانی فرا رسیده است}
+                \For{هر تعداد به‌روزرسانی}
+                    \State یک دسته تصادفی از تجربیات، $B = \{(\boldsymbol{o}, \boldsymbol{a}, r_1, r_2, \boldsymbol{o}', d)\}$، از $\mathcal{D}$ نمونه‌گیری کنید
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    اهداف را محاسبه کنید:
+                    \begin{align*}
+                        y_1 &= r_1 + \gamma (1-d) Q_{\phi_{1,\text{targ}}}(o_1', \mu_{\theta_{1,\text{targ}}}(o_1'), \mu_{\theta_{2,\text{targ}}}(o_2')) \\
+                        y_2 &= r_2 + \gamma (1-d) Q_{\phi_{2,\text{targ}}}(o_2', \mu_{\theta_{2,\text{targ}}}(o_2'), \mu_{\theta_{1,\text{targ}}}(o_1'))
+                    \end{align*}
+                    \strut}
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    توابع \lr{Q} را با نزول گرادیان به‌روزرسانی کنید:
+                    \begin{align*}
+                        \nabla_{\phi_1} \frac{1}{|B|}\sum_{(\boldsymbol{o}, \boldsymbol{a}, r_1, r_2, \boldsymbol{o}', d) \in B} \left( Q_{\phi_1}(o_1, a_1, a_2) - y_1 \right)^2 \\
+                        \nabla_{\phi_2} \frac{1}{|B|}\sum_{(\boldsymbol{o}, \boldsymbol{a}, r_1, r_2, \boldsymbol{o}', d) \in B} \left( Q_{\phi_2}(o_2, a_2, a_1) - y_2 \right)^2
+                    \end{align*}
+                    \strut}
+                    
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    سیاست‌ها را با صعود گرادیان به‌روزرسانی کنید:
+                    \begin{align*}
+                        \nabla_{\theta_1} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}Q_{\phi_1}(o_1, \mu_{\theta_1}(o_1), a_2) \\
+                        \nabla_{\theta_2} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}Q_{\phi_2}(o_2, \mu_{\theta_2}(o_2), a_1)
+                    \end{align*}
+                    \strut}
+                    
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    شبکه‌های هدف را به‌روزرسانی کنید:
+                    \begin{align*}
+                        \phi_{1,\text{targ}} &\leftarrow \rho \phi_{1,\text{targ}} + (1-\rho) \phi_1 \\
+                        \phi_{2,\text{targ}} &\leftarrow \rho \phi_{2,\text{targ}} + (1-\rho) \phi_2 \\
+                        \theta_{1,\text{targ}} &\leftarrow \rho \theta_{1,\text{targ}} + (1-\rho) \theta_1 \\
+                        \theta_{2,\text{targ}} &\leftarrow \rho \theta_{2,\text{targ}} + (1-\rho) \theta_2
+                    \end{align*}
+                    \strut}
+                \EndFor
+            \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{مزایای \lr{MADDPG} در بازی‌های مجموع­‌صفر}
+
+\lr{MADDPG} چندین مزیت برای یادگیری در بازی‌های دو­عاملیِ مجموع­‌صفر ارائه می‌دهد:
+
+\begin{itemize}
+    \item \textbf{مقابله با غیرایستایی:} با استفاده از منتقدهایی که به اطلاعات کامل دسترسی دارند، مشکل غیرایستایی محیط از دید هر عامل حل می‌شود.
+    \item \textbf{همگرایی بهتر:} در بازی‌های مجموع­‌صفر، \lr{MADDPG} معمولاً همگرایی بهتری نسبت به آموزش مستقل عامل‌ها با \lr{DDPG} نشان می‌دهد.
+    \item \textbf{یادگیری استراتژی‌های متقابل:} عامل‌ها می‌توانند استراتژی‌های متقابل پیچیده را یاد بگیرند که در آموزش مستقل امکان‌پذیر نیست.
+\end{itemize}
+
+در بازی‌های دو­عاملیِ مجموع­‌صفر، این رویکرد به رقابت کامل بین عامل‌ها منجر می‌شود، که هر یک تلاش می‌کند بهترین استراتژی را در برابر استراتژی رقیب پیدا کند.
