@@ -266,7 +266,17 @@ $\theta_{\text{targ}} \leftarrow \theta$, $\phi_{\text{targ}} \leftarrow \phi$
 \State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
 \If{زمان به‌روزرسانی فرا رسیده است}
 \For{هر تعداد به‌روزرسانی}
-\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+%\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ 
+%نمونه‌گیری شود.
+%\State
+%  \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+%یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+%	\strut}
+\State یک دسته تصادفی گذر از یک حالت به حالت دیگر،
+$B = \{(s,a,r,s',d)\}$، از $\mathcal{D}$ 
+\Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}\hspace{\algorithmicindent}
+نمونه‌گیری شود.
+	
 \State
 هدف را محاسبه کنید:
 \[ y(r,s',d) = r + \gamma (1-d) Q_{\phi_{\text{targ}}}(s', \mu_{\theta_{\text{targ}}}(s')) \]

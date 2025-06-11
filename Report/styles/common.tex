@@ -316,7 +316,31 @@ Path=styles/fonts/
 		dataset fill opacity=1.0,
 		]{#1}
 	\end{tikzpicture}
-} % end of \myviolinplot command
+}
+
+
+
+\usepackage{varwidth} % only once in the document
+
+\makeatletter
+% numbered, wrapped line
+\newcommand{\LongState}[1]{%
+	\State % produces the line number
+	\parbox[t]{\dimexpr\linewidth-\algorithmicindent}{#1\strut}}
+% continuation of the previous line (no number)
+\newcommand{\LongStatex}[1]{%
+	\Statex\hspace{\algorithmicindent}% add the missing indent
+	\parbox[t]{\dimexpr\linewidth-\algorithmicindent}{#1\strut}}
+\makeatother
+
+
+
+
+
+
+
+
+ % end of \myviolinplot command
 %% This is the vertical rule that is inserted
 %\def\therule{\makebox[\algorithmicindent][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
 %

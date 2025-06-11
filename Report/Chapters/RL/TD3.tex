@@ -108,16 +108,23 @@
   		وضعیت $(s)$ را مشاهده کرده و عمل 
   		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{\text{Low}}, a_{\text{High}})$
 %  		$a = \text{clip}(\mu_{\theta}(s) + \epsilon, a_{Low}, a_{High})$
-  		 را انتخاب کنید، به‌طوری که $\epsilon \sim \mathcal{N}$ است.
+  		 را انتخاب کنید، به‌طوری 
+  		 \Statex \hspace{\algorithmicindent}
+  		 که $\epsilon \sim \mathcal{N}$ است.
   		\State عمل $a$ را در محیط اجرا کنید.
   		\State 
-  		وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا خیر.
+  		وضعیت بعدی $s'$، پاداش $r$ و سیگنال پایان $d$ را مشاهده کنید تا نشان دهد آیا $s'$ پایانی است یا
+  		 \Statex \hspace{\algorithmicindent}
+  		 خیر.
   		\State اگر $s'$ پایانی است، وضعیت محیط را بازنشانی کنید.
   		\If{زمان به‌روزرسانی فرا رسیده است}
   		\For{$j$
   			در
   			هر تعداد به‌روزرسانی}
-  		\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$ نمونه‌گیری شود.
+  		\State یک دسته تصادفی گذر از ‌یک حالت به حالت دیگر، $B = \{ (s,a,r,s',d) \}$، از $\mathcal{D}$
+  		 \Statex \hspace{\algorithmicindent} \hspace{\algorithmicindent} ~~
+%  		 \State 
+  		 نمونه‌گیری شود.
 %  		  \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
 %  			
 %  			\strut}
