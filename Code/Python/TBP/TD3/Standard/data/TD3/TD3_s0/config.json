@@ -8,7 +8,7 @@
     "act_noise":	0.1,
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
-    "env_fn":	"<function <lambda> at 0x168799d00>",
+    "env_fn":	"<function <lambda> at 0x15c418720>",
     "epochs":	50,
     "exp_name":	"TD3",
     "gamma":	0.99,
@@ -27,7 +27,7 @@
     "save_freq":	1,
     "seed":	0,
     "self":	{
-        "<TD3.TD3 object at 0x16878b650>":	{
+        "<TD3.TD3 object at 0x15c444a90>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -37,11 +37,11 @@
             "act_noise":	0.1,
             "actor_critic":	"MLPActorCritic",
             "batch_size":	1024,
-            "env_fn":	"<function <lambda> at 0x168799d00>",
+            "env_fn":	"<function <lambda> at 0x15c418720>",
             "epochs":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x11cac7590>":	{
+                "<utils.logx.EpochLogger object at 0x15c299090>":	{
                     "epoch_dict":	{},
                     "exp_name":	"TD3",
                     "first_row":	true,

@@ -664,8 +664,8 @@ class ZS_SAC:
         state_array = np.array(state_array)
         action_array = np.array(action_array)
         # save trajectory and actions to csv
-        if not os.path.exists('../results/') and save_data:
-            os.makedirs('../results/')
+        if not os.path.exists('results/') and save_data:
+            os.makedirs('results/')
 
         # numpy to pandas with header
         state_df = pd.DataFrame(state_array, columns=['x', 'y', 'xdot', 'ydot'])

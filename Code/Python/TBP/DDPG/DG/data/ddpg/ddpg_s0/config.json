@@ -10,7 +10,7 @@
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
     "device":	"cpu",
-    "env_fn":	"<function <lambda> at 0x1612c8680>",
+    "env_fn":	"<function <lambda> at 0x161838fe0>",
     "epochs_":	50,
     "exp_name":	"ddpg",
     "first_player_epoch":	50,
@@ -32,7 +32,7 @@
     "save_freq":	1,
     "seed_":	0,
     "self":	{
-        "<__main__.DG_DDPG object at 0x160860bd0>":	{
+        "<__main__.DG_DDPG object at 0x15a9fbf50>":	{
             "ac":	{
                 "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=4, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=2, bias=True)\n      (5): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=6, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=1, bias=True)\n      (5): Identity()\n    )\n  )\n)":	{
                     "_backward_hooks":	{},
@@ -1662,7 +1662,7 @@
             "first_player_epoch":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x16110fcd0>":	{
+                "<utils.logx.EpochLogger object at 0x162198150>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ddpg",
                     "first_row":	true,
@@ -1892,7 +1892,7 @@
                 }
             },
             "replay_buffer":	{
-                "<__main__.ReplayBuffer object at 0x16123b590>":	{
+                "<__main__.ReplayBuffer object at 0x161854490>":	{
                     "act_2_buf":	"[[0. 0.]\n [0. 0.]\n [0. 0.]\n ...\n [0. 0.]\n [0. 0.]\n [0. 0.]]",
                     "act_buf":	"[[0. 0.]\n [0. 0.]\n [0. 0.]\n ...\n [0. 0.]\n [0. 0.]\n [0. 0.]]",
                     "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
