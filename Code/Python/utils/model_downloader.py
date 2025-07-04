@@ -96,11 +96,14 @@ def download_zs_ddpg_script() -> None:
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
 
-def download_ddpg_models() -> None:
+def download_ddpg_models(folder_name=None) -> None:
     """
-    Downloads only the standard model files (from the 'model' directory).
+    Downloads only the standard model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_dir = "model"
+    model_dir = folder_name if folder_name else "model"
     urls_model = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/DDPG/model/actor_cuda.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/DDPG/model/q_cuda.pth"
@@ -117,11 +120,14 @@ def download_ddpg_models() -> None:
         file_path = os.path.join(model_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
 
-def download_ppo_models() -> None:
+def download_ppo_models(folder_name=None) -> None:
     """
-    Downloads only the standard model files (from the 'model' directory).
+    Downloads only the standard model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_dir = "model"
+    model_dir = folder_name if folder_name else "model"
     urls_model = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/Standard/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/Standard/model/v_cpu.pth"
@@ -138,11 +144,14 @@ def download_ppo_models() -> None:
         file_path = os.path.join(model_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
 
-def download_ddpg_zs_models() -> None:
+def download_ddpg_zs_models(folder_name=None) -> None:
     """
-    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    Downloads only the zero‑sum model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_zs_dir = "model_zs"
+    model_zs_dir = folder_name if folder_name else "model_zs"
     urls_model_zs = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/DDPG/DG/model/actor_cuda.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/DDPG/DG/model/q_cuda.pth",
@@ -161,11 +170,14 @@ def download_ddpg_zs_models() -> None:
         file_path = os.path.join(model_zs_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
 
-def download_ppo_zs_models() -> None:
+def download_ppo_zs_models(folder_name=None) -> None:
     """
-    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    Downloads only the zero‑sum model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_zs_dir = "model_zs"
+    model_zs_dir = folder_name if folder_name else "model_zs"
     urls_model_zs = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/ZeroSum/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/PPO/ZeroSum/model/actor_1_cpu.pth",
@@ -219,11 +231,14 @@ def download_zs_ppo_script() -> None:
 
 
 
-def download_sac_models() -> None:
+def download_sac_models(folder_name=None) -> None:
     """
-    Downloads only the standard model files (from the 'model' directory).
+    Downloads only the standard model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_dir = "model"
+    model_dir = folder_name if folder_name else "model"
     urls_model = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/Standard/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/Standard/model/q1_cpu.pth",
@@ -253,11 +268,14 @@ def download_zs_sac_script() -> None:
     )
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
-def download_sac_zs_models() -> None:
+def download_sac_zs_models(folder_name=None) -> None:
     """
-    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    Downloads only the zero‑sum model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_zs_dir = "model_zs"
+    model_zs_dir = folder_name if folder_name else "model_zs"
     urls_model_zs = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/SAC/ZeroSum/model/actor_1_cpu.pth",
@@ -289,11 +307,14 @@ def download_td3_script() -> None:
     )
     download_file(td3_url, td3_script, use_wget=True)
 
-def download_td3_models() -> None:
+def download_td3_models(folder_name=None) -> None:
     """
-    Downloads only the standard model files (from the 'model' directory).
+    Downloads only the standard model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_dir = "model"
+    model_dir = folder_name if folder_name else "model"
     urls_model = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/Standard/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/Standard/model/q1_cpu.pth",
@@ -322,11 +343,14 @@ def download_zs_td3_script() -> None:
     )
     download_file(zero_sum_url, zero_sum_script, use_wget=True)
 
-def download_zs_td3_models() -> None:
+def download_zs_td3_models(folder_name=None) -> None:
     """
-    Downloads only the zero‑sum model files (from the 'model_zs' directory).
+    Downloads only the zero‑sum model files.
+
+    Args:
+        folder_name: Optional custom folder name to save models in
     """
-    model_zs_dir = "model_zs"
+    model_zs_dir = folder_name if folder_name else "model_zs"
     urls_model_zs = [
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/actor_cpu.pth",
         "https://github.com/alibaniasad1999/master-thesis/raw/main/Code/Python/TBP/TD3/ZeroSum/model/actor_1_cpu.pth",
@@ -347,22 +371,20 @@ def download_zs_td3_models() -> None:
         file_path = os.path.join(model_zs_dir, os.path.basename(url))
         download_file(url, file_path, use_wget=True)
 
-
-
-
-
-
-
-def download_everything(input_keywords) -> np.ndarray:
+def download_everything(input_keywords, folder_name=None) -> np.ndarray:
     """
     Downloads files based on the provided keyword(s). Accepted keywords (case-insensitive):
       - "TBP": Downloads the trajectory and TBP.py.
       - "DDPG": Downloads only the DDPG.py script.
       - "zs_DDPG": Downloads only the Zero_Sum_DDPG.py script.
-      - "MODELS": Downloads only the standard model files (from the 'model' directory).
-      - "zs_MODELS": Downloads only the zero‑sum model files (from the 'model_zs' directory).
+      - "MODELS": Downloads only the standard model files.
+      - "zs_MODELS": Downloads only the zero‑sum model files.
 
     You can provide a comma-separated string (e.g., "DDPG, TBP") or a list of keywords.
+
+    Args:
+        input_keywords: Keywords specifying what to download
+        folder_name: If True, adds algorithm name to model folder; if False or None, uses default folder names
 
     Returns the processed trajectory array if TBP files are downloaded; otherwise, returns None.
     """
@@ -379,35 +401,47 @@ def download_everything(input_keywords) -> np.ndarray:
         download_ddpg_script()
     if "ZS_DDPG" in keywords:
         download_zs_ddpg_script()
+
+    # Handle folder names for model downloads
+    ddpg_folder = "model_DDPG" if folder_name is True else folder_name
+    ddpg_zs_folder = "model_zs_DDPG" if folder_name is True else folder_name
+    ppo_folder = "model_PPO" if folder_name is True else folder_name
+    ppo_zs_folder = "model_zs_PPO" if folder_name is True else folder_name
+    sac_folder = "model_SAC" if folder_name is True else folder_name
+    sac_zs_folder = "model_zs_SAC" if folder_name is True else folder_name
+    td3_folder = "model_TD3" if folder_name is True else folder_name
+    td3_zs_folder = "model_zs_TD3" if folder_name is True else folder_name
+
     if "MODELS" in keywords:
-        download_ddpg_models()
+        download_ddpg_models(ddpg_folder)
+    if "DDPG_MODELS" in keywords:
+        download_ddpg_models(ddpg_folder)
     if "ZS_MODELS" in keywords:
-        download_ddpg_zs_models()
+        download_ddpg_zs_models(ddpg_zs_folder)
     if "PPO" in keywords:
         download_ppo_script()
     if "PPO_MODELS" in keywords:
-        download_ppo_models()
+        download_ppo_models(ppo_folder)
     if "ZS_PPO" in keywords:
         download_zs_ppo_script()
     if "ZS_PPO_MODELS" in keywords:
-        download_ppo_zs_models()
+        download_ppo_zs_models(ppo_zs_folder)
     if "SAC" in keywords:
         download_sac_script()
     if "SAC_MODELS" in keywords:
-        download_sac_models()
+        download_sac_models(sac_folder)
     if "ZS_SAC" in keywords:
         download_zs_sac_script()
     if "ZS_SAC_MODELS" in keywords:
-        download_sac_zs_models()
+        download_sac_zs_models(sac_zs_folder)
     if "TD3" in keywords:
         download_td3_script()
     if "TD3_MODELS" in keywords:
-        download_td3_models()
+        download_td3_models(td3_folder)
     if "ZS_TD3" in keywords:
         download_zs_td3_script()
     if "ZS_TD3_MODELS" in keywords:
-        download_zs_td3_models()
-
+        download_zs_td3_models(td3_zs_folder)
 
     return trajectory
 
@@ -419,7 +453,11 @@ if __name__ == "__main__":
     # "MODELS" or "zs_MODELS" downloads only the respective model files.
     user_input = input(
         "Enter download keyword(s) (e.g., 'TBP', 'DDPG, TBP', 'zs_DDPG', 'MODELS', 'zs_MODELS'): ").strip()
-    result = download_everything(user_input)
+
+    # Ask for custom folder naming
+    folder_input = input("Use algorithm-specific folder names? (yes/no): ").strip().lower()
+    custom_folder = True if folder_input in ['yes', 'y', 'true', '1'] else None
+
+    result = download_everything(user_input, folder_name=custom_folder)
     if result is not None:
         print("Processed trajectory array shape:", result.shape)
-
