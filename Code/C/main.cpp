@@ -5,14 +5,14 @@
 int main() {
     try {
         // Only need to supply the .pt filename:
-        auto modelPath = ModelLocator::locateModel("sac_mbk_pi_model.pt");
+        auto modelPath = ModelLocator::locateModel("zs_sac_traced_deterministic.pt");
         std::cout << "Loading model from: " << modelPath << "\n";
 
         auto module = torch::jit::load(modelPath.string());
         std::cout << "Model loaded successfully!\n";
 
         // (Your inference code here...)
-        torch::Tensor input = torch::rand({2, 2});
+        torch::Tensor input = torch::rand({1, 4});
         auto output = module.forward({input});
         std::cout << "Output tensor: " << output << "\n";
 
