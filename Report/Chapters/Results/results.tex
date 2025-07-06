@@ -289,3 +289,45 @@
 	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{TD3} در سناریوهای مختلف}
 	\label{fig:td3_robustness_violin}
 \end{figure}
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	
+	% سطر اول
+	\subfloat[شرایط اولیه تصادفی]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/initial_condition_shift.pdf}}%
+	\subfloat[اغتشاش در عملگرها]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/actuator_disturbance.pdf}}%
+	\subfloat[عدم تطابق مدل]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/model_mismatch.pdf}}\\[1ex]
+	
+	% سطر دوم
+	\subfloat[مشاهده ناقص]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/partial_observation.pdf}}%
+	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/sensor_noise.pdf}}%
+	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/time_delay.pdf}}
+	
+	\caption{مقایسه مجموع پاداش  الگوریتم‌های تک‌عاملی در سناریوهای مختلف}
+	\label{fig:all_solo_robustness_violin}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	
+	% سطر اول
+	\subfloat[شرایط اولیه تصادفی]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/initial_condition_shift.pdf}}%
+	\subfloat[اغتشاش در عملگرها]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/actuator_disturbance.pdf}}%
+	\subfloat[عدم تطابق مدل]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/model_mismatch.pdf}}\\[1ex]
+	
+	% سطر دوم
+	\subfloat[مشاهده ناقص]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/partial_observation.pdf}}%
+	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/sensor_noise.pdf}}%
+	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/ZeroSum/violin_plot/time_delay.pdf}}
+	
+	\caption{مقایسه مجموع پاداش  الگوریتم‌های چندعاملی در سناریوهای مختلف}
+	\label{fig:all_multi_robustness_violin}
+\end{figure}
