@@ -1,0 +1,161 @@
+\section{عامل گرادیان سیاست عمیق قطعی تاخیری دوگانه دو­عاملی}\label{sec:MATD3}
+
+عامل گرادیان سیاست عمیق قطعی تاخیری دوگانه دو­عاملی\LTRfootnote{Multi-Agent Twin Delayed Deep Deterministic Policy Gradient (MATD3)}
+توسعه‌ای از الگوریتم \lr{TD3} برای محیط‌های چند­عاملی است. در این بخش، به بررسی این الگوریتم در چارچوب بازی‌های دو­عاملیِ مجموع­‌صفر می‌پردازیم که در آن ترکیب ویژگی‌های \lr{TD3} با رویکرد چند­عاملی \lr{MADDPG} به پایداری و کارایی بیشتر در یادگیری منجر می‌شود.
+
+\subsection{چالش‌های یادگیری تقویتی در محیط‌های چند­عاملی و راه‌حل \lr{MATD3}}
+
+در محیط‌های چند­عاملی، عامل‌ها همزمان سیاست‌های خود را تغییر می‌دهند که باعث غیرایستایی محیط از دید هر عامل می‌شود. علاوه بر این، بیش‌برآورد تابع \lr{Q} که در \lr{DDPG} دیده می‌شود، در محیط‌های چند­عاملی می‌تواند تشدید شود.
+
+\lr{MATD3} هر دو چالش را با ترکیب رویکردهای زیر حل می‌کند:
+\begin{itemize}
+    \item \textbf{آموزش متمرکز، اجرای غیرمتمرکز:} مشابه \lr{MADDPG}، از منتقدهایی استفاده می‌کند که به اطلاعات کامل دسترسی دارند.
+    \item \textbf{منتقدهای دوگانه:} برای هر عامل، از دو شبکه منتقد استفاده می‌کند تا بیش‌برآورد تابع \lr{Q} را کاهش دهد.
+    \item \textbf{به‌روزرسانی‌های تاخیری سیاست:} سیاست‌ها را با تواتر کمتری نسبت به منتقدها به‌روزرسانی می‌کند.
+\end{itemize}
+
+\subsection{معماری \lr{MATD3} در بازی‌های مجموع­‌صفر}
+
+در یک بازی دو­عاملیِ مجموع­‌صفر، هر عامل دارای شبکه‌های زیر است:
+
+\begin{itemize}
+    \item \textbf{شبکه بازیگر:} $\mu_{\theta_i}(o_i)$ که مشاهدات محلی $o_i$ را به اعمال $a_i$ نگاشت می‌کند.
+    \item \textbf{شبکه‌های منتقد دوگانه:} $Q_{\phi_{i,1}}(o_i, a_1, a_2)$ و $Q_{\phi_{i,2}}(o_i, a_1, a_2)$ که ارزش حالت-عمل را تخمین می‌زنند.
+    \item \textbf{شبکه‌های هدف:} برای پایدارسازی آموزش، از نسخه‌های هدف بازیگر و منتقدها استفاده می‌شود.
+\end{itemize}
+
+در بازی‌های مجموع­‌صفر، پاداش‌ها رابطه $r_1 + r_2 = 0$ دارند، بنابراین $r_2 = -r_1$ است.
+
+\subsection{آموزش \lr{MATD3}}
+
+فرایند آموزش \lr{MATD3} به شرح زیر است:
+
+\subsubsection{یادگیری تابع \lr{Q}}
+
+برای هر عامل $i \in \{1, 2\}$ و هر منتقد $j \in \{1, 2\}$، تابع \lr{Q} با کمینه کردن خطای میانگین مربعات بلمن به‌روزرسانی می‌شود:
+
+\begin{equation}
+    L(\phi_{i,j}, \mathcal{D}) = \underset{(\boldsymbol{o}, \boldsymbol{a}, r_i, \boldsymbol{o}', d) \sim \mathcal{D}}{\mathrm{E}}\left[ 
+    \Bigg( Q_{\phi_{i,j}}(o_i, a_1, a_2) - y_i \Bigg)^2
+    \right]
+\end{equation}
+
+که در آن $y_i$ هدف برای عامل $i$ است:
+
+\begin{equation}
+    y_i = r_i + \gamma (1 - d) \min_{j=1,2} Q_{\phi_{i,j,\text{targ}}}(o_i', \mu_{\theta_{1,\text{targ}}}(o_1'), \mu_{\theta_{2,\text{targ}}}(o_2'))
+\end{equation}
+
+استفاده از عملگر حداقل روی دو منتقد، بیش‌برآورد را کاهش می‌دهد که منجر به تخمین‌های محتاطانه‌تر و پایدارتر می‌شود.
+
+\subsubsection{یادگیری سیاست با تاخیر}
+
+سیاست هر عامل با تاخیر (معمولاً پس از هر دو به‌روزرسانی منتقدها) و با بیشینه کردن تابع \lr{Q} اول به‌روزرسانی می‌شود:
+
+\begin{equation}
+    \max_{\theta_i} \underset{\boldsymbol{o} \sim \mathcal{D}}{\mathrm{E}}\left[ Q_{\phi_{i,1}}(o_i, \mu_{\theta_i}(o_i), \mu_{\theta_{-i}}(o_{-i})) \right]
+\end{equation}
+
+به‌روزرسانی تاخیری سیاست اجازه می‌دهد تا منتقدها قبل از تغییر سیاست به مقادیر دقیق‌تری همگرا شوند.
+
+\subsubsection{شبکه‌های هدف}
+
+مشابه \lr{TD3}، شبکه‌های هدف با میانگین‌گیری پولیاک به‌روزرسانی می‌شوند:
+
+\begin{align*}
+    \phi_{i,j,\text{targ}} &\leftarrow \rho \phi_{i,j,\text{targ}} + (1 - \rho) \phi_{i,j} \quad \text{برای } j=1,2 \\
+    \theta_{i,\text{targ}} &\leftarrow \rho \theta_{i,\text{targ}} + (1 - \rho) \theta_i
+\end{align*}
+
+\subsection{اکتشاف در \lr{MATD3}}
+
+اکتشاف در \lr{MATD3} با افزودن نویز به اعمال هر عامل انجام می‌شود:
+
+\begin{equation}
+    a_i = \text{clip}(\mu_{\theta_i}(o_i) + \epsilon_i, a_{\text{Low}}, a_{\text{High}})
+\end{equation}
+
+که در آن $\epsilon_i \sim \mathcal{N}(0, \sigma_i)$ است و مقدار $\sigma_i$ به مرور زمان کاهش می‌یابد.
+
+\subsection{شبه‌کد \lr{MATD3} برای بازی‌های دو­عاملیِ مجموع­‌صفر}
+
+در این بخش، شبه‌کد الگوریتم \lr{MATD3} پیاده‌سازی‌شده آورده شده‌است. در این پژوهش الگوریتم~\رجوع{alg:MATD3} در محیط پایتون با استفاده از کتابخانه \lr{PyTorch} \cite{paszke2017automatic} پیاده‌سازی شده‌است.
+
+\begin{algorithm}[H]
+    \caption{عامل گرادیان سیاست عمیق قطعی تاخیری دوگانه دو­عاملی}\label{alg:MATD3}
+    \begin{algorithmic}[1]
+        \ورودی پارامترهای اولیه سیاست عامل‌ها $(\theta_1, \theta_2)$، پارامترهای توابع \lr{Q} $(\phi_{1,1}, \phi_{1,2}, \phi_{2,1}, \phi_{2,2})$، بافر تکرار بازی خالی $(\mathcal{D})$
+        \State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید: 
+        \Statex \hspace{\algorithmicindent}
+        $\theta_{i,\text{targ}} \leftarrow \theta_i$, $\phi_{i,j,\text{targ}} \leftarrow \phi_{i,j}$ برای $i \in \{1, 2\}$ و $j \in \{1, 2\}$
+        
+        \While{همگرایی رخ دهد}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات $(o_1, o_2)$ را دریافت کنید
+            \strut}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، عمل $a_i = \text{clip}(\mu_{\theta_i}(o_i) + \epsilon_i, a_{\text{Low}}, a_{\text{High}})$ را انتخاب کنید، به‌طوری که $\epsilon_i \sim \mathcal{N}(0, \sigma_i)$ است
+            \strut}
+            \State اعمال $(a_1, a_2)$ را در محیط اجرا کنید
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات بعدی $(o_1', o_2')$، پاداش‌ها $(r_1, r_2=-r_1)$ و سیگنال پایان $d$ را دریافت کنید
+            \strut}
+            \State تجربه $(o_1, o_2, a_1, a_2, r_1, r_2, o_1', o_2', d)$ را در بافر $\mathcal{D}$ ذخیره کنید
+            \State اگر $d=1$ است، وضعیت محیط را بازنشانی کنید
+            
+            \If{زمان به‌روزرسانی فرا رسیده است}
+                \For{$j$ در هر تعداد به‌روزرسانی}
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    یک دسته تصادفی از تجربیات، $B = \{(\boldsymbol{o}, \boldsymbol{a}, r_1, r_2, \boldsymbol{o}', d)\}$، از $\mathcal{D}$ نمونه‌گیری کنید
+                    \strut}
+                    \State اهداف را محاسبه کنید:
+                     \vspace{-15pt}
+                    \begin{align*}
+                        y_1 &= r_1 + \gamma (1-d) \min_{k=1,2} Q_{\phi_{1,k,\text{targ}}}(o_1', \mu_{\theta_{1,\text{targ}}}(o_1'), \mu_{\theta_{2,\text{targ}}}(o_2')) \\
+                        y_2 &= r_2 + \gamma (1-d) \min_{k=1,2} Q_{\phi_{2,k,\text{targ}}}(o_2', \mu_{\theta_{2,\text{targ}}}(o_2'), \mu_{\theta_{1,\text{targ}}}(o_1'))
+                    \end{align*}
+                    \vspace{-35pt}
+                    
+                    \State توابع \lr{Q} را با نزول گرادیان به‌روزرسانی کنید:
+                    \vspace{-15pt}
+                    \begin{align*}
+                        \nabla_{\phi_{1,k}} \frac{1}{|B|}\sum_{B} \left( Q_{\phi_{1,k}}(o_1, a_1, a_2) - y_1 \right)^2 \quad \text{برای } k=1,2 \\
+                        \nabla_{\phi_{2,k}} \frac{1}{|B|}\sum_{B} \left( Q_{\phi_{2,k}}(o_2, a_2, a_1) - y_2 \right)^2 \quad \text{برای } k=1,2
+                    \end{align*}
+                    \vspace{-30pt}
+                    
+                    \If{باقیمانده $j$ بر تاخیر سیاست برابر $0$ باشد}
+                        \State سیاست‌ها را با صعود گرادیان به‌روزرسانی کنید:
+                        \vspace{-15pt}
+                        \begin{align*}
+                            \nabla_{\theta_1} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}Q_{\phi_{1,1}}(o_1, \mu_{\theta_1}(o_1), a_2) \\
+                            \nabla_{\theta_2} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}Q_{\phi_{2,1}}(o_2, \mu_{\theta_2}(o_2), a_1)
+                        \end{align*}
+                        \vspace{-35pt}
+                        
+                        \State شبکه‌های هدف را به‌روزرسانی کنید:
+                        \vspace{-15pt}
+                        \begin{align*}
+                            \phi_{i,k,\text{targ}} &\leftarrow \rho \phi_{i,k,\text{targ}} + (1-\rho) \phi_{i,k} \quad \text{برای } i,k \in \{1,2\} \\
+                            \theta_{i,\text{targ}} &\leftarrow \rho \theta_{i,\text{targ}} + (1-\rho) \theta_i \quad \text{برای } i \in \{1,2\}
+                        \end{align*}
+                    \EndIf
+                \EndFor
+            \EndIf
+        \EndWhile
+        \vspace{-15pt}
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{مزایای \lr{MATD3} در بازی‌های مجموع­‌صفر}
+
+\lr{MATD3} مزایای زیر را نسبت به \lr{MADDPG} در بازی‌های دو­عاملیِ مجموع­‌صفر ارائه می‌دهد:
+
+\begin{itemize}
+    \item \textbf{پایداری بیشتر:} با استفاده از منتقدهای دوگانه، بیش‌برآورد تابع \lr{Q} که در محیط‌های غیرایستای چند­عاملی شدیدتر است، کاهش می‌یابد.
+    \item \textbf{یادگیری کارآمدتر:} به‌روزرسانی‌های تاخیری سیاست اجازه می‌دهد منتقدها به تخمین‌های دقیق‌تری دست یابند، که منجر به بهبود کیفیت یادگیری سیاست می‌شود.
+    \item \textbf{مقاومت در برابر نویز:} ترکیب منتقدهای دوگانه با رویکرد آموزش متمرکز، مقاومت الگوریتم در برابر نویز و تغییرات محیط را افزایش می‌دهد.
+    \item \textbf{همگرایی بهتر:} بهبودهای \lr{TD3} در کنار رویکرد چند­عاملی، به همگرایی سریع‌تر و پایدارتر در بازی‌های رقابتی منجر می‌شود.
+\end{itemize}
+
+در مجموع، \lr{MATD3} ترکیبی از بهترین ویژگی‌های \lr{TD3} و \lr{MADDPG} را ارائه می‌دهد که آن را به گزینه‌ای مناسب برای یادگیری سیاست‌های پیچیده در بازی‌های دو­عاملیِ مجموع­‌صفر تبدیل می‌کند.

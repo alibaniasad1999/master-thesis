@@ -1,0 +1,180 @@
+\section{عامل عملگر نقاد نرم دو­عاملی}\label{sec:MASAC}
+
+عامل عملگر نقاد نرم دو­عاملی\LTRfootnote{Multi-Agent Soft Actor-Critic (MASAC)}
+توسعه‌ای از الگوریتم \lr{SAC} برای محیط‌های چند­عاملی است. در این بخش، به بررسی این الگوریتم در چارچوب بازی‌های دو­عاملیِ مجموع­‌صفر می‌پردازیم که در آن ترکیب ویژگی‌های \lr{SAC} با رویکرد چند­عاملی به پایداری و کارایی بیشتر در یادگیری منجر می‌شود.
+
+\subsection{چالش‌های یادگیری تقویتی در محیط‌های چند­عاملی و راه‌حل \lr{MASAC}}
+
+در محیط‌های چند­عاملی، عامل‌ها همزمان سیاست‌های خود را تغییر می‌دهند که باعث غیرایستایی محیط از دید هر عامل می‌شود. علاوه بر این، چالش‌های مربوط به تعادل اکتشاف-بهره‌برداری در محیط‌های چند­عاملی پیچیده‌تر است.
+
+\lr{MASAC} این چالش‌ها را با ترکیب رویکردهای زیر حل می‌کند:
+\begin{itemize}
+    \item \textbf{آموزش متمرکز، اجرای غیرمتمرکز:} مشابه \lr{MADDPG}، از منتقدهایی استفاده می‌کند که به اطلاعات کامل دسترسی دارند.
+    \item \textbf{سیاست‌های تصادفی:} برخلاف \lr{MADDPG} و \lr{MATD3} که سیاست‌های قطعی دارند، \lr{MASAC} از سیاست‌های تصادفی استفاده می‌کند.
+    \item \textbf{تنظیم آنتروپی:} با استفاده از تنظیم آنتروپی، اکتشاف و همگرایی به سیاست‌های بهتر را بهبود می‌بخشد.
+    \item \textbf{منتقدهای دوگانه:} برای هر عامل، از دو شبکه منتقد استفاده می‌کند تا بیش‌برآورد تابع \lr{Q} را کاهش دهد.
+\end{itemize}
+
+\subsection{معماری \lr{MASAC} در بازی‌های مجموع­‌صفر}
+
+در یک بازی دو­عاملیِ مجموع­‌صفر، هر عامل دارای شبکه‌های زیر است:
+
+\begin{itemize}
+    \item \textbf{شبکه بازیگر:} $\pi_{\theta_i}(a_i|o_i)$ که توزیع احتمال اعمال را با توجه به مشاهدات محلی تعیین می‌کند.
+    \item \textbf{شبکه‌های منتقد دوگانه:} $Q_{\phi_{i,1}}(o_i, a_1, a_2)$ و $Q_{\phi_{i,2}}(o_i, a_1, a_2)$ که ارزش حالت-عمل را تخمین می‌زنند.
+    \item \textbf{شبکه‌های هدف:} برای پایدارسازی آموزش، از نسخه‌های هدف منتقدها استفاده می‌شود.
+\end{itemize}
+
+در بازی‌های مجموع­‌صفر، پاداش‌ها رابطه $r_1 + r_2 = 0$ دارند، بنابراین $r_2 = -r_1$ است.
+
+\subsection{آموزش \lr{MASAC}}
+
+فرایند آموزش \lr{MASAC} به شرح زیر است:
+
+\subsubsection{یادگیری تابع \lr{Q}}
+
+برای هر عامل $i \in \{1, 2\}$ و هر منتقد $j \in \{1, 2\}$، تابع \lr{Q} با کمینه کردن خطای میانگین مربعات بلمن به‌روزرسانی می‌شود:
+
+\begin{equation}
+    L(\phi_{i,j}, \mathcal{D}) = \underset{(\boldsymbol{o}, \boldsymbol{a}, r_i, \boldsymbol{o}', d) \sim \mathcal{D}}{\mathrm{E}}\left[ 
+    \Bigg( Q_{\phi_{i,j}}(o_i, a_1, a_2) - y_i \Bigg)^2
+    \right]
+\end{equation}
+
+که در آن $y_i$ هدف برای عامل $i$ است:
+
+\begin{equation}
+    y_i = r_i + \gamma (1 - d) \Big( \min_{j=1,2} Q_{\phi_{i,j,\text{targ}}}(o_i', \tilde{a}_1', \tilde{a}_2') - \alpha_i \log \pi_{\theta_i}(\tilde{a}_i'|o_i') \Big)
+\end{equation}
+
+که در آن $\tilde{a}_i' \sim \pi_{\theta_i}(\cdot|o_i')$ است. استفاده از عملگر حداقل روی دو منتقد، بیش‌برآورد را کاهش می‌دهد که منجر به تخمین‌های محتاطانه‌تر و پایدارتر می‌شود.
+
+\subsubsection{یادگیری سیاست}
+
+سیاست هر عامل با بیشینه کردن ترکیبی از تابع \lr{Q} و آنتروپی به‌روزرسانی می‌شود:
+
+\begin{equation}
+    \max_{\theta_i} \underset{\boldsymbol{o} \sim \mathcal{D}}{\mathrm{E}}\left[ \min_{j=1,2}Q_{\phi_{i,j}}(o_i, \tilde{a}_i, a_{-i}) - \alpha_i \log \pi_{\theta_i}(\tilde{a}_i|o_i) \right]
+\end{equation}
+
+که در آن $\tilde{a}_i \sim \pi_{\theta_i}(\cdot|o_i)$ است و از ترفند پارامترسازی مجدد برای استخراج گرادیان استفاده می‌شود:
+
+\begin{equation}
+    \tilde{a}_{i,\theta_i}(o_i, \xi_i) = \tanh\left( \mu_{\theta_i}(o_i) + \sigma_{\theta_i}(o_i) \odot \xi_i \right), \;\;\;\;\; \xi_i \sim \mathcal{N}
+\end{equation}
+
+\subsubsection{شبکه‌های هدف}
+
+مشابه \lr{SAC}، شبکه‌های هدف منتقد با میانگین‌گیری پولیاک به‌روزرسانی می‌شوند:
+
+\begin{equation}
+    \phi_{i,j,\text{targ}} \leftarrow \rho \phi_{i,j,\text{targ}} + (1 - \rho) \phi_{i,j} \quad \text{برای } j=1,2
+\end{equation}
+
+\subsubsection{تنظیم ضریب آنتروپی}
+
+یکی از مزایای \lr{MASAC}، توانایی تنظیم خودکار ضریب آنتروپی $\alpha_i$ برای هر عامل است که می‌تواند با استفاده از یک تابع هزینه مجزا بهینه شود:
+
+\begin{equation}
+    \min_{\alpha_i} \underset{\boldsymbol{o} \sim \mathcal{D}, \tilde{a}_i \sim \pi_{\theta_i}}{\mathrm{E}}\left[ -\alpha_i \Big(\log \pi_{\theta_i}(\tilde{a}_i|o_i) + H_{\text{target}} \Big) \right]
+\end{equation}
+
+که در آن $H_{\text{target}}$ آنتروپی هدف است که به عنوان یک ابرپارامتر تعیین می‌شود.
+
+\subsection{اکتشاف در \lr{MASAC}}
+
+اکتشاف در \lr{MASAC} به صورت ذاتی از طریق سیاست‌های تصادفی و تنظیم آنتروپی انجام می‌شود. برخلاف \lr{MADDPG} و \lr{MATD3} که به افزودن نویز به اعمال نیاز دارند، \lr{MASAC} اعمال را مستقیماً از توزیع احتمال سیاست نمونه‌گیری می‌کند:
+
+\begin{equation}
+    a_i \sim \pi_{\theta_i}(\cdot|o_i)
+\end{equation}
+
+این رویکرد امکان اکتشاف ساختاریافته‌تر و کارآمدتر را فراهم می‌کند که در محیط‌های چند­عاملی پیچیده مفید است.
+
+\subsection{شبه‌کد \lr{MASAC} برای بازی‌های دو­عاملیِ مجموع­‌صفر}
+
+در این بخش، شبه‌کد الگوریتم \lr{MASAC} پیاده‌سازی‌شده آورده شده‌است. در این پژوهش الگوریتم~\رجوع{alg:MASAC} در محیط پایتون با استفاده از کتابخانه \lr{PyTorch} \cite{paszke2017automatic} پیاده‌سازی شده‌است.
+
+\begin{algorithm}[H]
+    \caption{عامل عملگر نقاد نرم دو­عاملی}\label{alg:MASAC}
+    \begin{algorithmic}[1]
+        \ورودی پارامترهای اولیه سیاست عامل‌ها $(\theta_1, \theta_2)$، پارامترهای توابع \lr{Q} $(\phi_{1,1}, \phi_{1,2}, \phi_{2,1}, \phi_{2,2})$، ضرایب آنتروپی $(\alpha_1, \alpha_2)$، بافر تکرار بازی خالی $(\mathcal{D})$
+        \State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید: 
+        \Statex \hspace{\algorithmicindent}
+        $\phi_{i,j,\text{targ}} \leftarrow \phi_{i,j}$ برای $i \in \{1, 2\}$ و $j \in \{1, 2\}$
+        
+        \While{همگرایی رخ دهد}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات $(o_1, o_2)$ را دریافت کنید
+            \strut}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، عمل $a_i \sim \pi_{\theta_i}(\cdot|o_i)$ را انتخاب کنید
+            \strut}
+            \State اعمال $(a_1, a_2)$ را در محیط اجرا کنید
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مشاهدات بعدی $(o_1', o_2')$، پاداش‌ها $(r_1, r_2=-r_1)$ و سیگنال پایان $d$ را دریافت کنید
+            \strut}
+            \State تجربه $(o_1, o_2, a_1, a_2, r_1, r_2, o_1', o_2', d)$ را در بافر $\mathcal{D}$ ذخیره کنید
+            \State اگر $d=1$ است، وضعیت محیط را بازنشانی کنید
+            
+            \If{زمان به‌روزرسانی فرا رسیده است}
+                \For{هر تعداد به‌روزرسانی}
+                    \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+                    یک دسته تصادفی از تجربیات، $B = \{(\boldsymbol{o}, \boldsymbol{a}, r_1, r_2, \boldsymbol{o}', d)\}$، از $\mathcal{D}$ نمونه‌گیری کنید
+                    \strut}
+                    \State اهداف را محاسبه کنید:
+                     \vspace{-15pt}
+                    \begin{align*}
+                        y_1 &= r_1 + \gamma (1-d) \Big(\min_{j=1,2} Q_{\phi_{1,j,\text{targ}}}(o_1', \tilde{a}_1', \tilde{a}_2') - \alpha_1 \log \pi_{\theta_1}(\tilde{a}_1'|o_1') \Big) \\
+                        y_2 &= r_2 + \gamma (1-d) \Big(\min_{j=1,2} Q_{\phi_{2,j,\text{targ}}}(o_2', \tilde{a}_2', \tilde{a}_1') - \alpha_2 \log \pi_{\theta_2}(\tilde{a}_2'|o_2') \Big)
+                    \end{align*}
+                    \vspace{-35pt}
+                    
+                    \State توابع \lr{Q} را با نزول گرادیان به‌روزرسانی کنید:
+                    \vspace{-15pt}
+                    \begin{align*}
+                        \nabla_{\phi_{1,j}} \frac{1}{|B|}\sum_{B} \left( Q_{\phi_{1,j}}(o_1, a_1, a_2) - y_1 \right)^2 \quad \text{برای } j=1,2 \\
+                        \nabla_{\phi_{2,j}} \frac{1}{|B|}\sum_{B} \left( Q_{\phi_{2,j}}(o_2, a_2, a_1) - y_2 \right)^2 \quad \text{برای } j=1,2
+                    \end{align*}
+                    \vspace{-30pt}
+                    
+                    \State سیاست‌ها را با صعود گرادیان به‌روزرسانی کنید:
+                    \vspace{-15pt}
+                    \begin{align*}
+                        \nabla_{\theta_1} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}\Big[\min_{j=1,2} Q_{\phi_{1,j}}(o_1, \tilde{a}_{1,\theta_1}(o_1, \xi_1), a_2) - \alpha_1 \log \pi_{\theta_1}(\tilde{a}_{1,\theta_1}(o_1, \xi_1)|o_1) \Big] \\
+                        \nabla_{\theta_2} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B}\Big[\min_{j=1,2} Q_{\phi_{2,j}}(o_2, \tilde{a}_{2,\theta_2}(o_2, \xi_2), a_1) - \alpha_2 \log \pi_{\theta_2}(\tilde{a}_{2,\theta_2}(o_2, \xi_2)|o_2) \Big]
+                    \end{align*}
+                    \vspace{-35pt}
+                    
+                    \State ضرایب آنتروپی را با نزول گرادیان به‌روزرسانی کنید (اختیاری):
+                    \vspace{-15pt}
+                    \begin{align*}
+                        \nabla_{\alpha_1} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B} -\alpha_1 \Big(\log \pi_{\theta_1}(\tilde{a}_{1,\theta_1}(o_1, \xi_1)|o_1) + H_{\text{target}} \Big) \\
+                        \nabla_{\alpha_2} \frac{1}{|B|}\sum_{\boldsymbol{o} \in B} -\alpha_2 \Big(\log \pi_{\theta_2}(\tilde{a}_{2,\theta_2}(o_2, \xi_2)|o_2) + H_{\text{target}} \Big)
+                    \end{align*}
+                    \vspace{-35pt}
+                    
+                    \State شبکه‌های هدف را به‌روزرسانی کنید:
+                    \vspace{-15pt}
+                    \begin{align*}
+                        \phi_{i,j,\text{targ}} &\leftarrow \rho \phi_{i,j,\text{targ}} + (1-\rho) \phi_{i,j} \quad \text{برای } i,j \in \{1,2\}
+                    \end{align*}
+                \EndFor
+            \EndIf
+        \EndWhile
+        \vspace{-15pt}
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{مزایای \lr{MASAC} در بازی‌های مجموع­‌صفر}
+
+\lr{MASAC} مزایای زیر را نسبت به سایر الگوریتم‌های چند­عاملی در بازی‌های دو­عاملیِ مجموع­‌صفر ارائه می‌دهد:
+
+\begin{itemize}
+    \item \textbf{اکتشاف بهتر:} استفاده از سیاست‌های تصادفی و تنظیم آنتروپی، اکتشاف فضای حالت-عمل را بهبود می‌بخشد که برای یافتن راه‌حل‌های بهینه در بازی‌های دو­عاملی ضروری است.
+    \item \textbf{ثبات بیشتر:} ترکیب منتقدهای دوگانه با تنظیم آنتروپی، یادگیری را پایدارتر می‌کند و از همگرایی زودهنگام به سیاست‌های ضعیف جلوگیری می‌کند.
+    \item \textbf{سازگاری با محیط‌های پیچیده:} توانایی تنظیم خودکار تعادل بین اکتشاف و بهره‌برداری، \lr{MASAC} را برای محیط‌های چند­عاملی پیچیده مناسب می‌سازد.
+    \item \textbf{عملکرد بهتر در مسائل با چندین بهینه محلی:} سیاست‌های تصادفی می‌توانند از دام‌های بهینه محلی فرار کنند و به راه‌حل‌های بهتر برسند.
+\end{itemize}
+
+در مجموع، \lr{MASAC} ترکیبی از ویژگی‌های مثبت \lr{SAC} و رویکردهای چند­عاملی را ارائه می‌دهد که آن را به گزینه‌ای قدرتمند برای یادگیری سیاست‌های پیچیده در بازی‌های دو­عاملیِ مجموع­‌صفر تبدیل می‌کند، به‌ویژه در محیط‌هایی که اکتشاف کارآمد و سیاست‌های تصادفی اهمیت دارند.

@@ -1,0 +1,149 @@
+\section{عامل بهینه‌سازی سیاست مجاور دو‌عاملی}\label{sec:MAPPO}
+
+عامل بهینه‌سازی سیاست مجاور دو­عاملی\LTRfootnote{Multi-Agent Proximal Policy Optimization (MAPPO)}
+توسعه‌ای از الگوریتم \lr{PPO} برای محیط‌های چند­عاملی است. در این بخش، به بررسی این الگوریتم در چارچوب بازی‌های دو­عاملیِ مجموع­‌صفر می‌پردازیم که در آن ترکیب ویژگی‌های \lr{PPO} با رویکرد چند­عاملی به پایداری و کارایی بیشتر در یادگیری منجر می‌شود.
+
+\subsection{چالش‌های یادگیری تقویتی در محیط‌های چند­عاملی و راه‌حل \lr{MAPPO}}
+
+در محیط‌های چند­عاملی، عامل‌ها همزمان سیاست‌های خود را تغییر می‌دهند که باعث غیرایستایی محیط از دید هر عامل می‌شود. این چالش با پیچیدگی‌های ذاتی الگوریتم‌های مبتنی بر گرادیان سیاست مانند \lr{PPO} ترکیب می‌شود.
+
+\lr{MAPPO} این چالش‌ها را با ترکیب رویکردهای زیر حل می‌کند:
+\begin{itemize}
+    \item \textbf{آموزش متمرکز، اجرای غیرمتمرکز:} مشابه سایر الگوریتم‌های چندعاملی، از منتقدهایی استفاده می‌کند که به اطلاعات کامل دسترسی دارند، اما بازیگران تنها به مشاهدات محلی خود دسترسی دارند.
+    \item \textbf{به‌روزرسانی کلیپ‌شده:} استفاده از مکانیسم کلیپ شده \lr{PPO} برای محدود کردن به‌روزرسانی‌های سیاست، که به پایداری بیشتر در یادگیری چند‌عاملی کمک می‌کند.
+    \item \textbf{بافر تجربه مشترک:} استفاده از یک بافر تجربه مشترک که تعاملات بین عامل‌ها را ثبت می‌کند.
+\end{itemize}
+
+\subsection{معماری \lr{MAPPO} در بازی‌های مجموع­‌صفر}
+
+در یک بازی دو­عاملیِ مجموع­‌صفر، هر عامل دارای شبکه‌های زیر است:
+
+\begin{itemize}
+    \item \textbf{شبکه بازیگر:} $\pi_{\theta_i}(a_i|o_i)$ که توزیع احتمال اعمال را با توجه به مشاهدات محلی تعیین می‌کند.
+    \item \textbf{شبکه منتقد:} $V_{\phi_i}(o_i, a_1, a_2)$ که ارزش حالت را تخمین می‌زند و برای محاسبه تابع مزیت استفاده می‌شود.
+\end{itemize}
+
+در بازی‌های مجموع­‌صفر، پاداش‌ها رابطه $r_1 + r_2 = 0$ دارند، بنابراین $r_2 = -r_1$ است.
+
+\subsection{آموزش \lr{MAPPO}}
+
+فرایند آموزش \lr{MAPPO} به شرح زیر است:
+
+\subsubsection{جمع‌آوری تجربیات}
+
+در هر تکرار، عامل‌ها با استفاده از سیاست‌های فعلی خود در محیط تعامل می‌کنند و مجموعه‌ای از مسیرها را جمع‌آوری می‌کنند:
+
+\begin{equation}
+    \mathcal{D}_k = \{(o_1^t, o_2^t, a_1^t, a_2^t, r_1^t, r_2^t, o_1^{t+1}, o_2^{t+1})\}
+\end{equation}
+
+\subsubsection{محاسبه مزیت}
+
+برای هر عامل $i \in \{1, 2\}$، تابع مزیت با استفاده از تابع ارزش فعلی محاسبه می‌شود. روش‌های مختلفی برای محاسبه مزیت وجود دارد؛ یک روش متداول استفاده از تخمین‌زننده مزیت تعمیم‌یافته (GAE) است:
+
+\begin{equation}
+    \hat{A}_i^t = \sum_{l=0}^{\infty} (\gamma\lambda)^l \delta_{i,t+l}
+\end{equation}
+
+که در آن $\delta_{i,t} = r_i^t + \gamma V_{\phi_i}(o_i^{t+1}) - V_{\phi_i}(o_i^t)$ است.
+
+\subsubsection{به‌روزرسانی سیاست}
+
+سیاست هر عامل با بیشینه کردن تابع هدف \lr{PPO-Clip} به‌روزرسانی می‌شود:
+
+\begin{equation}
+    \max_{\theta_i} \underset{(o_i,a_i) \sim \mathcal{D}_k}{\mathrm{E}}\left[ \min\left( \frac{\pi_{\theta_i}(a_i|o_i)}{\pi_{\theta_{i,k}}(a_i|o_i)} \hat{A}_i, \;\; \text{clip}\left(\frac{\pi_{\theta_i}(a_i|o_i)}{\pi_{\theta_{i,k}}(a_i|o_i)}, 1 - \epsilon, 1+\epsilon \right) \hat{A}_i \right) \right]
+\end{equation}
+
+یا با استفاده از همان فرمول‌بندی ساده‌تر:
+
+\begin{equation}
+    \max_{\theta_i} \underset{(o_i,a_i) \sim \mathcal{D}_k}{\mathrm{E}}\left[ \min\left( \frac{\pi_{\theta_i}(a_i|o_i)}{\pi_{\theta_{i,k}}(a_i|o_i)} \hat{A}_i, \;\; g(\epsilon, \hat{A}_i) \right) \right]
+\end{equation}
+
+که تابع $g$ به صورت زیر تعریف شده‌است:
+
+\begin{align}
+    g(\epsilon, A) = \left\{
+    \begin{array}{ll}
+        (1 + \epsilon) A & A \geq 0 \\
+        (1 - \epsilon) A & A < 0
+    \end{array}
+    \right.
+\end{align}
+
+\subsubsection{به‌روزرسانی منتقد}
+
+تابع ارزش هر عامل با کمینه کردن خطای میانگین مربعات به‌روزرسانی می‌شود:
+
+\begin{equation}
+    \min_{\phi_i} \underset{(o_i,\hat{R}_i) \sim \mathcal{D}_k}{\mathrm{E}}\left[ \left( V_{\phi_i}(o_i) - \hat{R}_i \right)^2 \right]
+\end{equation}
+
+که در آن $\hat{R}_i$ بازده تنزیل‌شده برای عامل $i$ است.
+
+\subsection{اکتشاف در \lr{MAPPO}}
+
+اکتشاف در \lr{MAPPO} به صورت ذاتی از طریق سیاست‌های تصادفی انجام می‌شود. برخلاف الگوریتم‌های مبتنی بر \lr{DDPG} که به افزودن نویز به اعمال نیاز دارند، \lr{MAPPO} از توزیع احتمال سیاست برای اکتشاف استفاده می‌کند:
+
+\begin{equation}
+    a_i \sim \pi_{\theta_i}(\cdot|o_i)
+\end{equation}
+
+این رویکرد اکتشاف سیاست‌محور، در ترکیب با مکانیسم کلیپ \lr{PPO} که از به‌روزرسانی‌های بزرگ سیاست جلوگیری می‌کند، به ثبات بیشتر در یادگیری چند‌عاملی کمک می‌کند.
+
+\subsection{شبه‌کد \lr{MAPPO} برای بازی‌های دو­عاملیِ مجموع­‌صفر}
+
+در این بخش، شبه‌کد الگوریتم \lr{MAPPO} پیاده‌سازی‌شده آورده شده‌است. در این پژوهش الگوریتم~\رجوع{alg:MAPPO} در محیط پایتون با استفاده از کتابخانه \lr{PyTorch} \cite{paszke2017automatic} پیاده‌سازی شده‌است.
+
+\begin{algorithm}[H]
+    \caption{عامل بهینه‌سازی سیاست مجاور دو­عاملی}\label{alg:MAPPO}
+    \begin{algorithmic}[1]
+        \ورودی پارامترهای اولیه سیاست عامل‌ها $(\theta_1, \theta_2)$، پارامترهای تابع ارزش $(\phi_1, \phi_2)$
+        
+        \For{$k = 0, 1, 2, ...$}
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            مجموعه‌ای از مسیرها به نام $\mathcal{D}_k = \{(o_1^t, o_2^t, a_1^t, a_2^t, r_1^t, r_2^t, o_1^{t+1}, o_2^{t+1})\}$ با اجرای سیاست‌های $\pi_{\theta_1}$ و $\pi_{\theta_2}$ در محیط جمع‌آوری شود.
+            \strut}
+            
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، پاداش‌های باقی‌مانده $\hat{R}_i^t$ را محاسبه کنید.
+            \strut}
+            
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، برآوردهای مزیت $\hat{A}_i^t$ را با استفاده از تابع ارزش فعلی $V_{\phi_i}$ محاسبه کنید.
+            \strut}
+            
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، سیاست را با به حداکثر رساندن تابع هدف \lr{PPO-Clip} به‌روزرسانی کنید:
+%            \vspace{-15pt}
+            \begin{align*}
+                \theta_{i,k+1} = \arg \max_{\theta_i} \frac{1}{|\mathcal{D}_k|} \sum_{(o_i,a_i) \in \mathcal{D}_k} \min\left( \frac{\pi_{\theta_i}(a_i|o_i)}{\pi_{\theta_{i,k}}(a_i|o_i)} \hat{A}_i, \;\; g(\epsilon, \hat{A}_i) \right)
+            \end{align*}
+            \strut}
+            \vspace{-30pt}
+            
+            \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
+            برای هر عامل $i$، تابع ارزش را با رگرسیون بر روی میانگین مربعات خطا به‌روزرسانی کنید:
+            \vspace{-15pt}
+            \begin{align*}
+                \phi_{i,k+1} = \arg \min_{\phi_i} \frac{1}{|\mathcal{D}_k|} \sum_{(o_i) \in \mathcal{D}_k} \left( V_{\phi_i}(o_i) - \hat{R}_i \right)^2
+            \end{align*}
+            \strut}
+        \EndFor
+        \vspace{-15pt}
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{مزایای \lr{MAPPO} در بازی‌های مجموع­‌صفر}
+
+\lr{MAPPO} مزایای زیر را نسبت به سایر الگوریتم‌های چند­عاملی در بازی‌های دو­عاملیِ مجموع­‌صفر ارائه می‌دهد:
+
+\begin{itemize}
+    \item \textbf{پایداری یادگیری:} مکانیسم کلیپ \lr{PPO} از به‌روزرسانی‌های بزرگ سیاست جلوگیری می‌کند که به پایداری بیشتر در محیط‌های غیرایستای چند­عاملی منجر می‌شود.
+    \item \textbf{کارایی نمونه:} نسبت به الگوریتم‌های خارج از سیاست مانند \lr{MATD3} و \lr{MASAC}، \lr{MAPPO} معمولاً کارایی نمونه بهتری دارد و به داده‌های کمتری برای یادگیری نیاز دارد.
+    \item \textbf{اکتشاف سیاست‌محور:} اکتشاف ذاتی از طریق سیاست‌های تصادفی به جای افزودن نویز به اعمال، به اکتشاف کارآمدتر فضای حالت-عمل کمک می‌کند.
+    \item \textbf{مقیاس‌پذیری:} \lr{MAPPO} به راحتی به سیستم‌های با تعداد بیشتری از عامل‌ها قابل گسترش است، اگرچه در این پژوهش بر بازی‌های دو­عاملی تمرکز شده‌است.
+\end{itemize}
+
+در مجموع، \lr{MAPPO} ترکیبی از سادگی و کارایی \lr{PPO} با رویکردهای چند­عاملی را ارائه می‌دهد که آن را به گزینه‌ای قدرتمند برای یادگیری در بازی‌های دو­عاملیِ مجموع­‌صفر تبدیل می‌کند.
