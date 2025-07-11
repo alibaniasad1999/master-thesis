@@ -121,11 +121,11 @@
                 \theta_{i,k+1} = \arg \max_{\theta_i} \frac{1}{|\mathcal{D}_k|} \sum_{(o_i,a_i) \in \mathcal{D}_k} \min\left( \frac{\pi_{\theta_i}(a_i|o_i)}{\pi_{\theta_{i,k}}(a_i|o_i)} \hat{A}_i, \;\; g(\epsilon, \hat{A}_i) \right)
             \end{align*}
             \strut}
-            \vspace{-30pt}
+%            \vspace{-30pt}
             
             \State \parbox[t]{\dimexpr\linewidth-\algorithmicindent}{
             برای هر عامل $i$، تابع ارزش را با رگرسیون بر روی میانگین مربعات خطا به‌روزرسانی کنید:
-            \vspace{-15pt}
+%            \vspace{-15pt}
             \begin{align*}
                 \phi_{i,k+1} = \arg \min_{\phi_i} \frac{1}{|\mathcal{D}_k|} \sum_{(o_i) \in \mathcal{D}_k} \left( V_{\phi_i}(o_i) - \hat{R}_i \right)^2
             \end{align*}
