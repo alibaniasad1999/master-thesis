@@ -24,7 +24,8 @@ include_directories(
 )
 
 # Define the executable
-add_executable(sac_controler_node src/sac_tbp_controler.cpp)
+add_executable(sac_controler_node src/sac_tbp_controler.cpp
+                                  src/src/ModelLocator.cpp)
 
 # Link dependencies to the executable
 ament_target_dependencies(sac_controler_node

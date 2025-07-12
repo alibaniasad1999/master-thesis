@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <chrono>
+#include "src/ModelLocator.h"
 
 using namespace std::chrono;
 
