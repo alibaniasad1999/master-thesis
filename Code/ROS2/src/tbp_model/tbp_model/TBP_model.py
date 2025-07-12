@@ -9,11 +9,12 @@ from std_msgs.msg import Float64
 
 # three body problem env
 class ThreeBodyEnv:
-    def __init__(self, trajectory_, error_range=0.1, final_range=0.1, dt=0.001):
+    def __init__(self, trajectory_, error_range=0.1, final_range=0.1, dt=0.01):
         self.trajectory = trajectory_
         self.state = np.zeros(4)
-        self.dt = dt
+        self.dt = dt/10
         self.mu = 0.012277471
+        # Commented out spaces.Box references
         # self.action_space = spaces.Box(low=-4, high=4, shape=(2,), dtype=np.float32)
         # self.observation_space = spaces.Box(low=-1, high=1, shape=(4,), dtype=np.float32)
         self.position = trajectory_[0]
@@ -34,9 +35,9 @@ class ThreeBodyEnv:
         ydot = self.position[3]
 
         # force = action[0] * env.state[2:] + action[1] * env.state[:2]
-        # clip action
-        action = np.clip(action, self.action_space.low, self.action_space.high)
-        action_2 = np.clip(action_2, self.action_space.low, self.action_space.high)
+        # clip action without using action_space
+        action = np.clip(action, -4, 4)
+        action_2 = np.clip(action_2, -4, 4)
 
         a_x = action[0] / 100
         a_y = action[1] / 100
@@ -145,7 +146,10 @@ class ModelServiceNode(Node):
         if self.time_step <= 0.0:
             self.get_logger().warn(f'Invalid time_step ({self.time_step}). Setting to default 1.0s.')
             self.time_step = 1.0
-        self.control_force_ = 0
+
+        # Initialize control_force_ as a list
+        self.control_force_ = [0.0, 0.0]
+
         # Create a client for the 'compute_control_force' service
         self.client = self.create_client(ControlCommand, 'compute_control_force')
         while not self.client.wait_for_service(timeout_sec=1.0):
@@ -219,10 +223,10 @@ class ModelServiceNode(Node):
             self.get_logger().error(f'Service call failed: {e}')
 
     def update_state(self, control_force):
-        state, _, _, _, _ = self.tbp_env.step(control_force)
+        state, _, _, _, position = self.tbp_env.step(control_force)
         self.position_x, self.position_y, self.velocity_x, self.velocity_y = state
 
-        self.get_logger().info(f'Updated state -> Position: {self.position}, Velocity: {self.velocity}')
+        self.get_logger().info(f'Updated state -> Position: ({self.position_x}, {self.position_y}), Velocity: ({self.velocity_x}, {self.velocity_y})')
 
     def publish_callback(self):
         # Publish the position, velocity, and control force
