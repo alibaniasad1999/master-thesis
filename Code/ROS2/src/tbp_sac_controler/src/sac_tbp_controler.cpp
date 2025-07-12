@@ -11,10 +11,10 @@ using namespace std::chrono;
 
 class ControllerServiceNode : public rclcpp::Node {
 public:
-    ControllerServiceNode() : Node("controller_service_node"), model_name_("zs_sac_traced_deterministicl.pt") {
+    ControllerServiceNode() : Node("controller_service_node"), model_name_("zs_sac_traced_deterministic.pt") {
         RCLCPP_INFO(this->get_logger(), "Initializing Controller Service Node");
         auto modelPath = ModelLocator::locateModel(model_name_);
-        model_name_str_ = modelPath.string();
+        auto model_name_str_ = modelPath.string();
         // Load the Torch model
         if (!model_file_exists(modelPath.string())) {
             RCLCPP_ERROR(this->get_logger(), "Model file not found: %s", modelPath.string().c_str());
@@ -81,7 +81,7 @@ private:
 //            auto outputs = output.toTuple();
             // Extract the control force from the model output
             // at::Tensor output_tensor = output.toTensor();
-            at::Tensor output_tensor = outputs->elements()[0].toTensor();
+            at::Tensor output_tensor = output.toTensor();
             float control_force_x = output_tensor[0][0].item<float>();
             float control_force_y = output_tensor[0][1].item<float>();
 

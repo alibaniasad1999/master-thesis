@@ -9,10 +9,10 @@ from std_msgs.msg import Float64
 
 # three body problem env
 class ThreeBodyEnv:
-    def __init__(self, trajectory_, error_range=0.1, final_range=0.1):
+    def __init__(self, trajectory_, error_range=0.1, final_range=0.1, dt=0.001):
         self.trajectory = trajectory_
         self.state = np.zeros(4)
-        self.dt = 0.001
+        self.dt = dt
         self.mu = 0.012277471
         # self.action_space = spaces.Box(low=-4, high=4, shape=(2,), dtype=np.float32)
         # self.observation_space = spaces.Box(low=-1, high=1, shape=(4,), dtype=np.float32)
