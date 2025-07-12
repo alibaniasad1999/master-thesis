@@ -11,18 +11,19 @@ using namespace std::chrono;
 
 class ControllerServiceNode : public rclcpp::Node {
 public:
-    ControllerServiceNode() : Node("controller_service_node"), model_path_("/home/ali/Documents/University/master-thesis/Code/ROS2/src/tbp_sac_controler/src/model/sac_model.pt") {
+    ControllerServiceNode() : Node("controller_service_node"), model_name_("zs_sac_traced_deterministicl.pt") {
         RCLCPP_INFO(this->get_logger(), "Initializing Controller Service Node");
-
+        auto modelPath = ModelLocator::locateModel(model_name_);
+        model_name_str_ = modelPath.string();
         // Load the Torch model
-        if (!model_file_exists(model_path_)) {
-            RCLCPP_ERROR(this->get_logger(), "Model file not found: %s", model_path_.c_str());
+        if (!model_file_exists(modelPath.string())) {
+            RCLCPP_ERROR(this->get_logger(), "Model file not found: %s", modelPath.string().c_str());
             rclcpp::shutdown();
             return;
         }
 
         try {
-            module_ = torch::jit::load(model_path_);
+            module_ = torch::jit::load(modelPath.string());
             // warmup model with 100 iteration
             for (int i = 0; i < 100; ++i) {
               // random number
@@ -77,7 +78,7 @@ private:
             RCLCPP_INFO(this->get_logger(), "Time taken by inference: %ld microseconds", duration.count());
             // print the output tensor in ros
             std::cout << "Output tensor: " << output << std::endl;
-            auto outputs = output.toTuple();
+//            auto outputs = output.toTuple();
             // Extract the control force from the model output
             // at::Tensor output_tensor = output.toTensor();
             at::Tensor output_tensor = outputs->elements()[0].toTensor();
@@ -97,7 +98,7 @@ private:
         }
     }
 
-    std::string model_path_;
+    std::string model_name_;
     torch::jit::script::Module module_;
     rclcpp::Service<tbp_interface::srv::ControlCommand>::SharedPtr service_;
 };
