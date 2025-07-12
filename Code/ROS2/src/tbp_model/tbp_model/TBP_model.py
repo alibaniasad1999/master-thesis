@@ -109,7 +109,7 @@ class ThreeBodyEnv:
 class ModelServiceNode(Node):
     def __init__(self):
         super().__init__('model_service_node')
-        df = pd.read_csv('/home/ali/Documents/University/master-thesis/Code/realtime/src/tbp_model/trajectory.csv')
+        df = pd.read_csv('/home/ali/Documents/University/master-thesis/Code/ROS2/src/tbp_model/trajectory.csv')
         df.head()
         # df to numpy array
         data = df.to_numpy()

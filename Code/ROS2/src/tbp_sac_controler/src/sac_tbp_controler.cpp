@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 class ControllerServiceNode : public rclcpp::Node {
 public:
-    ControllerServiceNode() : Node("controller_service_node"), model_path_("/home/ali/Documents/University/master-thesis/Code/realtime/src/tbp_sac_controler/src/model/sac_model.pt") {
+    ControllerServiceNode() : Node("controller_service_node"), model_path_("/home/ali/Documents/University/master-thesis/Code/ROS2/src/tbp_sac_controler/src/model/sac_model.pt") {
         RCLCPP_INFO(this->get_logger(), "Initializing Controller Service Node");
 
         // Load the Torch model
