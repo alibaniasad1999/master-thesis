@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'sub_data = sub_data.sub_data:main',
         ],
     },
 )
