@@ -223,10 +223,51 @@ class ModelServiceNode(Node):
             self.get_logger().error(f'Service call failed: {e}')
 
     def update_state(self, control_force):
-        state, _, _, _, position = self.tbp_env.step(control_force)
+        state, reward, done, truncated, position = self.tbp_env.step(control_force)
         self.position_x, self.position_y, self.velocity_x, self.velocity_y = state
 
         self.get_logger().info(f'Updated state -> Position: ({self.position_x}, {self.position_y}), Velocity: ({self.velocity_x}, {self.velocity_y})')
+
+        # If environment signals it's done, shutdown ROS
+        if done:
+            self.get_logger().info('Simulation complete. Shutting down ROS node.')
+            # Publish final state before shutdown
+            self.publish_final_state()
+            # Schedule shutdown to allow final messages to be published
+            self.create_timer(1.0, self.shutdown_ros)
+
+    def publish_final_state(self):
+        # Publish the final position, velocity, and control force
+        position_x_msg = Float64()
+        position_x_msg.data = float(self.position_x)
+        self.position_x_pub.publish(position_x_msg)
+
+        position_y_msg = Float64()
+        position_y_msg.data = float(self.position_y)
+        self.position_y_pub.publish(position_y_msg)
+
+        velocity_x_msg = Float64()
+        velocity_x_msg.data = float(self.velocity_x)
+        self.velocity_x_pub.publish(velocity_x_msg)
+
+        velocity_y_msg = Float64()
+        velocity_y_msg.data = float(self.velocity_y)
+        self.velocity_y_pub.publish(velocity_y_msg)
+
+        control_force_x_msg = Float64()
+        control_force_x_msg.data = float(self.control_force_[0])
+        self.control_force_x_pub.publish(control_force_x_msg)
+
+        control_force_y_msg = Float64()
+        control_force_y_msg.data = float(self.control_force_[1])
+        self.control_force_y_pub.publish(control_force_y_msg)
+
+        self.get_logger().info(f'Final state published -> Position x: {position_x_msg.data}, Position y: {position_y_msg.data}, Velocity x: {velocity_x_msg.data}, Velocity y: {velocity_y_msg.data}, Control Force x: {control_force_x_msg.data}, Control Force y: {control_force_y_msg.data}')
+
+    def shutdown_ros(self):
+        # Shutdown ROS node
+        self.get_logger().info('Shutting down ROS...')
+        rclpy.shutdown()
 
     def publish_callback(self):
         # Publish the position, velocity, and control force
