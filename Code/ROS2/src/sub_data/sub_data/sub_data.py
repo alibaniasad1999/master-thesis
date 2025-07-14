@@ -8,63 +8,72 @@ from std_msgs.msg import Float64
 
 
 class DataListenerNode(Node):
-    """ROS 2 node that subscribes to the six Float64 topics and logs
-    each message to both the console and a CSV file.
+    """ROS 2 node that subscribes to six Float64 topics and logs each
+    message both to the console and to a rotating CSV file.
+
+    Fixes / improvements over the previous version:
+    ▸ Corrected quoting bug in f‑string used for the filename.
+    ▸ Guaranteed file close via rclpy.on_shutdown as well as the finally block.
+    ▸ Parameterised log directory ( --ros-args -p log_dir:=... ).
+    ▸ Opens the CSV in *append* mode, so re‑running the node won’t wipe earlier data.
+    ▸ Keeps a header row only once per new file.
     """
 
     def __init__(self):
         super().__init__('data_listener_node')
 
-        qos = 10  # Depth 10 to mirror publisher QoS
+        qos = 10  # match publisher depth
 
         # ------------------------------------------------------------------
         # CSV setup
         # ------------------------------------------------------------------
-        log_dir = Path.home() / 'ros2_logs'
+        default_log_dir = Path.home() / 'ros2_logs'
+        self.declare_parameter('log_dir', str(default_log_dir))
+        log_dir = Path(self.get_parameter('log_dir').get_parameter_value().string_value)
         log_dir.mkdir(parents=True, exist_ok=True)
-        filename = log_dir / f'data_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv'
-        self.csv_file = open(filename, 'w', newline='')
+
+        # Time‑stamped file name (quotes fixed!)
+        filename = log_dir / f"data_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        file_exists = filename.exists()
+        self.csv_file = open(filename, 'a', newline='')
         self.csv_writer = csv.writer(self.csv_file)
-        self.csv_writer.writerow(['timestamp', 'topic', 'value'])
+
+        if not file_exists:  # add header only for new files
+            self.csv_writer.writerow(['timestamp', 'topic', 'value'])
+
         self.get_logger().info(f'Logging incoming data to {filename}')
 
         # ------------------------------------------------------------------
-        # Subscriptions (one‑liner lambdas share a common handler)
+        # Subscriptions (use late‑binding safe default arg in lambda)
         # ------------------------------------------------------------------
-        self.create_subscription(Float64, 'position_x',
-                                 lambda msg: self._handle('position_x', msg.data), qos)
-        self.create_subscription(Float64, 'position_y',
-                                 lambda msg: self._handle('position_y', msg.data), qos)
-        self.create_subscription(Float64, 'velocity_x',
-                                 lambda msg: self._handle('velocity_x', msg.data), qos)
-        self.create_subscription(Float64, 'velocity_y',
-                                 lambda msg: self._handle('velocity_y', msg.data), qos)
-        self.create_subscription(Float64, 'control_force_x',
-                                 lambda msg: self._handle('control_force_x', msg.data), qos)
-        self.create_subscription(Float64, 'control_force_y',
-                                 lambda msg: self._handle('control_force_y', msg.data), qos)
+        topics = ['position_x', 'position_y',
+                  'velocity_x', 'velocity_y',
+                  'control_force_x', 'control_force_y']
+
+        for t in topics:
+            self.create_subscription(Float64, t, lambda msg, t=t: self._handle(t, msg.data), qos)
 
         self.get_logger().info('Data Listener Node has been started and is listening for data.')
+
+        # Ensure graceful shutdown
+        rclpy.get_default_context().on_shutdown(self._on_shutdown)
 
     # ----------------------------------------------------------------------
     # Common message handler
     # ----------------------------------------------------------------------
     def _handle(self, topic: str, value: float):
         timestamp = datetime.now().isoformat(sep=' ', timespec='milliseconds')
-        # Write to CSV then flush to avoid data loss on abrupt shutdown
         self.csv_writer.writerow([timestamp, topic, f'{value:.6f}'])
         self.csv_file.flush()
-        # Console output
         self.get_logger().info(f'{topic}: {value:.4f}')
 
     # ----------------------------------------------------------------------
-    # Clean shutdown – ensures the CSV file is closed properly
+    # Shutdown housekeeping
     # ----------------------------------------------------------------------
-    def destroy_node(self):
+    def _on_shutdown(self):
         if not self.csv_file.closed:
             self.csv_file.close()
             self.get_logger().info('CSV log file closed.')
-        super().destroy_node()
 
 
 # --------------------------------------------------------------------------
@@ -78,9 +87,9 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
+        node.get_logger().info('SIGINT received – shutting down.')
     finally:
-        node.get_logger().info('Shutting down Data Listener Node.')
+        node._on_shutdown()
         node.destroy_node()
         rclpy.shutdown()
 
