@@ -30,6 +30,13 @@ add_executable(sac_controler_node src/sac_tbp_controler.cpp
 add_executable(ddpg_controler_node src/ddpg_tbp_controler.cpp
                                   src/src/ModelLocator.cpp)
 
+# Define the TD3 executable
+add_executable(td3_controler_node src/td3_tbp_controler.cpp
+                                  src/src/ModelLocator.cpp)
+
+# Define the PPO executable
+add_executable(ppo_controler_node src/ppo_tbp_controler.cpp
+                                  src/src/ModelLocator.cpp)
 
 # Link dependencies to the executable
 ament_target_dependencies(sac_controler_node
@@ -44,27 +51,36 @@ ament_target_dependencies(ddpg_controler_node
     Torch  # Link against Torch
 )
 
+ament_target_dependencies(td3_controler_node
+    rclcpp
+    tbp_interface  # Add the service dependency
+    Torch  # Link against Torch
+)
+
+ament_target_dependencies(ppo_controler_node
+    rclcpp
+    tbp_interface  # Add the service dependency
+    Torch  # Link against Torch
+)
+
 # Link Torch libraries
 target_link_libraries(sac_controler_node "${TORCH_LIBRARIES}")
+target_link_libraries(ddpg_controler_node "${TORCH_LIBRARIES}")
+target_link_libraries(td3_controler_node "${TORCH_LIBRARIES}")
+target_link_libraries(ppo_controler_node "${TORCH_LIBRARIES}")
 
 # Specify C++11 or higher
 set_property(TARGET sac_controler_node PROPERTY CXX_STANDARD 14)
+set_property(TARGET ddpg_controler_node PROPERTY CXX_STANDARD 14)
+set_property(TARGET td3_controler_node PROPERTY CXX_STANDARD 14)
+set_property(TARGET ppo_controler_node PROPERTY CXX_STANDARD 14)
 
 # Install the executable
 install(TARGETS
     sac_controler_node
-    DESTINATION lib/${PROJECT_NAME}
-)
-
-# Link Torch libraries
-target_link_libraries(ddpg_controler_node "${TORCH_LIBRARIES}")
-
-# Specify C++11 or higher
-set_property(TARGET ddpg_controler_node PROPERTY CXX_STANDARD 14)
-
-# Install the executable
-install(TARGETS
     ddpg_controler_node
+    td3_controler_node
+    ppo_controler_node
     DESTINATION lib/${PROJECT_NAME}
 )
 
