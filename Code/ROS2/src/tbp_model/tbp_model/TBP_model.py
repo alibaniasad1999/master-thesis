@@ -237,7 +237,7 @@ class ModelServiceNode(Node):
             # Publish final state before shutdown
             self.publish_final_state()
             # Schedule shutdown to allow final messages to be published
-            self.create_timer(1.0, self.shutdown_ros)
+            self.create_timer(self.time_step, self.shutdown_ros)
 
     def publish_final_state(self):
         # Publish the final position, velocity, and control force
