@@ -156,7 +156,7 @@ class ModelServiceNode(Node):
             self.get_logger().info('Waiting for controller service...')
 
         # Timer to periodically send state and receive control force
-        self.tbp_env = ThreeBodyEnv(trajectory_in, dt=self.time_step)
+        self.tbp_env = ThreeBodyEnv(trajectory_in, dt=self.time_step, error_range=0.01, final_range=0.001)
         state, _ = self.tbp_env.reset()
         self.position_x, self.position_y, self.velocity_x, self.velocity_y = state
         self.position_x_pub_data, self.position_y_pub_data, self.velocity_x_pub_data, self.velocity_y_pub_data = trajectory_in[0]
