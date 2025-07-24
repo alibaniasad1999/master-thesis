@@ -68,7 +68,7 @@
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<Zero_Sum_PPO.ZS_PPO object at 0x107a0c550>":	{
+        "<Zero_Sum_PPO.ZS_PPO object at 0x155bc0790>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -130,7 +130,7 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x159b8f550>":	{
+                "<utils.logx.EpochLogger object at 0x12de8a110>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
