@@ -159,6 +159,7 @@ class ModelServiceNode(Node):
         self.tbp_env = ThreeBodyEnv(trajectory_in, dt=self.time_step)
         state, _ = self.tbp_env.reset()
         self.position_x, self.position_y, self.velocity_x, self.velocity_y = state
+        self.position_x_pub_data, self.position_y_pub_data, self.velocity_x_pub_data, self.velocity_y_pub_data = trajectory_in[0]
         self.timer = self.create_timer(self.time_step, self.timer_callback)
 
         # Initialize timing variables
@@ -225,6 +226,8 @@ class ModelServiceNode(Node):
     def update_state(self, control_force):
         state, reward, done, truncated, position = self.tbp_env.step(control_force)
         self.position_x, self.position_y, self.velocity_x, self.velocity_y = state
+        self.position_x_pub_data, self.position_y_pub_data, self.velocity_x_pub_data, self.velocity_y_pub_data = position
+
 
         self.get_logger().info(f'Updated state -> Position: ({self.position_x}, {self.position_y}), Velocity: ({self.velocity_x}, {self.velocity_y})')
 
@@ -239,19 +242,19 @@ class ModelServiceNode(Node):
     def publish_final_state(self):
         # Publish the final position, velocity, and control force
         position_x_msg = Float64()
-        position_x_msg.data = float(self.position_x)
+        position_x_msg.data = float(self.position_x_pub_data)
         self.position_x_pub.publish(position_x_msg)
 
         position_y_msg = Float64()
-        position_y_msg.data = float(self.position_y)
+        position_y_msg.data = float(self.position_y_pub_data)
         self.position_y_pub.publish(position_y_msg)
 
         velocity_x_msg = Float64()
-        velocity_x_msg.data = float(self.velocity_x)
+        velocity_x_msg.data = float(self.velocity_x_pub_data)
         self.velocity_x_pub.publish(velocity_x_msg)
 
         velocity_y_msg = Float64()
-        velocity_y_msg.data = float(self.velocity_y)
+        velocity_y_msg.data = float(self.velocity_y_pub_data)
         self.velocity_y_pub.publish(velocity_y_msg)
 
         control_force_x_msg = Float64()
@@ -272,22 +275,22 @@ class ModelServiceNode(Node):
     def publish_callback(self):
         # Publish the position, velocity, and control force
         position_x_msg = Float64()
-        position_x_msg.data = float(self.position_x)
+        position_x_msg.data = float(self.position_x_pub_data)
         self.position_x_pub.publish(position_x_msg)
         print(position_x_msg.data)
 
         position_y_msg = Float64()
-        position_y_msg.data = float(self.position_y)
+        position_y_msg.data = float(self.position_y_pub_data)
         self.position_y_pub.publish(position_y_msg)
         print(position_y_msg.data)
 
         velocity_x_msg = Float64()
-        velocity_x_msg.data = float(self.velocity_x)
+        velocity_x_msg.data = float(self.velocity_x_pub_data)
         self.velocity_x_pub.publish(velocity_x_msg)
         print(velocity_x_msg.data)
 
         velocity_y_msg = Float64()
-        velocity_y_msg.data = float(self.velocity_y)
+        velocity_y_msg.data = float(self.velocity_y_pub_data)
         self.velocity_y_pub.publish(velocity_y_msg)
         print(velocity_y_msg.data)
 
