@@ -20,13 +20,13 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tbp_model = tbp_model.TBP_model:main',
+            'tbp_model = tbp_model_robust_eval.TBP_model:main',
             'actuator_disturbance = tbp_model_robust_eval.actuator_disturbance:main',
-            'initial_condition_shift = tbp_model.initial_condition_shift:main',
-            'model_mismatch = tbp_model.model_mismatch:main',
-            'partial_observation = tbp_model.partial_observation:main',
-            'sensor_noise = tbp_model.sensor_noise:main',
-            'time_delay = tbp_model.time_delay:main',
+            'initial_condition_shift = tbp_model_robust_eval.initial_condition_shift:main',
+            'model_mismatch = tbp_model_robust_eval.model_mismatch:main',
+            'partial_observation = tbp_model_robust_eval.partial_observation:main',
+            'sensor_noise = tbp_model_robust_eval.sensor_noise:main',
+            'time_delay = tbp_model_robust_eval.time_delay:main',
         ],
     },
 )
