@@ -21,7 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'tbp_model = tbp_model.TBP_model:main',
-            'actuator_disturbance = tbp_model.actuator_disturbance:main',
+            'actuator_disturbance = tbp_model_robust_eval.actuator_disturbance:main',
             'initial_condition_shift = tbp_model.initial_condition_shift:main',
             'model_mismatch = tbp_model.model_mismatch:main',
             'partial_observation = tbp_model.partial_observation:main',
