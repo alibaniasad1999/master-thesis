@@ -1,6 +1,6 @@
 \section{ گرادیان سیاست عمیق قطعی 
 دو­عاملی
-}
+}\label{sec:marl_maddpg}
 % insert_edit_into_file("/Users/Ali/Documents/BAI/Master/master-thesis/Report/Chapters/MARL/MA-DDPG.tex", r"\section{ گرادیان سیاست عمیق قطعی 
 % در بازی‌های دو­عاملیِ مجموع‌­صفر
 % }", """
@@ -30,25 +30,18 @@
 در بازی‌های مجموع­‌صفر، پاداش‌ها رابطه $r_1 + r_2 = 0$ دارند که در آن $r_1$ و $r_2$ پاداش‌های دریافتی عامل‌ها هستند. در نتیجه، $r_2 = -r_1$ است که نمایانگر تضاد کامل منافع بین عامل‌هاست.
 
 \subsection{آموزش \lr{MA-DDPG} در بازی‌های مجموع­‌صفر}
-
 فرایند آموزش \lr{MA-DDPG} برای بازی‌های مجموع­‌صفر به شرح زیر است:
-
 \subsubsection{یادگیری تابع \lr{Q}}
-
 برای هر عامل $i \in \{1, 2\}$، تابع \lr{Q} با کمینه کردن خطای میانگین مربعات بلمن به‌روزرسانی می‌شود:
-
 \begin{equation}
     L(\phi_i, \mathcal{D}) = \underset{(\boldsymbol{o}, \boldsymbol{a}, r_i, \boldsymbol{o}', d) \sim \mathcal{D}}{\mathrm{E}}\left[ 
     \Bigg( Q_{\phi_i}(o_i, a_1, a_2) - y_i \Bigg)^2
     \right]
 \end{equation}
-
 که در آن $\boldsymbol{o} = (o_1, o_2)$ بردار مشاهدات، $\boldsymbol{a} = (a_1, a_2)$ بردار اعمال، و $y_i$ هدف برای عامل $i$ است:
-
 \begin{equation}
     y_i = r_i + \gamma (1 - d) Q_{\phi_{i,\text{targ}}}(o_i', \mu_{\theta_{1,\text{targ}}}(o_1'), \mu_{\theta_{2,\text{targ}}}(o_2'))
 \end{equation}
-
 توجه کنید که منتقد هر عامل به اعمال همه عامل‌ها دسترسی دارد، اما در بازی‌های مجموع­‌صفر، عامل شماره 2 جهت مخالف هدف عامل 1 را دنبال می‌کند.
 
 \subsubsection{یادگیری سیاست}
@@ -59,10 +52,8 @@
     \max_{\theta_i} \underset{\boldsymbol{o} \sim \mathcal{D}}{\mathrm{E}}\left[ Q_{\phi_i}(o_i, \mu_{\theta_i}(o_i), \mu_{\theta_{-i}}(o_{-i})) \right]
 \end{equation}
 
-که در آن $-i$ نشان‌دهنده عامل مقابل است. با توجه به ماهیت بازی مجموع­‌صفر، هر عامل تلاش می‌کند تا مطلوبیت خود را افزایش دهد، در حالی که مطلوبیت عامل دیگر به طور همزمان کاهش می‌یابد.
-
+که در آن $i$ نشان‌دهنده عامل مقابل است. با توجه به ماهیت بازی مجموع­‌صفر، هر عامل تلاش می‌کند تا مطلوبیت خود را افزایش دهد، در حالی که مطلوبیت عامل دیگر به طور همزمان کاهش می‌یابد.
 \subsubsection{شبکه‌های هدف و بافر تجربه}
-
 مشابه \lr{DDPG}، برای پایدار کردن آموزش، شبکه‌های هدف با میانگین‌گیری پولیاک به‌روزرسانی می‌شوند:
 
 \begin{align*}
@@ -75,13 +66,10 @@
 \subsection{اکتشاف در \lr{MA-DDPG}}
 
 اکتشاف در \lr{MA-DDPG} مشابه \lr{DDPG} است، اما برای هر عامل به طور جداگانه اعمال می‌شود. در طی آموزش، به اعمال هر عامل نویز اضافه می‌شود:
-
 \begin{equation}
     a_i = \text{clip}(\mu_{\theta_i}(o_i) + \epsilon_i, a_{\text{Low}}, a_{\text{High}})
 \end{equation}
-
 که در آن $\epsilon_i$ نویز اضافه شده به عامل $i$ است.
-
 \subsection{شبه‌کد \lr{MA-DDPG} برای بازی‌های دو­عاملیِ مجموع­‌صفر}
        در این بخش، شبه‌کد الگوریتم
 \lr{MA-DDPG}
