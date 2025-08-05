@@ -190,7 +190,18 @@ class DDPG:
         self.max_ep_len = max_ep_len
         self.save_freq = save_freq
         self.logger = EpochLogger(**logger_kwargs_)
-        self.logger.save_config(locals())
+        try:
+            self.logger.save_config(locals())
+        except Exception as e:
+            # If saving config fails, log the error but continue
+            print(colorize(f"Error saving config: {e}", 'red', bold=True))
+            print(colorize("Error saving config, some parameters might not be saved.", 'red', bold=True))
+            self.logger.log('Error saving config, some parameters might not be saved.')
+        finally:
+            self.logger.log('Using device: %s' % self.device)
+            self.logger.log('Actor-Critic architecture: %s' % actor_critic.__name__)
+            self.logger.log('Actor-Critic parameters: %s' % ac_kwargs_)
+            self.logger.log('Environment: %s' % env_fn.__name__)
         self.logger.setup_pytorch_saver(self.ac)
         # Count variables (protip: try to get a feel for how different size networks behave!)
         var_counts = tuple(count_vars(module) for module in [self.ac.pi, self.ac.q])
