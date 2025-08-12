@@ -1,0 +1,1516 @@
+{
+    "ac_kwargs_":	{
+        "hidden_sizes":	[
+            1024,
+            1024,
+            1024
+        ]
+    },
+    "act_dim":	8,
+    "act_noise":	0.1,
+    "actor_critic":	"MLPActorCritic",
+    "batch_size":	1024,
+    "device_":	"cpu",
+    "env_fn":	"<function <lambda> at 0x166373c40>",
+    "epochs_":	50,
+    "exp_name":	"ddpg",
+    "gamma_":	0.99,
+    "logger_kwargs_":	{
+        "exp_name":	"ddpg",
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Benchmark/Ant/data/ddpg/ddpg_s0"
+    },
+    "max_ep_len":	30000,
+    "num_test_episodes":	10,
+    "obs_dim":	[
+        105
+    ],
+    "p":	"Parameter containing:\ntensor([-0.0059])",
+    "pi_lr":	0.001,
+    "polyak":	0.995,
+    "q_lr":	0.001,
+    "replay_size":	1000000,
+    "save_freq":	1,
+    "seed_":	0,
+    "self":	{
+        "<DDPG.DDPG object at 0x16aa0ee10>":	{
+            "ac":	{
+                "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=105, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=8, bias=True)\n      (7): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=113, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=1, bias=True)\n      (7): Identity()\n    )\n  )\n)":	{
+                    "_backward_hooks":	{},
+                    "_backward_pre_hooks":	{},
+                    "_buffers":	{},
+                    "_forward_hooks":	{},
+                    "_forward_hooks_always_called":	{},
+                    "_forward_hooks_with_kwargs":	{},
+                    "_forward_pre_hooks":	{},
+                    "_forward_pre_hooks_with_kwargs":	{},
+                    "_is_full_backward_hook":	null,
+                    "_load_state_dict_post_hooks":	{},
+                    "_load_state_dict_pre_hooks":	{},
+                    "_modules":	{
+                        "pi":	{
+                            "MLPActor(\n  (pi): Sequential(\n    (0): Linear(in_features=105, out_features=1024, bias=True)\n    (1): Tanh()\n    (2): Linear(in_features=1024, out_features=1024, bias=True)\n    (3): Tanh()\n    (4): Linear(in_features=1024, out_features=1024, bias=True)\n    (5): Tanh()\n    (6): Linear(in_features=1024, out_features=8, bias=True)\n    (7): Tanh()\n  )\n)":	{
+                                "_backward_hooks":	{},
+                                "_backward_pre_hooks":	{},
+                                "_buffers":	{},
+                                "_forward_hooks":	{},
+                                "_forward_hooks_always_called":	{},
+                                "_forward_hooks_with_kwargs":	{},
+                                "_forward_pre_hooks":	{},
+                                "_forward_pre_hooks_with_kwargs":	{},
+                                "_is_full_backward_hook":	null,
+                                "_load_state_dict_post_hooks":	{},
+                                "_load_state_dict_pre_hooks":	{},
+                                "_modules":	{
+                                    "pi":	{
+                                        "Sequential(\n  (0): Linear(in_features=105, out_features=1024, bias=True)\n  (1): Tanh()\n  (2): Linear(in_features=1024, out_features=1024, bias=True)\n  (3): Tanh()\n  (4): Linear(in_features=1024, out_features=1024, bias=True)\n  (5): Tanh()\n  (6): Linear(in_features=1024, out_features=8, bias=True)\n  (7): Tanh()\n)":	{
+                                            "_backward_hooks":	{},
+                                            "_backward_pre_hooks":	{},
+                                            "_buffers":	{},
+                                            "_forward_hooks":	{},
+                                            "_forward_hooks_always_called":	{},
+                                            "_forward_hooks_with_kwargs":	{},
+                                            "_forward_pre_hooks":	{},
+                                            "_forward_pre_hooks_with_kwargs":	{},
+                                            "_is_full_backward_hook":	null,
+                                            "_load_state_dict_post_hooks":	{},
+                                            "_load_state_dict_pre_hooks":	{},
+                                            "_modules":	{
+                                                "0":	{
+                                                    "Linear(in_features=105, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0050, -0.0805,  0.0221,  ...,  0.0775, -0.0278,  0.0777],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0007,  0.0524, -0.0803,  ..., -0.0426, -0.0246, -0.0930],\n        [-0.0018, -0.0735, -0.0753,  ...,  0.0823,  0.0353,  0.0124],\n        [-0.0007, -0.0193,  0.0122,  ...,  0.0339, -0.0356,  0.0370],\n        ...,\n        [-0.0241,  0.0154, -0.0382,  ...,  0.0464,  0.0463, -0.0308],\n        [ 0.0625,  0.0067,  0.0267,  ...,  0.0170,  0.0458,  0.0776],\n        [-0.0028, -0.0442, -0.0164,  ..., -0.0607, -0.0748, -0.0857]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	105,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "1":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "2":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0019,  0.0301,  0.0061,  ..., -0.0144, -0.0163, -0.0183],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0288,  0.0116, -0.0047,  ..., -0.0121, -0.0295, -0.0174],\n        [ 0.0248,  0.0154,  0.0068,  ..., -0.0294,  0.0163,  0.0190],\n        [ 0.0239,  0.0009, -0.0055,  ..., -0.0030, -0.0290,  0.0301],\n        ...,\n        [-0.0081,  0.0291,  0.0274,  ...,  0.0065, -0.0104, -0.0247],\n        [ 0.0113,  0.0217,  0.0058,  ..., -0.0142, -0.0048,  0.0162],\n        [ 0.0298, -0.0296, -0.0306,  ...,  0.0189,  0.0294, -0.0190]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "3":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "4":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0177,  0.0298, -0.0014,  ...,  0.0272,  0.0144, -0.0082],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0166,  0.0276, -0.0238,  ..., -0.0228,  0.0190,  0.0045],\n        [ 0.0155,  0.0132,  0.0160,  ..., -0.0023, -0.0187, -0.0154],\n        [-0.0082,  0.0105, -0.0005,  ...,  0.0213,  0.0015, -0.0134],\n        ...,\n        [-0.0310,  0.0016,  0.0133,  ..., -0.0050,  0.0137,  0.0246],\n        [ 0.0193,  0.0056, -0.0222,  ..., -0.0115, -0.0009, -0.0026],\n        [ 0.0071, -0.0015, -0.0235,  ...,  0.0165, -0.0297,  0.0117]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "5":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "6":	{
+                                                    "Linear(in_features=1024, out_features=8, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0117,  0.0087,  0.0081, -0.0242,  0.0240, -0.0221,  0.0164,  0.0250],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0173, -0.0154, -0.0033,  ..., -0.0210,  0.0166, -0.0279],\n        [-0.0288,  0.0284, -0.0275,  ...,  0.0279,  0.0223,  0.0265],\n        [ 0.0219,  0.0221,  0.0260,  ..., -0.0098,  0.0025,  0.0133],\n        ...,\n        [ 0.0297, -0.0076,  0.0147,  ..., -0.0251, -0.0158,  0.0090],\n        [ 0.0071,  0.0120, -0.0144,  ..., -0.0092, -0.0228, -0.0148],\n        [ 0.0008, -0.0118, -0.0141,  ..., -0.0144, -0.0231,  0.0197]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	8,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "7":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                }
+                                            },
+                                            "_non_persistent_buffers_set":	"set()",
+                                            "_parameters":	{},
+                                            "_state_dict_hooks":	{},
+                                            "_state_dict_pre_hooks":	{},
+                                            "training":	true
+                                        }
+                                    }
+                                },
+                                "_non_persistent_buffers_set":	"set()",
+                                "_parameters":	{},
+                                "_state_dict_hooks":	{},
+                                "_state_dict_pre_hooks":	{},
+                                "act_limit":	"1.0",
+                                "training":	true
+                            }
+                        },
+                        "q":	{
+                            "MLPQFunction(\n  (q): Sequential(\n    (0): Linear(in_features=113, out_features=1024, bias=True)\n    (1): Tanh()\n    (2): Linear(in_features=1024, out_features=1024, bias=True)\n    (3): Tanh()\n    (4): Linear(in_features=1024, out_features=1024, bias=True)\n    (5): Tanh()\n    (6): Linear(in_features=1024, out_features=1, bias=True)\n    (7): Identity()\n  )\n)":	{
+                                "_backward_hooks":	{},
+                                "_backward_pre_hooks":	{},
+                                "_buffers":	{},
+                                "_forward_hooks":	{},
+                                "_forward_hooks_always_called":	{},
+                                "_forward_hooks_with_kwargs":	{},
+                                "_forward_pre_hooks":	{},
+                                "_forward_pre_hooks_with_kwargs":	{},
+                                "_is_full_backward_hook":	null,
+                                "_load_state_dict_post_hooks":	{},
+                                "_load_state_dict_pre_hooks":	{},
+                                "_modules":	{
+                                    "q":	{
+                                        "Sequential(\n  (0): Linear(in_features=113, out_features=1024, bias=True)\n  (1): Tanh()\n  (2): Linear(in_features=1024, out_features=1024, bias=True)\n  (3): Tanh()\n  (4): Linear(in_features=1024, out_features=1024, bias=True)\n  (5): Tanh()\n  (6): Linear(in_features=1024, out_features=1, bias=True)\n  (7): Identity()\n)":	{
+                                            "_backward_hooks":	{},
+                                            "_backward_pre_hooks":	{},
+                                            "_buffers":	{},
+                                            "_forward_hooks":	{},
+                                            "_forward_hooks_always_called":	{},
+                                            "_forward_hooks_with_kwargs":	{},
+                                            "_forward_pre_hooks":	{},
+                                            "_forward_pre_hooks_with_kwargs":	{},
+                                            "_is_full_backward_hook":	null,
+                                            "_load_state_dict_post_hooks":	{},
+                                            "_load_state_dict_pre_hooks":	{},
+                                            "_modules":	{
+                                                "0":	{
+                                                    "Linear(in_features=113, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0812,  0.0191, -0.0622,  ..., -0.0330,  0.0579,  0.0382],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0518, -0.0236, -0.0396,  ..., -0.0635,  0.0912, -0.0718],\n        [ 0.0901,  0.0049, -0.0886,  ...,  0.0509,  0.0655,  0.0686],\n        [-0.0883,  0.0002, -0.0607,  ..., -0.0616,  0.0714, -0.0131],\n        ...,\n        [-0.0801,  0.0935,  0.0162,  ...,  0.0702, -0.0433,  0.0809],\n        [ 0.0159, -0.0741,  0.0314,  ..., -0.0195, -0.0604, -0.0716],\n        [ 0.0656, -0.0767,  0.0159,  ..., -0.0497, -0.0239, -0.0319]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	113,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "1":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "2":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0220, -0.0164,  0.0179,  ...,  0.0176,  0.0146, -0.0045],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0284, -0.0081,  0.0193,  ..., -0.0132, -0.0146,  0.0300],\n        [ 0.0227, -0.0164, -0.0098,  ...,  0.0030, -0.0292, -0.0256],\n        [ 0.0214, -0.0189, -0.0275,  ..., -0.0078,  0.0197, -0.0246],\n        ...,\n        [-0.0224, -0.0035, -0.0020,  ...,  0.0185,  0.0177, -0.0042],\n        [-0.0304,  0.0089, -0.0217,  ..., -0.0146, -0.0192,  0.0114],\n        [-0.0208,  0.0113,  0.0041,  ..., -0.0050, -0.0281, -0.0155]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "3":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "4":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0068,  0.0269, -0.0227,  ...,  0.0004, -0.0297,  0.0046],\n       requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0172,  0.0081, -0.0191,  ...,  0.0199,  0.0267,  0.0152],\n        [ 0.0157,  0.0060,  0.0007,  ..., -0.0057, -0.0123,  0.0279],\n        [-0.0014,  0.0135,  0.0270,  ..., -0.0265, -0.0028, -0.0117],\n        ...,\n        [ 0.0197, -0.0096, -0.0188,  ..., -0.0020, -0.0035,  0.0288],\n        [ 0.0139,  0.0042,  0.0060,  ...,  0.0077, -0.0042,  0.0241],\n        [-0.0291,  0.0121,  0.0252,  ...,  0.0272, -0.0012, -0.0311]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "5":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "6":	{
+                                                    "Linear(in_features=1024, out_features=1, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0059], requires_grad=True)",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0222,  0.0290, -0.0298,  ...,  0.0062, -0.0134, -0.0311]],\n       requires_grad=True)"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "7":	{
+                                                    "Identity()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                }
+                                            },
+                                            "_non_persistent_buffers_set":	"set()",
+                                            "_parameters":	{},
+                                            "_state_dict_hooks":	{},
+                                            "_state_dict_pre_hooks":	{},
+                                            "training":	true
+                                        }
+                                    }
+                                },
+                                "_non_persistent_buffers_set":	"set()",
+                                "_parameters":	{},
+                                "_state_dict_hooks":	{},
+                                "_state_dict_pre_hooks":	{},
+                                "training":	true
+                            }
+                        }
+                    },
+                    "_non_persistent_buffers_set":	"set()",
+                    "_parameters":	{},
+                    "_state_dict_hooks":	{},
+                    "_state_dict_pre_hooks":	{},
+                    "training":	true
+                }
+            },
+            "ac_targ":	{
+                "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=105, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=8, bias=True)\n      (7): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=113, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=1, bias=True)\n      (7): Identity()\n    )\n  )\n)":	{
+                    "_backward_hooks":	{},
+                    "_backward_pre_hooks":	{},
+                    "_buffers":	{},
+                    "_forward_hooks":	{},
+                    "_forward_hooks_always_called":	{},
+                    "_forward_hooks_with_kwargs":	{},
+                    "_forward_pre_hooks":	{},
+                    "_forward_pre_hooks_with_kwargs":	{},
+                    "_is_full_backward_hook":	null,
+                    "_load_state_dict_post_hooks":	{},
+                    "_load_state_dict_pre_hooks":	{},
+                    "_modules":	{
+                        "pi":	{
+                            "MLPActor(\n  (pi): Sequential(\n    (0): Linear(in_features=105, out_features=1024, bias=True)\n    (1): Tanh()\n    (2): Linear(in_features=1024, out_features=1024, bias=True)\n    (3): Tanh()\n    (4): Linear(in_features=1024, out_features=1024, bias=True)\n    (5): Tanh()\n    (6): Linear(in_features=1024, out_features=8, bias=True)\n    (7): Tanh()\n  )\n)":	{
+                                "_backward_hooks":	{},
+                                "_backward_pre_hooks":	{},
+                                "_buffers":	{},
+                                "_forward_hooks":	{},
+                                "_forward_hooks_always_called":	{},
+                                "_forward_hooks_with_kwargs":	{},
+                                "_forward_pre_hooks":	{},
+                                "_forward_pre_hooks_with_kwargs":	{},
+                                "_is_full_backward_hook":	null,
+                                "_load_state_dict_post_hooks":	{},
+                                "_load_state_dict_pre_hooks":	{},
+                                "_modules":	{
+                                    "pi":	{
+                                        "Sequential(\n  (0): Linear(in_features=105, out_features=1024, bias=True)\n  (1): Tanh()\n  (2): Linear(in_features=1024, out_features=1024, bias=True)\n  (3): Tanh()\n  (4): Linear(in_features=1024, out_features=1024, bias=True)\n  (5): Tanh()\n  (6): Linear(in_features=1024, out_features=8, bias=True)\n  (7): Tanh()\n)":	{
+                                            "_backward_hooks":	{},
+                                            "_backward_pre_hooks":	{},
+                                            "_buffers":	{},
+                                            "_forward_hooks":	{},
+                                            "_forward_hooks_always_called":	{},
+                                            "_forward_hooks_with_kwargs":	{},
+                                            "_forward_pre_hooks":	{},
+                                            "_forward_pre_hooks_with_kwargs":	{},
+                                            "_is_full_backward_hook":	null,
+                                            "_load_state_dict_post_hooks":	{},
+                                            "_load_state_dict_pre_hooks":	{},
+                                            "_modules":	{
+                                                "0":	{
+                                                    "Linear(in_features=105, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0050, -0.0805,  0.0221,  ...,  0.0775, -0.0278,  0.0777])",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0007,  0.0524, -0.0803,  ..., -0.0426, -0.0246, -0.0930],\n        [-0.0018, -0.0735, -0.0753,  ...,  0.0823,  0.0353,  0.0124],\n        [-0.0007, -0.0193,  0.0122,  ...,  0.0339, -0.0356,  0.0370],\n        ...,\n        [-0.0241,  0.0154, -0.0382,  ...,  0.0464,  0.0463, -0.0308],\n        [ 0.0625,  0.0067,  0.0267,  ...,  0.0170,  0.0458,  0.0776],\n        [-0.0028, -0.0442, -0.0164,  ..., -0.0607, -0.0748, -0.0857]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	105,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "1":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "2":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0019,  0.0301,  0.0061,  ..., -0.0144, -0.0163, -0.0183])",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0288,  0.0116, -0.0047,  ..., -0.0121, -0.0295, -0.0174],\n        [ 0.0248,  0.0154,  0.0068,  ..., -0.0294,  0.0163,  0.0190],\n        [ 0.0239,  0.0009, -0.0055,  ..., -0.0030, -0.0290,  0.0301],\n        ...,\n        [-0.0081,  0.0291,  0.0274,  ...,  0.0065, -0.0104, -0.0247],\n        [ 0.0113,  0.0217,  0.0058,  ..., -0.0142, -0.0048,  0.0162],\n        [ 0.0298, -0.0296, -0.0306,  ...,  0.0189,  0.0294, -0.0190]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "3":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "4":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0177,  0.0298, -0.0014,  ...,  0.0272,  0.0144, -0.0082])",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0166,  0.0276, -0.0238,  ..., -0.0228,  0.0190,  0.0045],\n        [ 0.0155,  0.0132,  0.0160,  ..., -0.0023, -0.0187, -0.0154],\n        [-0.0082,  0.0105, -0.0005,  ...,  0.0213,  0.0015, -0.0134],\n        ...,\n        [-0.0310,  0.0016,  0.0133,  ..., -0.0050,  0.0137,  0.0246],\n        [ 0.0193,  0.0056, -0.0222,  ..., -0.0115, -0.0009, -0.0026],\n        [ 0.0071, -0.0015, -0.0235,  ...,  0.0165, -0.0297,  0.0117]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "5":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "6":	{
+                                                    "Linear(in_features=1024, out_features=8, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0117,  0.0087,  0.0081, -0.0242,  0.0240, -0.0221,  0.0164,  0.0250])",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0173, -0.0154, -0.0033,  ..., -0.0210,  0.0166, -0.0279],\n        [-0.0288,  0.0284, -0.0275,  ...,  0.0279,  0.0223,  0.0265],\n        [ 0.0219,  0.0221,  0.0260,  ..., -0.0098,  0.0025,  0.0133],\n        ...,\n        [ 0.0297, -0.0076,  0.0147,  ..., -0.0251, -0.0158,  0.0090],\n        [ 0.0071,  0.0120, -0.0144,  ..., -0.0092, -0.0228, -0.0148],\n        [ 0.0008, -0.0118, -0.0141,  ..., -0.0144, -0.0231,  0.0197]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	8,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "7":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                }
+                                            },
+                                            "_non_persistent_buffers_set":	"set()",
+                                            "_parameters":	{},
+                                            "_state_dict_hooks":	{},
+                                            "_state_dict_pre_hooks":	{},
+                                            "training":	true
+                                        }
+                                    }
+                                },
+                                "_non_persistent_buffers_set":	"set()",
+                                "_parameters":	{},
+                                "_state_dict_hooks":	{},
+                                "_state_dict_pre_hooks":	{},
+                                "act_limit":	"1.0",
+                                "training":	true
+                            }
+                        },
+                        "q":	{
+                            "MLPQFunction(\n  (q): Sequential(\n    (0): Linear(in_features=113, out_features=1024, bias=True)\n    (1): Tanh()\n    (2): Linear(in_features=1024, out_features=1024, bias=True)\n    (3): Tanh()\n    (4): Linear(in_features=1024, out_features=1024, bias=True)\n    (5): Tanh()\n    (6): Linear(in_features=1024, out_features=1, bias=True)\n    (7): Identity()\n  )\n)":	{
+                                "_backward_hooks":	{},
+                                "_backward_pre_hooks":	{},
+                                "_buffers":	{},
+                                "_forward_hooks":	{},
+                                "_forward_hooks_always_called":	{},
+                                "_forward_hooks_with_kwargs":	{},
+                                "_forward_pre_hooks":	{},
+                                "_forward_pre_hooks_with_kwargs":	{},
+                                "_is_full_backward_hook":	null,
+                                "_load_state_dict_post_hooks":	{},
+                                "_load_state_dict_pre_hooks":	{},
+                                "_modules":	{
+                                    "q":	{
+                                        "Sequential(\n  (0): Linear(in_features=113, out_features=1024, bias=True)\n  (1): Tanh()\n  (2): Linear(in_features=1024, out_features=1024, bias=True)\n  (3): Tanh()\n  (4): Linear(in_features=1024, out_features=1024, bias=True)\n  (5): Tanh()\n  (6): Linear(in_features=1024, out_features=1, bias=True)\n  (7): Identity()\n)":	{
+                                            "_backward_hooks":	{},
+                                            "_backward_pre_hooks":	{},
+                                            "_buffers":	{},
+                                            "_forward_hooks":	{},
+                                            "_forward_hooks_always_called":	{},
+                                            "_forward_hooks_with_kwargs":	{},
+                                            "_forward_pre_hooks":	{},
+                                            "_forward_pre_hooks_with_kwargs":	{},
+                                            "_is_full_backward_hook":	null,
+                                            "_load_state_dict_post_hooks":	{},
+                                            "_load_state_dict_pre_hooks":	{},
+                                            "_modules":	{
+                                                "0":	{
+                                                    "Linear(in_features=113, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0812,  0.0191, -0.0622,  ..., -0.0330,  0.0579,  0.0382])",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0518, -0.0236, -0.0396,  ..., -0.0635,  0.0912, -0.0718],\n        [ 0.0901,  0.0049, -0.0886,  ...,  0.0509,  0.0655,  0.0686],\n        [-0.0883,  0.0002, -0.0607,  ..., -0.0616,  0.0714, -0.0131],\n        ...,\n        [-0.0801,  0.0935,  0.0162,  ...,  0.0702, -0.0433,  0.0809],\n        [ 0.0159, -0.0741,  0.0314,  ..., -0.0195, -0.0604, -0.0716],\n        [ 0.0656, -0.0767,  0.0159,  ..., -0.0497, -0.0239, -0.0319]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	113,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "1":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "2":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([ 0.0220, -0.0164,  0.0179,  ...,  0.0176,  0.0146, -0.0045])",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0284, -0.0081,  0.0193,  ..., -0.0132, -0.0146,  0.0300],\n        [ 0.0227, -0.0164, -0.0098,  ...,  0.0030, -0.0292, -0.0256],\n        [ 0.0214, -0.0189, -0.0275,  ..., -0.0078,  0.0197, -0.0246],\n        ...,\n        [-0.0224, -0.0035, -0.0020,  ...,  0.0185,  0.0177, -0.0042],\n        [-0.0304,  0.0089, -0.0217,  ..., -0.0146, -0.0192,  0.0114],\n        [-0.0208,  0.0113,  0.0041,  ..., -0.0050, -0.0281, -0.0155]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "3":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "4":	{
+                                                    "Linear(in_features=1024, out_features=1024, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0068,  0.0269, -0.0227,  ...,  0.0004, -0.0297,  0.0046])",
+                                                            "weight":	"Parameter containing:\ntensor([[ 0.0172,  0.0081, -0.0191,  ...,  0.0199,  0.0267,  0.0152],\n        [ 0.0157,  0.0060,  0.0007,  ..., -0.0057, -0.0123,  0.0279],\n        [-0.0014,  0.0135,  0.0270,  ..., -0.0265, -0.0028, -0.0117],\n        ...,\n        [ 0.0197, -0.0096, -0.0188,  ..., -0.0020, -0.0035,  0.0288],\n        [ 0.0139,  0.0042,  0.0060,  ...,  0.0077, -0.0042,  0.0241],\n        [-0.0291,  0.0121,  0.0252,  ...,  0.0272, -0.0012, -0.0311]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1024,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "5":	{
+                                                    "Tanh()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "6":	{
+                                                    "Linear(in_features=1024, out_features=1, bias=True)":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{
+                                                            "bias":	"Parameter containing:\ntensor([-0.0059])",
+                                                            "weight":	"Parameter containing:\ntensor([[-0.0222,  0.0290, -0.0298,  ...,  0.0062, -0.0134, -0.0311]])"
+                                                        },
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "in_features":	1024,
+                                                        "out_features":	1,
+                                                        "training":	true
+                                                    }
+                                                },
+                                                "7":	{
+                                                    "Identity()":	{
+                                                        "_backward_hooks":	{},
+                                                        "_backward_pre_hooks":	{},
+                                                        "_buffers":	{},
+                                                        "_forward_hooks":	{},
+                                                        "_forward_hooks_always_called":	{},
+                                                        "_forward_hooks_with_kwargs":	{},
+                                                        "_forward_pre_hooks":	{},
+                                                        "_forward_pre_hooks_with_kwargs":	{},
+                                                        "_is_full_backward_hook":	null,
+                                                        "_load_state_dict_post_hooks":	{},
+                                                        "_load_state_dict_pre_hooks":	{},
+                                                        "_modules":	{},
+                                                        "_non_persistent_buffers_set":	"set()",
+                                                        "_parameters":	{},
+                                                        "_state_dict_hooks":	{},
+                                                        "_state_dict_pre_hooks":	{},
+                                                        "training":	true
+                                                    }
+                                                }
+                                            },
+                                            "_non_persistent_buffers_set":	"set()",
+                                            "_parameters":	{},
+                                            "_state_dict_hooks":	{},
+                                            "_state_dict_pre_hooks":	{},
+                                            "training":	true
+                                        }
+                                    }
+                                },
+                                "_non_persistent_buffers_set":	"set()",
+                                "_parameters":	{},
+                                "_state_dict_hooks":	{},
+                                "_state_dict_pre_hooks":	{},
+                                "training":	true
+                            }
+                        }
+                    },
+                    "_non_persistent_buffers_set":	"set()",
+                    "_parameters":	{},
+                    "_state_dict_hooks":	{},
+                    "_state_dict_pre_hooks":	{},
+                    "training":	true
+                }
+            },
+            "act_limit":	"1.0",
+            "act_noise":	0.1,
+            "batch_size":	1024,
+            "device":	"cpu",
+            "env":	{
+                "<TimeLimit<OrderEnforcing<PassiveEnvChecker<AntEnv<Ant-v5>>>>>":	{
+                    "_action_space":	null,
+                    "_cached_spec":	null,
+                    "_elapsed_steps":	null,
+                    "_max_episode_steps":	1000,
+                    "_metadata":	null,
+                    "_observation_space":	null,
+                    "_saved_kwargs":	{
+                        "max_episode_steps":	1000
+                    },
+                    "env":	{
+                        "<OrderEnforcing<PassiveEnvChecker<AntEnv<Ant-v5>>>>":	{
+                            "_action_space":	null,
+                            "_cached_spec":	null,
+                            "_disable_render_order_enforcing":	false,
+                            "_has_reset":	false,
+                            "_metadata":	null,
+                            "_observation_space":	null,
+                            "_saved_kwargs":	{
+                                "disable_render_order_enforcing":	false
+                            },
+                            "env":	{
+                                "<PassiveEnvChecker<AntEnv<Ant-v5>>>":	{
+                                    "_action_space":	null,
+                                    "_cached_spec":	null,
+                                    "_metadata":	null,
+                                    "_observation_space":	null,
+                                    "_saved_kwargs":	{},
+                                    "checked_render":	false,
+                                    "checked_reset":	false,
+                                    "checked_step":	false,
+                                    "close_called":	false,
+                                    "env":	{
+                                        "<AntEnv<Ant-v5>>":	{
+                                            "_contact_cost_weight":	0.0005,
+                                            "_contact_force_range":	[
+                                                -1.0,
+                                                1.0
+                                            ],
+                                            "_ctrl_cost_weight":	0.5,
+                                            "_exclude_current_positions_from_observation":	true,
+                                            "_ezpickle_args":	[
+                                                "ant.xml",
+                                                5,
+                                                {
+                                                    "distance":	4.0
+                                                },
+                                                1,
+                                                0.5,
+                                                0.0005,
+                                                1.0,
+                                                1,
+                                                true,
+                                                [
+                                                    0.2,
+                                                    1.0
+                                                ],
+                                                [
+                                                    -1.0,
+                                                    1.0
+                                                ],
+                                                0.1,
+                                                true,
+                                                true
+                                            ],
+                                            "_ezpickle_kwargs":	{},
+                                            "_forward_reward_weight":	1,
+                                            "_healthy_reward":	1.0,
+                                            "_healthy_z_range":	[
+                                                0.2,
+                                                1.0
+                                            ],
+                                            "_include_cfrc_ext_in_observation":	true,
+                                            "_main_body":	1,
+                                            "_reset_noise_scale":	0.1,
+                                            "_terminate_when_unhealthy":	true,
+                                            "action_space":	{
+                                                "Box(-1.0, 1.0, (8,), float32)":	{
+                                                    "_np_random":	null,
+                                                    "_shape":	[
+                                                        8
+                                                    ],
+                                                    "bounded_above":	"[ True  True  True  True  True  True  True  True]",
+                                                    "bounded_below":	"[ True  True  True  True  True  True  True  True]",
+                                                    "dtype":	"float32",
+                                                    "high":	"[1. 1. 1. 1. 1. 1. 1. 1.]",
+                                                    "high_repr":	"1.0",
+                                                    "low":	"[-1. -1. -1. -1. -1. -1. -1. -1.]",
+                                                    "low_repr":	"-1.0"
+                                                }
+                                            },
+                                            "camera_id":	null,
+                                            "camera_name":	null,
+                                            "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                            "frame_skip":	5,
+                                            "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/ant.xml",
+                                            "height":	480,
+                                            "init_qpos":	"[0.   0.   0.75 1.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.\n 0.  ]",
+                                            "init_qvel":	"[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]",
+                                            "metadata":	{
+                                                "render_fps":	20,
+                                                "render_modes":	[
+                                                    "human",
+                                                    "rgb_array",
+                                                    "depth_array",
+                                                    "rgbd_tuple"
+                                                ]
+                                            },
+                                            "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                            "mujoco_renderer":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x1663c2f50>":	{
+                                                    "_viewers":	{},
+                                                    "_vopt":	{},
+                                                    "camera_id":	0,
+                                                    "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                                    "default_cam_config":	{
+                                                        "distance":	4.0
+                                                    },
+                                                    "height":	480,
+                                                    "max_geom":	1000,
+                                                    "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                                    "viewer":	null,
+                                                    "width":	480
+                                                }
+                                            },
+                                            "observation_space":	{
+                                                "Box(-inf, inf, (105,), float64)":	{
+                                                    "_np_random":	null,
+                                                    "_shape":	[
+                                                        105
+                                                    ],
+                                                    "bounded_above":	"[False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False]",
+                                                    "bounded_below":	"[False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False]",
+                                                    "dtype":	"float64",
+                                                    "high":	"[inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf]",
+                                                    "high_repr":	"inf",
+                                                    "low":	"[-inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf]",
+                                                    "low_repr":	"-inf"
+                                                }
+                                            },
+                                            "observation_structure":	{
+                                                "cfrc_ext":	78,
+                                                "qpos":	13,
+                                                "qvel":	14,
+                                                "skipped_qpos":	2
+                                            },
+                                            "render_mode":	null,
+                                            "spec":	{
+                                                "EnvSpec(id='Ant-v5', entry_point='gymnasium.envs.mujoco.ant_v5:AntEnv', reward_threshold=6000.0, nondeterministic=False, max_episode_steps=None, order_enforce=False, disable_env_checker=True, kwargs={}, namespace=None, name='Ant', version=5, additional_wrappers=(), vector_entry_point=None)":	{
+                                                    "additional_wrappers":	[],
+                                                    "disable_env_checker":	true,
+                                                    "entry_point":	"gymnasium.envs.mujoco.ant_v5:AntEnv",
+                                                    "id":	"Ant-v5",
+                                                    "kwargs":	{},
+                                                    "max_episode_steps":	null,
+                                                    "name":	"Ant",
+                                                    "namespace":	null,
+                                                    "nondeterministic":	false,
+                                                    "order_enforce":	false,
+                                                    "reward_threshold":	6000.0,
+                                                    "vector_entry_point":	null,
+                                                    "version":	5
+                                                }
+                                            },
+                                            "width":	480
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "epochs":	50,
+            "gamma":	0.99,
+            "logger":	{
+                "<utils.logx.EpochLogger object at 0x16b413bd0>":	{
+                    "epoch_dict":	{},
+                    "exp_name":	"ddpg",
+                    "first_row":	true,
+                    "log_current_row":	{},
+                    "log_headers":	[],
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Benchmark/Ant/data/ddpg/ddpg_s0",
+                    "output_file":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Benchmark/Ant/data/ddpg/ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                            "mode":	"w"
+                        }
+                    }
+                }
+            },
+            "max_ep_len":	30000,
+            "num_test_episodes":	10,
+            "pi_optimizer":	{
+                "Adam (\nParameter Group 0\n    amsgrad: False\n    betas: (0.9, 0.999)\n    capturable: False\n    differentiable: False\n    eps: 1e-08\n    foreach: None\n    fused: None\n    lr: 0.001\n    maximize: False\n    weight_decay: 0\n)":	{
+                    "_optimizer_load_state_dict_post_hooks":	{},
+                    "_optimizer_load_state_dict_pre_hooks":	{},
+                    "_optimizer_state_dict_post_hooks":	{},
+                    "_optimizer_state_dict_pre_hooks":	{},
+                    "_optimizer_step_post_hooks":	{},
+                    "_optimizer_step_pre_hooks":	{},
+                    "_warned_capturable_if_run_uncaptured":	true,
+                    "_zero_grad_profile_name":	"Optimizer.zero_grad#Adam.zero_grad",
+                    "defaults":	{
+                        "amsgrad":	false,
+                        "betas":	[
+                            0.9,
+                            0.999
+                        ],
+                        "capturable":	false,
+                        "differentiable":	false,
+                        "eps":	1e-08,
+                        "foreach":	null,
+                        "fused":	null,
+                        "lr":	0.001,
+                        "maximize":	false,
+                        "weight_decay":	0
+                    },
+                    "param_groups":	[
+                        {
+                            "amsgrad":	false,
+                            "betas":	[
+                                0.9,
+                                0.999
+                            ],
+                            "capturable":	false,
+                            "differentiable":	false,
+                            "eps":	1e-08,
+                            "foreach":	null,
+                            "fused":	null,
+                            "lr":	0.001,
+                            "maximize":	false,
+                            "params":	[
+                                "Parameter containing:\ntensor([[-0.0007,  0.0524, -0.0803,  ..., -0.0426, -0.0246, -0.0930],\n        [-0.0018, -0.0735, -0.0753,  ...,  0.0823,  0.0353,  0.0124],\n        [-0.0007, -0.0193,  0.0122,  ...,  0.0339, -0.0356,  0.0370],\n        ...,\n        [-0.0241,  0.0154, -0.0382,  ...,  0.0464,  0.0463, -0.0308],\n        [ 0.0625,  0.0067,  0.0267,  ...,  0.0170,  0.0458,  0.0776],\n        [-0.0028, -0.0442, -0.0164,  ..., -0.0607, -0.0748, -0.0857]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([ 0.0050, -0.0805,  0.0221,  ...,  0.0775, -0.0278,  0.0777],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[-0.0288,  0.0116, -0.0047,  ..., -0.0121, -0.0295, -0.0174],\n        [ 0.0248,  0.0154,  0.0068,  ..., -0.0294,  0.0163,  0.0190],\n        [ 0.0239,  0.0009, -0.0055,  ..., -0.0030, -0.0290,  0.0301],\n        ...,\n        [-0.0081,  0.0291,  0.0274,  ...,  0.0065, -0.0104, -0.0247],\n        [ 0.0113,  0.0217,  0.0058,  ..., -0.0142, -0.0048,  0.0162],\n        [ 0.0298, -0.0296, -0.0306,  ...,  0.0189,  0.0294, -0.0190]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([-0.0019,  0.0301,  0.0061,  ..., -0.0144, -0.0163, -0.0183],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[-0.0166,  0.0276, -0.0238,  ..., -0.0228,  0.0190,  0.0045],\n        [ 0.0155,  0.0132,  0.0160,  ..., -0.0023, -0.0187, -0.0154],\n        [-0.0082,  0.0105, -0.0005,  ...,  0.0213,  0.0015, -0.0134],\n        ...,\n        [-0.0310,  0.0016,  0.0133,  ..., -0.0050,  0.0137,  0.0246],\n        [ 0.0193,  0.0056, -0.0222,  ..., -0.0115, -0.0009, -0.0026],\n        [ 0.0071, -0.0015, -0.0235,  ...,  0.0165, -0.0297,  0.0117]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([ 0.0177,  0.0298, -0.0014,  ...,  0.0272,  0.0144, -0.0082],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[ 0.0173, -0.0154, -0.0033,  ..., -0.0210,  0.0166, -0.0279],\n        [-0.0288,  0.0284, -0.0275,  ...,  0.0279,  0.0223,  0.0265],\n        [ 0.0219,  0.0221,  0.0260,  ..., -0.0098,  0.0025,  0.0133],\n        ...,\n        [ 0.0297, -0.0076,  0.0147,  ..., -0.0251, -0.0158,  0.0090],\n        [ 0.0071,  0.0120, -0.0144,  ..., -0.0092, -0.0228, -0.0148],\n        [ 0.0008, -0.0118, -0.0141,  ..., -0.0144, -0.0231,  0.0197]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([ 0.0117,  0.0087,  0.0081, -0.0242,  0.0240, -0.0221,  0.0164,  0.0250],\n       requires_grad=True)"
+                            ],
+                            "weight_decay":	0
+                        }
+                    ],
+                    "state":	{}
+                }
+            },
+            "polyak":	0.995,
+            "q_optimizer":	{
+                "Adam (\nParameter Group 0\n    amsgrad: False\n    betas: (0.9, 0.999)\n    capturable: False\n    differentiable: False\n    eps: 1e-08\n    foreach: None\n    fused: None\n    lr: 0.001\n    maximize: False\n    weight_decay: 0\n)":	{
+                    "_optimizer_load_state_dict_post_hooks":	{},
+                    "_optimizer_load_state_dict_pre_hooks":	{},
+                    "_optimizer_state_dict_post_hooks":	{},
+                    "_optimizer_state_dict_pre_hooks":	{},
+                    "_optimizer_step_post_hooks":	{},
+                    "_optimizer_step_pre_hooks":	{},
+                    "_warned_capturable_if_run_uncaptured":	true,
+                    "_zero_grad_profile_name":	"Optimizer.zero_grad#Adam.zero_grad",
+                    "defaults":	{
+                        "amsgrad":	false,
+                        "betas":	[
+                            0.9,
+                            0.999
+                        ],
+                        "capturable":	false,
+                        "differentiable":	false,
+                        "eps":	1e-08,
+                        "foreach":	null,
+                        "fused":	null,
+                        "lr":	0.001,
+                        "maximize":	false,
+                        "weight_decay":	0
+                    },
+                    "param_groups":	[
+                        {
+                            "amsgrad":	false,
+                            "betas":	[
+                                0.9,
+                                0.999
+                            ],
+                            "capturable":	false,
+                            "differentiable":	false,
+                            "eps":	1e-08,
+                            "foreach":	null,
+                            "fused":	null,
+                            "lr":	0.001,
+                            "maximize":	false,
+                            "params":	[
+                                "Parameter containing:\ntensor([[ 0.0518, -0.0236, -0.0396,  ..., -0.0635,  0.0912, -0.0718],\n        [ 0.0901,  0.0049, -0.0886,  ...,  0.0509,  0.0655,  0.0686],\n        [-0.0883,  0.0002, -0.0607,  ..., -0.0616,  0.0714, -0.0131],\n        ...,\n        [-0.0801,  0.0935,  0.0162,  ...,  0.0702, -0.0433,  0.0809],\n        [ 0.0159, -0.0741,  0.0314,  ..., -0.0195, -0.0604, -0.0716],\n        [ 0.0656, -0.0767,  0.0159,  ..., -0.0497, -0.0239, -0.0319]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([-0.0812,  0.0191, -0.0622,  ..., -0.0330,  0.0579,  0.0382],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[ 0.0284, -0.0081,  0.0193,  ..., -0.0132, -0.0146,  0.0300],\n        [ 0.0227, -0.0164, -0.0098,  ...,  0.0030, -0.0292, -0.0256],\n        [ 0.0214, -0.0189, -0.0275,  ..., -0.0078,  0.0197, -0.0246],\n        ...,\n        [-0.0224, -0.0035, -0.0020,  ...,  0.0185,  0.0177, -0.0042],\n        [-0.0304,  0.0089, -0.0217,  ..., -0.0146, -0.0192,  0.0114],\n        [-0.0208,  0.0113,  0.0041,  ..., -0.0050, -0.0281, -0.0155]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([ 0.0220, -0.0164,  0.0179,  ...,  0.0176,  0.0146, -0.0045],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[ 0.0172,  0.0081, -0.0191,  ...,  0.0199,  0.0267,  0.0152],\n        [ 0.0157,  0.0060,  0.0007,  ..., -0.0057, -0.0123,  0.0279],\n        [-0.0014,  0.0135,  0.0270,  ..., -0.0265, -0.0028, -0.0117],\n        ...,\n        [ 0.0197, -0.0096, -0.0188,  ..., -0.0020, -0.0035,  0.0288],\n        [ 0.0139,  0.0042,  0.0060,  ...,  0.0077, -0.0042,  0.0241],\n        [-0.0291,  0.0121,  0.0252,  ...,  0.0272, -0.0012, -0.0311]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([-0.0068,  0.0269, -0.0227,  ...,  0.0004, -0.0297,  0.0046],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([[-0.0222,  0.0290, -0.0298,  ...,  0.0062, -0.0134, -0.0311]],\n       requires_grad=True)",
+                                "Parameter containing:\ntensor([-0.0059], requires_grad=True)"
+                            ],
+                            "weight_decay":	0
+                        }
+                    ],
+                    "state":	{}
+                }
+            },
+            "replay_buffer":	{
+                "<DDPG.ReplayBuffer object at 0x123390490>":	{
+                    "act_buf":	"[[0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n ...\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]]",
+                    "device":	"cpu",
+                    "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
+                    "max_size":	1000000,
+                    "obs2_buf":	"[[0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n ...\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]]",
+                    "obs_buf":	"[[0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n ...\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]]",
+                    "ptr":	0,
+                    "rew_buf":	"[0. 0. 0. ... 0. 0. 0.]",
+                    "size":	0
+                }
+            },
+            "save_freq":	1,
+            "start_steps":	5000,
+            "steps_per_epoch":	5000,
+            "test_env":	{
+                "<TimeLimit<OrderEnforcing<PassiveEnvChecker<AntEnv<Ant-v5>>>>>":	{
+                    "_action_space":	null,
+                    "_cached_spec":	null,
+                    "_elapsed_steps":	null,
+                    "_max_episode_steps":	1000,
+                    "_metadata":	null,
+                    "_observation_space":	null,
+                    "_saved_kwargs":	{
+                        "max_episode_steps":	1000
+                    },
+                    "env":	{
+                        "<OrderEnforcing<PassiveEnvChecker<AntEnv<Ant-v5>>>>":	{
+                            "_action_space":	null,
+                            "_cached_spec":	null,
+                            "_disable_render_order_enforcing":	false,
+                            "_has_reset":	false,
+                            "_metadata":	null,
+                            "_observation_space":	null,
+                            "_saved_kwargs":	{
+                                "disable_render_order_enforcing":	false
+                            },
+                            "env":	{
+                                "<PassiveEnvChecker<AntEnv<Ant-v5>>>":	{
+                                    "_action_space":	null,
+                                    "_cached_spec":	null,
+                                    "_metadata":	null,
+                                    "_observation_space":	null,
+                                    "_saved_kwargs":	{},
+                                    "checked_render":	false,
+                                    "checked_reset":	false,
+                                    "checked_step":	false,
+                                    "close_called":	false,
+                                    "env":	{
+                                        "<AntEnv<Ant-v5>>":	{
+                                            "_contact_cost_weight":	0.0005,
+                                            "_contact_force_range":	[
+                                                -1.0,
+                                                1.0
+                                            ],
+                                            "_ctrl_cost_weight":	0.5,
+                                            "_exclude_current_positions_from_observation":	true,
+                                            "_ezpickle_args":	[
+                                                "ant.xml",
+                                                5,
+                                                {
+                                                    "distance":	4.0
+                                                },
+                                                1,
+                                                0.5,
+                                                0.0005,
+                                                1.0,
+                                                1,
+                                                true,
+                                                [
+                                                    0.2,
+                                                    1.0
+                                                ],
+                                                [
+                                                    -1.0,
+                                                    1.0
+                                                ],
+                                                0.1,
+                                                true,
+                                                true
+                                            ],
+                                            "_ezpickle_kwargs":	{},
+                                            "_forward_reward_weight":	1,
+                                            "_healthy_reward":	1.0,
+                                            "_healthy_z_range":	[
+                                                0.2,
+                                                1.0
+                                            ],
+                                            "_include_cfrc_ext_in_observation":	true,
+                                            "_main_body":	1,
+                                            "_reset_noise_scale":	0.1,
+                                            "_terminate_when_unhealthy":	true,
+                                            "action_space":	{
+                                                "Box(-1.0, 1.0, (8,), float32)":	{
+                                                    "_np_random":	null,
+                                                    "_shape":	[
+                                                        8
+                                                    ],
+                                                    "bounded_above":	"[ True  True  True  True  True  True  True  True]",
+                                                    "bounded_below":	"[ True  True  True  True  True  True  True  True]",
+                                                    "dtype":	"float32",
+                                                    "high":	"[1. 1. 1. 1. 1. 1. 1. 1.]",
+                                                    "high_repr":	"1.0",
+                                                    "low":	"[-1. -1. -1. -1. -1. -1. -1. -1.]",
+                                                    "low_repr":	"-1.0"
+                                                }
+                                            },
+                                            "camera_id":	null,
+                                            "camera_name":	null,
+                                            "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                            "frame_skip":	5,
+                                            "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/ant.xml",
+                                            "height":	480,
+                                            "init_qpos":	"[0.   0.   0.75 1.   0.   0.   0.   0.   0.   0.   0.   0.   0.   0.\n 0.  ]",
+                                            "init_qvel":	"[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]",
+                                            "metadata":	{
+                                                "render_fps":	20,
+                                                "render_modes":	[
+                                                    "human",
+                                                    "rgb_array",
+                                                    "depth_array",
+                                                    "rgbd_tuple"
+                                                ]
+                                            },
+                                            "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                            "mujoco_renderer":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x1663c2f50>":	{
+                                                    "_viewers":	{},
+                                                    "_vopt":	{},
+                                                    "camera_id":	0,
+                                                    "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                                    "default_cam_config":	{
+                                                        "distance":	4.0
+                                                    },
+                                                    "height":	480,
+                                                    "max_geom":	1000,
+                                                    "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                                    "viewer":	null,
+                                                    "width":	480
+                                                }
+                                            },
+                                            "observation_space":	{
+                                                "Box(-inf, inf, (105,), float64)":	{
+                                                    "_np_random":	null,
+                                                    "_shape":	[
+                                                        105
+                                                    ],
+                                                    "bounded_above":	"[False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False]",
+                                                    "bounded_below":	"[False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False False False False\n False False False False False False False False False]",
+                                                    "dtype":	"float64",
+                                                    "high":	"[inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf\n inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf]",
+                                                    "high_repr":	"inf",
+                                                    "low":	"[-inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf\n -inf -inf -inf -inf -inf -inf -inf]",
+                                                    "low_repr":	"-inf"
+                                                }
+                                            },
+                                            "observation_structure":	{
+                                                "cfrc_ext":	78,
+                                                "qpos":	13,
+                                                "qvel":	14,
+                                                "skipped_qpos":	2
+                                            },
+                                            "render_mode":	null,
+                                            "spec":	{
+                                                "EnvSpec(id='Ant-v5', entry_point='gymnasium.envs.mujoco.ant_v5:AntEnv', reward_threshold=6000.0, nondeterministic=False, max_episode_steps=None, order_enforce=False, disable_env_checker=True, kwargs={}, namespace=None, name='Ant', version=5, additional_wrappers=(), vector_entry_point=None)":	{
+                                                    "additional_wrappers":	[],
+                                                    "disable_env_checker":	true,
+                                                    "entry_point":	"gymnasium.envs.mujoco.ant_v5:AntEnv",
+                                                    "id":	"Ant-v5",
+                                                    "kwargs":	{},
+                                                    "max_episode_steps":	null,
+                                                    "name":	"Ant",
+                                                    "namespace":	null,
+                                                    "nondeterministic":	false,
+                                                    "order_enforce":	false,
+                                                    "reward_threshold":	6000.0,
+                                                    "vector_entry_point":	null,
+                                                    "version":	5
+                                                }
+                                            },
+                                            "width":	480
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "update_after":	1000,
+            "update_every":	2000
+        }
+    },
+    "start_steps":	5000,
+    "steps_per_epoch":	5000,
+    "update_after":	1000,
+    "update_every":	2000
+}
