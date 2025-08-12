@@ -168,7 +168,7 @@
 			\begin{itemize}
 				\item State: $\mathbf{x} = [x, y, \dot{x}, \dot{y}]^T$
 				\item Control: $\mathbf{u} \leq u_{\max}$
-				\item Dynamics: $\dot{\mathbf{x}} = f(\mathbf{x}) + g(\mathbf{x})\mathbf{u}$
+				\item Dynamics: $\dot{\mathbf{x}} = f(\mathbf{x}, \mathbf{u})$
 			\end{itemize}
 		\end{column}
 		\begin{column}{0.5\textwidth}
@@ -252,7 +252,7 @@
 			\begin{itemize}
 				\item Centralized training
 				\item Decentralized execution
-				\item Shared actor-critic networks
+				% \item Shared actor-critic networks
 			\end{itemize}
 		\end{column}
 		\begin{column}{0.4\textwidth}
@@ -286,8 +286,8 @@
 				\item Target networks
 			\end{itemize}
 			
-			\vspace{0.3cm}
-			\textbf{SAC $\rightarrow$ MASAC}
+			% \vspace{0.1cm}
+			\textbf{SAC $\rightarrow$ MA-SAC}
 			\begin{itemize}
 				\item Entropy regularization
 				\item Stochastic policies
@@ -295,15 +295,15 @@
 			\end{itemize}
 		\end{column}
 		\begin{column}{0.5\textwidth}
-			\textbf{TD3 $\rightarrow$ MATD3}
+			\textbf{TD3 $\rightarrow$ MA-TD3}
 			\begin{itemize}
 				\item Twin critic networks
 				\item Delayed policy updates
 				\item Target policy smoothing
 			\end{itemize}
 			
-			\vspace{0.3cm}
-			\textbf{PPO $\rightarrow$ MAPPO}
+			% \vspace{0.1cm}
+			\textbf{PPO $\rightarrow$ MA-PPO}
 			\begin{itemize}
 				\item Proximal policy optimization
 				\item Clipped surrogate objective
@@ -322,7 +322,7 @@
 			\textbf{Actor-Critic Structure:}
 			\begin{itemize}
 				\item 3 hidden layers
-				\item 256 neurons per layer
+				\item 32 neurons per layer
 				\item ReLU activation
 				\item Learning rate: $3 \times 10^{-4}$
 			\end{itemize}
@@ -383,12 +383,12 @@
 				\item Robustness measures
 			\end{itemize}
 			
-			\vspace{0.3cm}
+			% \vspace{0.3cm}
 			\textbf{Baseline Comparison:}
 			\begin{itemize}
 				\item Single-agent variants
-				\item Classical LQR/LQG
-				\item Model predictive control
+				% \item Classical LQR/LQG
+				% \item Model predictive control
 			\end{itemize}
 		\end{column}
 	\end{columns}
@@ -399,25 +399,27 @@
 
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Trajectory Comparison: MATD3 Performance}
-	
+	\frametitle{Trajectory Comparison: MA-TD3 Performance}
+	\vspace{-.75cm}
 	\begin{columns}[t]
 		\begin{column}{0.5\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[width=\textwidth]{td3_trajectory_comparison.png}
+				\includegraphics[width=.7\textwidth]{../../Report/plots/td3/trajectory_force/plot_trajectory}
+				\vspace{-.5cm}
 				\caption{Single-Agent vs Multi-Agent TD3}
 			\end{figure}
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[width=\textwidth]{td3_thrust_comparison.png}
+				\includegraphics[width=.7\textwidth]{../../Report/plots/td3/trajectory_force/plot_trajectory_zs}
+				\vspace{-.5cm}
 				\caption{Thrust Commands}
 			\end{figure}
 		\end{column}
 	\end{columns}
-	
+	\vspace{-0.5cm}
 	\begin{alertblock}{Key Observation}
 		Zero-sum variants demonstrate more direct trajectories with smoother thrust profiles and reduced fuel consumption
 	\end{alertblock}
