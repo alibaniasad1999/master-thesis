@@ -11,7 +11,7 @@
     "actor_critic":	"MLPActorCritic",
     "batch_size":	1024,
     "device_":	"cpu",
-    "env_fn":	"<function <lambda> at 0x166373c40>",
+    "env_fn":	"<function <lambda> at 0x16249aca0>",
     "epochs_":	50,
     "exp_name":	"ddpg",
     "gamma_":	0.99,
@@ -32,7 +32,7 @@
     "save_freq":	1,
     "seed_":	0,
     "self":	{
-        "<DDPG.DDPG object at 0x16aa0ee10>":	{
+        "<DDPG.DDPG object at 0x1624a9d90>":	{
             "ac":	{
                 "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=105, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=8, bias=True)\n      (7): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=113, out_features=1024, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=1024, out_features=1024, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=1024, out_features=1024, bias=True)\n      (5): Tanh()\n      (6): Linear(in_features=1024, out_features=1, bias=True)\n      (7): Identity()\n    )\n  )\n)":	{
                     "_backward_hooks":	{},
@@ -1105,7 +1105,7 @@
                                             },
                                             "camera_id":	null,
                                             "camera_name":	null,
-                                            "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                            "data":	"<mujoco._structs.MjData object at 0x16633e330>",
                                             "frame_skip":	5,
                                             "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/ant.xml",
                                             "height":	480,
@@ -1120,19 +1120,19 @@
                                                     "rgbd_tuple"
                                                 ]
                                             },
-                                            "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                            "model":	"<mujoco._structs.MjModel object at 0x16633f270>",
                                             "mujoco_renderer":	{
-                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x1663c2f50>":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x166b20310>":	{
                                                     "_viewers":	{},
                                                     "_vopt":	{},
                                                     "camera_id":	0,
-                                                    "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                                    "data":	"<mujoco._structs.MjData object at 0x16633e330>",
                                                     "default_cam_config":	{
                                                         "distance":	4.0
                                                     },
                                                     "height":	480,
                                                     "max_geom":	1000,
-                                                    "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                                    "model":	"<mujoco._structs.MjModel object at 0x16633f270>",
                                                     "viewer":	null,
                                                     "width":	480
                                                 }
@@ -1188,7 +1188,7 @@
             "epochs":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x16b413bd0>":	{
+                "<utils.logx.EpochLogger object at 0x167c84e10>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ddpg",
                     "first_row":	true,
@@ -1316,7 +1316,7 @@
                 }
             },
             "replay_buffer":	{
-                "<DDPG.ReplayBuffer object at 0x123390490>":	{
+                "<DDPG.ReplayBuffer object at 0x162538ad0>":	{
                     "act_buf":	"[[0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n ...\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]\n [0. 0. 0. ... 0. 0. 0.]]",
                     "device":	"cpu",
                     "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
@@ -1425,7 +1425,7 @@
                                             },
                                             "camera_id":	null,
                                             "camera_name":	null,
-                                            "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                            "data":	"<mujoco._structs.MjData object at 0x16633e330>",
                                             "frame_skip":	5,
                                             "fullpath":	"/Users/Ali/Documents/BAI/Master/master-thesis/.env/lib/python3.11/site-packages/gymnasium/envs/mujoco/assets/ant.xml",
                                             "height":	480,
@@ -1440,19 +1440,19 @@
                                                     "rgbd_tuple"
                                                 ]
                                             },
-                                            "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                            "model":	"<mujoco._structs.MjModel object at 0x16633f270>",
                                             "mujoco_renderer":	{
-                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x1663c2f50>":	{
+                                                "<gymnasium.envs.mujoco.mujoco_rendering.MujocoRenderer object at 0x166b20310>":	{
                                                     "_viewers":	{},
                                                     "_vopt":	{},
                                                     "camera_id":	0,
-                                                    "data":	"<mujoco._structs.MjData object at 0x1663840f0>",
+                                                    "data":	"<mujoco._structs.MjData object at 0x16633e330>",
                                                     "default_cam_config":	{
                                                         "distance":	4.0
                                                     },
                                                     "height":	480,
                                                     "max_geom":	1000,
-                                                    "model":	"<mujoco._structs.MjModel object at 0x1663b0530>",
+                                                    "model":	"<mujoco._structs.MjModel object at 0x16633f270>",
                                                     "viewer":	null,
                                                     "width":	480
                                                 }
