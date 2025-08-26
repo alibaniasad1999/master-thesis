@@ -364,22 +364,22 @@
 		\midrule
 		شرایط اولیه تصادفی
 		&
-		&&&&&&& \\
+		$-4.69$ & $-2.98$ & $0.29$ & $0.26$ & $1.37$ & $1.37$ & $1.00$ & $1.00$ \\
 		اغتشاش در عملگرها
 		&
-		&&&&&&& \\
+		$-1.95$ & $-1.93$ & $8.02$ & $7.72$ & $3.09$ & $3.09$ & $1.00$ & $1.00$ \\
 		عدم تطابق مدل
 		&
-		&&&&&&& \\
+		$-4.89$ & $-4.35$ & $0.38$ & $0.26$ & $1.16$ & $1.16$ & $1.00$ & $1.00$ \\
 		مشاهده ناقص
 		&
-		&&&&&&& \\
+		$-3.63$ & $-0.44$ & $1.95$ & $0.07$ & $1.99$ & $1.99$ & $1.00$ & $0.00$ \\
 		نویز حسگر  
 		&
-		&&&&&&& \\
+		$-0.89$ & $0.12$ & $0.12$ & $0.12$ & $1.86$ & $1.86$ & $0.00$ & $0.00$ \\
 		تأخیر زمانی        
 		&
-		&&&&&&& \\
+		$-4.14$ & $-0.05$ & $1.87$ & $0.01$ & $1.25$ & $1.25$ & $1.00$ & $0.00$ \\
 		\bottomrule
 	\end{tabular}
 	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{SAC}}
@@ -422,6 +422,58 @@
 الگوریتم \lr{TD3} مبتنی بر بازی مجموع‌صفر در تمامی سناریوها نشان می‌دهد. 
 %این برتری در سناریوهای اغتشاش در عملگرها و نویز حسگر بسیار قابل توجه است. 
 این نتایج نشان می‌دهد که ترکیب مکانیزم‌های پایدارسازی \lr{TD3} با رویکرد بازی مجموع‌صفر می‌تواند منجر به مقاومت قابل توجهی در برابر شرایط نامطلوب شود.
+
+
+
+
+
+
+
+\begin{table}
+	\centering
+	\setlength{\tabcolsep}{2pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}} \\
+		\midrule
+		شرایط اولیه تصادفی
+		&
+		$-2.95$ & $-0.26$ & $0.39$ & $0.14$ & $4.57$ & $4.57$ & $1.00$ & $0.30$\\
+		اغتشاش در عملگرها
+		&
+		$0.56$ & $0.73$ & $0.02$ & $0.00$ & $2.66$ & $2.66$ & $0.00$ & $0.00$ \\
+		عدم تطابق مدل
+		&
+		$-4.73$ & $-3.30$ & $0.47$ & $0.73$ & $5.41$ & $5.41$ & $1.00$ & $1.00$ \\
+		مشاهده ناقص
+		&
+		$0.21$ & $0.71$ & $0.02$ & $0.01$ & $3.18$ & $3.18$ & $0.00$ & $0.00$ \\
+		نویز حسگر  
+		&
+		$-0.08$ & $-2.93$ & $0.11$ & $3.19$ & $5.50$ & $5.50$ & $0.00$ & $1.00$ \\
+		تأخیر زمانی        
+		&
+		$0.55$ & $0.67$ & $0.01$ & $0.01$ & $4.57$ & $4.57$ & $0.00$ & $0.00$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{TD3}}
+\end{table}
+
+
+
+
+
+
+
+
 
 \section{مقایسه جامع الگوریتم‌ها}
 \label{sec:comprehensive_comparison}
@@ -662,41 +714,41 @@
 % \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
 
-\begin{table}
-	\centering
-	\setlength{\tabcolsep}{2pt}
-	\small
-	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
-		\toprule
-		\multirow{2}{*}{\makecell[r]{سناریو}}
-		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
-		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
-		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
-		\midrule
-		شرایط اولیه تصادفی
-		&
-		&&&&&&& \\
-		اغتشاش در عملگرها
-		&
-		&&&&&&& \\
-		عدم تطابق مدل
-		&
-		&&&&&&& \\
-		مشاهده ناقص
-		&
-		&&&&&&& \\
-		نویز حسگر  
-		&
-		&&&&&&& \\
-		تأخیر زمانی        
-		&
-		&&&&&&& \\
-		\bottomrule
-	\end{tabular}
-	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{PPO}}
-\end{table}
+%\begin{table}
+%	\centering
+%	\setlength{\tabcolsep}{2pt}
+%	\small
+%	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+%		\toprule
+%		\multirow{2}{*}{\makecell[r]{سناریو}}
+%		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+%		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+%		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+%		\midrule
+%		شرایط اولیه تصادفی
+%		&
+%		&&&&&&& \\
+%		اغتشاش در عملگرها
+%		&
+%		&&&&&&& \\
+%		عدم تطابق مدل
+%		&
+%		&&&&&&& \\
+%		مشاهده ناقص
+%		&
+%		&&&&&&& \\
+%		نویز حسگر  
+%		&
+%		&&&&&&& \\
+%		تأخیر زمانی        
+%		&
+%		&&&&&&& \\
+%		\bottomrule
+%	\end{tabular}
+%	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{PPO}}
+%\end{table}
 
