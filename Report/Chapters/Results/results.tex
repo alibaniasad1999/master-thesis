@@ -196,6 +196,56 @@
 
 نتایج نشان می‌دهد که الگوریتم \lr{DDPG} مبتنی بر بازی مجموع‌صفر در اکثر سناریوهای چالش‌برانگیز، عملکرد بهتری نسبت به نسخه استاندارد دارد. این برتری به خصوص در شرایط نویز حسگر و شرایط اولیه تصادفی مدل قابل توجه است، که نشان می‌دهد رویکرد چندعاملی توانایی بیشتری در مقابله با عدم قطعیت‌های سیستم دارد.
 
+
+
+
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{2pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+		\midrule
+		شرایط اولیه تصادفی
+		&
+		$-4.17$ & $-3.63$ & $0.40$ & $0.63$ & $5.60$ & $5.60$ & $1.00$ & $1.00$ \\
+		اغتشاش در عملگرها
+		& $-1.93$ & $-1.96$  & $7.56$ & $7.94$ & $5.60$ & $5.59$ & $0.90$ & $0.30$ \\
+		عدم تطابق مدل
+		& $-3.24$ & $-2.70$ & $0.70$ & $0.76$ & $5.57$ & $5.57$ & $1.00$ & $1.00$ \\
+		مشاهده ناقص
+		&
+		$-3.28$ & $-2.89$ & $0.68$ & $0.75$ & $5.57$ & $5.57$ & $0.60$ & $0.80$ \\
+		نویز حسگر  
+		&$-1.07$ & $-0.47$ & $0.10$ & $0.15$ & $5.54$ & $5.54$ & $0.00$ & $0.00$ \\
+		تأخیر زمانی        
+		&
+		$-3.20$ & $-1.91$ & $1.74$ & $2.43$ & $5.61$ & $5.61$ & $0.70$ & $0.70$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{DDPG}}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{مقایسه الگوریتم‌های تک‌عاملی و چندعاملی \lr{PPO}}
 
 \begin{figure}[H]
@@ -218,6 +268,55 @@
 \end{figure}
 
 الگوریتم \lr{PPO} در حالت بازی مجموع‌صفر در اکثر سناریوها عملکرد بهتری نشان می‌دهد، به خصوص در شرایط تأخیر زمانی و نویز حسگر. این می‌تواند نشان‌دهنده توانایی روش چندعاملی در مدیریت بهتر شرایط دارای عدم قطعیت در ورودی‌ها باشد. با این حال، تفاوت در برخی از سناریوها کمتر از \lr{DDPG} است.
+
+
+
+
+\begin{table}
+	\centering
+	\setlength{\tabcolsep}{2pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+		\midrule
+		شرایط اولیه تصادفی
+		&
+		&&&&&&& \\
+		اغتشاش در عملگرها
+		&
+		&&&&&&& \\
+		عدم تطابق مدل
+		&
+		&&&&&&& \\
+		مشاهده ناقص
+		&
+		&&&&&&& \\
+		نویز حسگر  
+		&
+		&&&&&&& \\
+		تأخیر زمانی        
+		&
+		&&&&&&& \\
+		\bottomrule
+	\end{tabular}
+	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{PPO}}
+\end{table}
+
+
+
+
+
+
+
+
 
 \subsection{مقایسه الگوریتم‌های تک‌عاملی و چندعاملی \lr{SAC}}
 
@@ -336,76 +435,211 @@
 
 
 
+
+
+%
+%
+%
+%\begin{table}
+%	\centering
+%	\begin{tabular}{c|c|c|c|c|c|c|c|c|}
+%		\cline{2-9}
+%		& \multicolumn{4}{c|}{یادگیری تقویتی چندعاملی} & \multicolumn{4}{c|}{یادگیری تقویتی تک‌عاملی}
+%		
+%		\\
+%		\hline
+%		\multicolumn{1}{|c|}{معیار عملکرد} 
+%		&
+%		\lr{MA-DDPG} 
+%		&
+%		\lr{MA-TD3} 
+%		&
+%	\lr{MA-PPO} 
+%		&
+%	\lr{MA-SAC} 
+%		&
+%		\lr{DDPG} 
+%		&
+%		\lr{TD3} 
+%		&
+%		\lr{PPO} 
+%		&
+%		\lr{SAC} 
+%		\\
+%		\hline
+%		\multicolumn{1}{|c|}{
+%			پاداش تجمی
+%		}
+%		&&&&&&&&
+%	\end{tabular}
+%\end{table}
+%
+%
+%
+%
+%
+%
+%
+%\begin{table}
+%	\centering
+%	\setlength{\tabcolsep}{2.5pt} % default is ~6pt; smaller = tighter columns
+%	\begin{tabular}{c|c|c|c|c|c|c|c|c|}
+%		\cline{2-9}
+%		& \multicolumn{2}{c|}{پاداش} & \multicolumn{2}{c|}{پاداش} & \multicolumn{2}{c|}{پاداش} & \multicolumn{2}{c|}{پاداش}
+%		
+%		\\
+%		\hline
+%		%		1 & 2 & 3&4&5&6&7&8&9\\
+%		\multicolumn{1}{|c|}{سناریو} 
+%		&
+%		\lr{DDPG} 
+%		&
+%		\lr{MA-DDPG} 
+%		&
+%	\lr{DDPG} 
+%		&
+%		\lr{MA-DDPG} 
+%		&
+%		\lr{DDPG}  
+%		&
+%		\lr{MA-DDPG} 
+%		&
+%	\lr{DDPG} 
+%		&
+%		\lr{MA-DDPG} 
+%		\\
+%		\hline
+%	\end{tabular}
+%\end{table}
+%
+%
+%
+%
+%
+%
+%% Preamble (once)
+%
+%
+%% Table
+%\begin{table}
+%	\centering
+%	\setlength{\tabcolsep}{2pt} % tighter inner padding
+%	\small                      % slightly smaller font (nice width win)
+%	
+%	\begin{tabular}{@{} R{2.2cm} *{8}{C{1.05cm}} @{}}
+%		\toprule
+%		& \multicolumn{2}{c}{پاداش ۱} & \multicolumn{2}{c}{پاداش ۲}
+%		& \multicolumn{2}{c}{پاداش ۳} & \multicolumn{2}{c}{پاداش ۴} \\
+%		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+%		\makecell[r]{سناریو}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+%		\midrule
+%		% ... rows ...
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
+%
+%
+%
+%\begin{table}
+%	\centering
+%%	\setlength{\tabcolsep}{2.5pt}
+%%	\renewcommand{\arraystretch}{0.95}
+%	
+%	\begin{tabular}{@{} R{2.2cm} *{8}{C{1.05cm}} @{}}
+%	\toprule
+%	& \multicolumn{2}{c}{پاداش ۱} & \multicolumn{2}{c}{پاداش ۲}
+%	& \multicolumn{2}{c}{پاداش ۳} & \multicolumn{2}{c}{پاداش ۴} \\
+%	\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+%	\makecell[r]{سناریو}
+%	& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%	& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%	& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%	& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+%		\hline
+%		\multicolumn{1}{|c|}{شرایط اولیه تصادفی} & & & & & & & & \\ \hline
+%		\multicolumn{1}{|c|}{اغتشاش در عملگرها}   & & & & & & & & \\ \hline
+%		\multicolumn{1}{|c|}{عدم تطابق مدل}       & & & & & & & & \\ \hline
+%		\multicolumn{1}{|c|}{مشاهده ناقص}         & & & & & & & & \\ \hline
+%		\multicolumn{1}{|c|}{نویز حسگر}            & & & & & & & & \\ \hline
+%		\multicolumn{1}{|c|}{تأخیر زمانی}          & & & & & & & & \\ \hline
+%	\end{tabular}
+%\end{table}
+%
+%
+%
+%
+%\begin{table}
+%	\centering
+%	\setlength{\tabcolsep}{2pt}
+%	\small
+%	\begin{tabular}{@{} R{2.2cm} *{8}{C{1.05cm}} @{}}
+%		\toprule
+%		& \multicolumn{2}{c}{پاداش ۱} & \multicolumn{2}{c}{پاداش ۲}
+%		& \multicolumn{2}{c}{پاداش ۳} & \multicolumn{2}{c}{پاداش ۴} \\
+%		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+%		\makecell[r]{سناریو}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+%		& {\rotatebox[origin=c]{90}{\lr{DDPG}}}    & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+%		\midrule
+%		شرایط اولیه تصادفی & & & & & & & & \\
+%		اغتشاش در عملگرها & & & & & & & & \\
+%		عدم تطابق مدل     & & & & & & & & \\
+%		مشاهده ناقص       & & & & & & & & \\
+%		نویز حسگر          & & & & & & & & \\
+%		تأخیر زمانی        & & & & & & & & \\
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
+
+
+
+% Preamble (once)
+% \usepackage{array,booktabs,makecell,multirow,graphicx}
+% \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+% \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
 \begin{table}
 	\centering
-	\begin{tabular}{c|c|c|c|c|c|c|c|c|}
-		\cline{2-9}
-		& \multicolumn{4}{c|}{یادگیری تقویتی چندعاملی} & \multicolumn{4}{c|}{یادگیری تقویتی تک‌عاملی}
-		
-		\\
-		\hline
-%		1 & 2 & 3&4&5&6&7&8&9\\
-		\multicolumn{1}{|c|}{سناریو} 
+	\setlength{\tabcolsep}{2pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
+		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+		\midrule
+		شرایط اولیه تصادفی
 		&
-		پاداش 
+		&&&&&&& \\
+		اغتشاش در عملگرها
 		&
-		 خطا
+		&&&&&&& \\
+		عدم تطابق مدل
 		&
-		 تلاش کنترلی
+		&&&&&&& \\
+		مشاهده ناقص
 		&
-		 شکست
+		&&&&&&& \\
+		نویز حسگر  
 		&
-			پاداش 
-	&
-	 خطا
-	&
-	 تلاش کنترلی
-	&
-	 شکست
-		\\
-		\hline
+		&&&&&&& \\
+		تأخیر زمانی        
+		&
+		&&&&&&& \\
+		\bottomrule
 	\end{tabular}
+	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{PPO}}
 \end{table}
-
-
-
-\begin{table}
-	\centering
-	\begin{tabular}{c|c|c|c|c|c|c|c|c|}
-		\cline{2-9}
-		& \multicolumn{4}{c|}{یادگیری تقویتی چندعاملی} & \multicolumn{4}{c|}{یادگیری تقویتی تک‌عاملی}
-		
-		\\
-		\hline
-		\multicolumn{1}{|c|}{معیار عملکرد} 
-		&
-		\lr{MA-DDPG} 
-		&
-		\lr{MA-TD3} 
-		&
-	\lr{MA-PPO} 
-		&
-	\lr{MA-SAC} 
-		&
-		\lr{DDPG} 
-		&
-		\lr{TD3} 
-		&
-		\lr{PPO} 
-		&
-		\lr{SAC} 
-		\\
-		\hline
-		\multicolumn{1}{|c|}{
-			پاداش تجمی
-		}
-		&&&&&&&&
-	\end{tabular}
-\end{table}
-
-
-
-
-
-
 

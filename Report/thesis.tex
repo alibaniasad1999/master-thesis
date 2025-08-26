@@ -9,7 +9,9 @@
 
 
 \documentclass[oneside,a4paper,12pt]{book}
-
+\usepackage{array,booktabs,makecell,graphicx} % rotatebox in graphicx
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}   % right-aligned, fixed width
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}    % centered, fixed width
 \input{styles/common.tex}
 \input{styles/custom.tex}
 
