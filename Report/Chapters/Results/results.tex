@@ -282,29 +282,29 @@
 		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
 		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
 		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}}
-		& {\rotatebox[origin=c]{90}{\lr{DDPG}}} & {\rotatebox[origin=c]{90}{\lr{MA-DDPG}}} \\
+		& {\rotatebox[origin=c]{90}{\lr{PPO}}} & {\rotatebox[origin=c]{90}{\lr{MA-PPO}}}
+		& {\rotatebox[origin=c]{90}{\lr{PPO}}} & {\rotatebox[origin=c]{90}{\lr{MA-PPO}}}
+		& {\rotatebox[origin=c]{90}{\lr{PPO}}} & {\rotatebox[origin=c]{90}{\lr{MA-PPO}}}
+		& {\rotatebox[origin=c]{90}{\lr{PPO}}} & {\rotatebox[origin=c]{90}{\lr{MA-PPO}}} \\
 		\midrule
 		شرایط اولیه تصادفی
 		&
-		&&&&&&& \\
+		$-1.85$ & $0.46$ & $0.22$ & $0.14$ & $1.98$ & $1.98$ & $0.70$ & $0.00$ \\
 		اغتشاش در عملگرها
 		&
-		&&&&&&& \\
+		$-1.97$ & $-1.91$ & $8.33$ & $7.50$ & $3.42$ & $3.42$ & $1.00$ & $1.00$ \\
 		عدم تطابق مدل
 		&
-		&&&&&&& \\
+		$0.46$ & $0.30$ & $0.07$ & $0.08$ & $1.13$ & $1.13$ & $0.00$ & $0.00$ \\
 		مشاهده ناقص
 		&
-		&&&&&&& \\
+		$-3.60$ & $-1.81$ & $2.34$ & $2.06$ & $2.15$ & $2.15$ & $1.00$ & $1.00$ \\
 		نویز حسگر  
 		&
-		&&&&&&& \\
+		$0.52$ & $0.48$ & $0.13$ & $0.15$ & $2.08$ & $2.08$ & $0.00$ & $0.00$ \\
 		تأخیر زمانی        
 		&
-		&&&&&&& \\
+		$0.58$ & $-2.44$ & $0.03$ & $2.49$ & $2.56$ & $2.56$ & $0.00$ & $1.00$ \\
 		\bottomrule
 	\end{tabular}
 	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{PPO}}
@@ -340,6 +340,63 @@
 \end{figure}
 
 الگوریتم \lr{SAC} در هر دو حالت عملکرد نسبتاً خوبی در سناریوهای مختلف نشان می‌دهد. این می‌تواند به دلیل استفاده از مکانیزم آنتروپی باشد که به صورت ذاتی اکتشاف بیشتری را تشویق می‌کند. با این حال، نسخه بازی مجموع‌صفر در تمامی سناریوها  برتری معناداری دارد که نشان‌دهنده مقاومت بیشتر آن در شرایط با اطلاعات محدود است.
+
+
+
+
+
+
+
+\begin{table}
+	\centering
+	\setlength{\tabcolsep}{2pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{SAC}}} & {\rotatebox[origin=c]{90}{\lr{MA-SAC}}}
+		& {\rotatebox[origin=c]{90}{\lr{SAC}}} & {\rotatebox[origin=c]{90}{\lr{MA-SAC}}}
+		& {\rotatebox[origin=c]{90}{\lr{SAC}}} & {\rotatebox[origin=c]{90}{\lr{MA-SAC}}}
+		& {\rotatebox[origin=c]{90}{\lr{SAC}}} & {\rotatebox[origin=c]{90}{\lr{MA-SAC}}} \\
+		\midrule
+		شرایط اولیه تصادفی
+		&
+		&&&&&&& \\
+		اغتشاش در عملگرها
+		&
+		&&&&&&& \\
+		عدم تطابق مدل
+		&
+		&&&&&&& \\
+		مشاهده ناقص
+		&
+		&&&&&&& \\
+		نویز حسگر  
+		&
+		&&&&&&& \\
+		تأخیر زمانی        
+		&
+		&&&&&&& \\
+		\bottomrule
+	\end{tabular}
+	\caption{جدول پارامترها و مقادیر پیش‌فرض الگوریتم \lr{SAC}}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{مقایسه الگوریتم‌های تک‌عاملی و چندعاملی \lr{TD3}}
 
