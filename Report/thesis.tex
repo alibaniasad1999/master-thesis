@@ -12,6 +12,18 @@
 \usepackage{array,booktabs,makecell,graphicx} % rotatebox in graphicx
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}   % right-aligned, fixed width
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}    % centered, fixed width
+\usepackage{booktabs,tabularx,siunitx,threeparttable}
+
+\sisetup{
+	detect-weight = true,
+	detect-family = true,
+	table-number-alignment = center,
+	round-mode = places,
+	round-precision = 2
+}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\newcolumntype{L}{>{\raggedleft\arraybackslash}X} % right-align Persian scenario names
 \input{styles/common.tex}
 \input{styles/custom.tex}
 
