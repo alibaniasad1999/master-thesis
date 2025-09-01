@@ -19,7 +19,7 @@
 
 The policies are trained and evaluated on transfers to the Earth–Moon  lyapunov orbit under five uncertainty scenarios: random initial states, actuator perturbations, sensor noise, communication delays, and model mismatch. Zero‑sum variants consistently outperform their single‑agent baselines, with MATD3 delivering the best trade‑off between trajectory accuracy and propellant consumption while maintaining stability in the harshest conditions.
 
-For real‑time deployment, the learned networks are quantized to INT8 and exported to ONNX for execution on a ROS 2 hardware‑in‑the‑loop platform. Inference latency is reduced to 5.8 ms and memory footprint to 9.2 MB—improvements of 47 \% and 53 \% over the FP32 models—while sustaining a 100 Hz control loop with no deadline misses.
+%For real‑time deployment, the learned networks are quantized to INT8 and exported to ONNX for execution on a ROS 2 hardware‑in‑the‑loop platform. Inference latency is reduced to 5.8 ms and memory footprint to 9.2 MB—improvements of 47 \% and 53 \% over the FP32 models—while sustaining a 100 Hz control loop with no deadline misses.
 
 The results demonstrate that the proposed multi‑agent, game‑theoretic reinforcement‑learning framework enables adaptive and robust low‑thrust guidance in unstable three‑body regions without reliance on precise dynamics models, and is ready for hardware‑in‑the‑loop implementation.
 
