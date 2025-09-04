@@ -15,8 +15,10 @@
 \usepackage{booktabs,tabularx,siunitx,threeparttable}
 
 \sisetup{
-	detect-weight = true,
-	detect-family = true,
+	reset-text-series = false,
+	text-series-to-math = true,
+	reset-text-family = false,
+	text-family-to-math = true,
 	table-number-alignment = center,
 	round-mode = places,
 	round-precision = 2
@@ -61,23 +63,23 @@
 \pagenumbering{arabic}
 
 % Chapter 1: Introduction
-%\input{Chapters/Introduction/Introduction}
-%% Chapter 2: Literature Review
-%\input{Chapters/Literature_Review/Literature_Review}
-%% Chapter 3: Simulation
-%\input{Chapters/Simulation/Simulation}
-%% Chapter 4: Reinforcement Learning
-%\input{Chapters/RL/RL}
-%% Chapter 5: Agent Simulation
-%\input{Chapters/Agent_simulation/Agent_simulation}
-%% Chapter 6: Multi-Agent Reinforcement Learning
-%\input{Chapters/MARL/MARL}
-
-
-
-%\input{Chapters/HIL/HIL}
-% Chapter 7: Results and Discussion
+\input{Chapters/Introduction/Introduction}
+% Chapter 2: Literature Review
+\input{Chapters/Literature_Review/Literature_Review}
+% Chapter 3: Simulation
+\input{Chapters/Simulation/Simulation}
+% Chapter 4: Reinforcement Learning
+\input{Chapters/RL/RL}
+% Chapter 5: Agent Simulation
+\input{Chapters/Agent_simulation/Agent_simulation}
+% Chapter 6: Multi-Agent Reinforcement Learning
+\input{Chapters/MARL/MARL}
+% Chapter 7: Hardware-in-the-Loop (HIL)
+\input{Chapters/HIL/HIL}
+% Chapter 8: Results and Discussion
 \input{Chapters/Results/results}
+% Chapter 9: Conclusion
+\input{Chapters/Conclusion/Conclusion}
 
 %\include{chapters/sandbox}
 
