@@ -60,7 +60,7 @@
 که در آن $\tilde{a}_i \sim \pi_{\theta_i}(\cdot|o_i)$ است و از ترفند پارامترسازی مجدد برای استخراج گرادیان استفاده می‌شود:
 
 \begin{equation}
-    \tilde{a}_{i,\theta_i}(o_i, \xi_i) = \tanh\left( \mu_{\theta_i}(o_i) + \sigma_{\theta_i}(o_i) \odot \xi_i \right), \;\;\;\;\; \xi_i \sim \mathcal{N}
+    \tilde{a}_{i,\theta_i}(o_i, \xi_i) = \tanh\left( \mu_{\theta_i}(o_i) + \sigma_{\theta_i}(o_i) \odot \xi_i \right), \;\;\;\;\; \xi_i \sim \mathcal{N}(0, I)
 \end{equation}
 
 \subsubsection{شبکه‌های هدف}
@@ -96,7 +96,7 @@
 در این بخش، شبه‌کد الگوریتم \lr{MA-SAC} پیاده‌سازی‌شده آورده شده‌است. در این پژوهش الگوریتم~\رجوع{alg:MA-SAC} در محیط پایتون با استفاده از کتابخانه \lr{PyTorch} \cite{paszke2017automatic} پیاده‌سازی شده‌است.
 
 \begin{algorithm}[H]
-    \caption{عامل عملگر نقاد نرم دو­عاملی}\label{alg:MA-SAC}
+    \caption{عامل عملگر نقاد نرم چند­عاملی}\label{alg:MA-SAC}
     \begin{algorithmic}[1]
         \ورودی پارامترهای اولیه سیاست عامل‌ها $(\theta_1, \theta_2)$، پارامترهای توابع \lr{Q} $(\phi_{1,1}, \phi_{1,2}, \phi_{2,1}, \phi_{2,2})$، ضرایب آنتروپی $(\alpha_1, \alpha_2)$، بافر تکرار بازی خالی $(\mathcal{D})$
         \State پارامترهای هدف را برابر با پارامترهای اصلی قرار دهید: 
