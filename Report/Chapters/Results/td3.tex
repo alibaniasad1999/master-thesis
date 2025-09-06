@@ -1,0 +1,72 @@
+\subsection{الگوریتم \lr{TD3}}
+
+الگوریتم \lr{TD3} (یادگیری تفاضل زمانی سه‌گانه عمیق) نسخه بهبودیافته \lr{DDPG} است که با استفاده از تکنیک‌های جدید مانند شبکه‌های دوگانه منتقد و تأخیر در بروزرسانی سیاست، مشکلات تخمین بیش از حد را کاهش می‌دهد.
+
+\begin{figure}[H]
+	\centering
+	
+	% سطر اول
+	\subfloat[\lr{TD3} استاندارد]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory.pdf}}%
+	\subfloat[\lr{TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_zs.pdf}}%
+	
+	\caption{
+		مقایسه مسیر طی شده در دو الگوریتم تک‌عاملی و چندعاملی \lr{TD3}.
+		مسیرهای تولیدشده توسط نسخه بازی مجموع‌صفر نشان‌دهنده کاهش انحراف از مسیر بهینه و همگرایی سریع‌تر به هدف است.
+	}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	
+	% سطر اول
+	\subfloat[\lr{TD3} استاندارد]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_force.pdf}}%
+	\subfloat[\lr{TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_force_zs.pdf}}%
+	
+	\caption{
+		مقایسه مسیر و فرمان پیشران دو الگوریتم تک‌عاملی و چندعاملی \lr{TD3}.
+		فرمان‌های پیشران در نسخه بازی مجموع‌صفر از توزیع یکنواخت‌تری برخوردار است که نشان‌دهنده استفاده بهینه‌تر از منابع پیشرانش می‌باشد.
+	}
+\end{figure}
+
+الگوریتم \lr{TD3} در هر دو حالت عملکرد قابل توجهی دارد، اما نسخه بازی مجموع‌صفر آن بهبودهای معناداری در کیفیت مسیر و مصرف سوخت نشان می‌دهد. ثبات بیشتر این الگوریتم در مقایسه با \lr{DDPG} در هر دو نسخه قابل مشاهده است.
+
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3pt}
+	\small
+	\begin{tabular}{@{} R{3.2cm} *{8}{C{1.05cm}} @{}}
+		\toprule
+		\multirow{2}{*}{\makecell[r]{سناریو}}
+		& \multicolumn{2}{c}{پاداش تجمعی} & \multicolumn{2}{c}{مجموع خطای مسیر}
+		& \multicolumn{2}{c}{مجموع تلاش کنترلی} & \multicolumn{2}{c}{احتمال شکست} \\
+		\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}}
+		& {\rotatebox[origin=c]{90}{\lr{TD3}}} & {\rotatebox[origin=c]{90}{\lr{MA-TD3}}} \\
+		\midrule
+		شرایط اولیه تصادفی
+		&
+		$-2.95$ & ${-0.26}$ & $0.39$ & ${0.14}$ & $4.57$ & $4.57$ & $1.00$ & ${0.30}$\\
+		اغتشاش در عملگرها
+		&
+		$0.56$ & ${0.73}$ & $0.02$ & ${0.00}$ & $2.66$ & $2.66$ & $0.00$ & $0.00$ \\
+		عدم تطابق مدل
+		&
+		$-4.73$ & ${-3.30}$ & $0.47$ & $0.73$ & $5.41$ & $5.41$ & $1.00$ & $1.00$ \\
+		مشاهده ناقص
+		&
+		$0.21$ & ${0.71}$ & $0.02$ & ${0.01}$ & $3.18$ & $3.18$ & $0.00$ & $0.00$ \\
+		نویز حسگر
+		&
+		${-0.08}$ & $-2.93$ & ${0.11}$ & $3.19$ & $5.50$ & $5.50$ & ${0.00}$ & $1.00$ \\
+		تأخیر زمانی
+		&
+		$0.55$ & ${0.67}$ & $0.01$ & $0.01$ & $4.57$ & $4.57$ & $0.00$ & $0.00$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{مقایسه عملکرد \lr{TD3} و \lr{MA-TD3} در سناریوهای مختلف مقاومت}
+	\label{tab:td3_comparison}
+\end{table}
