@@ -1,4 +1,5 @@
-\subsection{الگوریتم \lr{SAC}}
+\section{الگوریتم \lr{SAC}}
+\label{sec:sac_results}
 
 الگوریتم \lr{SAC}  از روش‌های نوین یادگیری تقویتی است که با استفاده از مفهوم آنتروپی، تعادل بهتری بین اکتشاف و بهره‌برداری ایجاد می‌کند. این الگوریتم در شرایط فضاهای پیوسته عملکرد قابل توجهی دارد.
 
@@ -9,10 +10,7 @@
 	\subfloat[\lr{SAC} استاندارد]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory.pdf}}%
 	\subfloat[\lr{SAC} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر طی شده در دو الگوریتم تک‌عاملی و چندعاملی \lr{SAC}.
-		مسیرهای تولیدشده توسط هر دو نسخه از کیفیت بالایی برخوردارند، اما نسخه بازی مجموع‌صفر در مناطق با گرادیان جاذبه پیچیده عملکرد پایدارتری را نشان می‌دهد.
-	}
+	\caption{مسیر طی‌شده فضاپیما با \lr{SAC} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-SAC}.}
 \end{figure}
 
 
@@ -23,10 +21,7 @@
 	\subfloat[\lr{SAC} استاندارد]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory_force.pdf}}%
 	\subfloat[\lr{SAC} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory_force_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر و فرمان پیشران دو الگوریتم تک‌عاملی و چندعاملی \lr{SAC}.
-		نسخه بازی مجموع‌صفر مصرف سوخت متعادل‌تری را در طول مسیر نشان می‌دهد که می‌تواند منجر به صرفه‌جویی در منابع شود.
-	}
+	\caption{مسیر و فرمان پیشران فضاپیما در \lr{SAC} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-SAC}.}
 \end{figure}
 
 الگوریتم \lr{SAC} در هر دو حالت عملکرد قابل قبولی ارائه می‌دهد. ویژگی خاص این الگوریتم در تنظیم خودکار پارامتر آنتروپی باعث می‌شود که بتواند تعادل مناسبی بین اکتشاف و بهره‌برداری ایجاد کند، اما نسخه بازی مجموع‌صفر آن در شرایط سخت‌تر مقاومت بیشتری نشان می‌دهد.

@@ -1,37 +1,44 @@
-\subsection{الگوریتم \lr{TD3}}
+\section{الگوریتم \lr{TD3}}
+\label{sec:td3_results}
 
 الگوریتم \lr{TD3} (یادگیری تفاضل زمانی سه‌گانه عمیق) نسخه بهبودیافته \lr{DDPG} است که با استفاده از تکنیک‌های جدید مانند شبکه‌های دوگانه منتقد و تأخیر در بروزرسانی سیاست، مشکلات تخمین بیش از حد را کاهش می‌دهد.
 
+\subsection{مسیر طی‌شده}
+این بخش مسیر طی‌شده فضاپیما را برای نسخه استاندارد و نسخه بازی مجموع‌صفر \lr{TD3} نشان می‌دهد.
 \begin{figure}[H]
 	\centering
-	
-	% سطر اول
 	\subfloat[\lr{TD3} استاندارد]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory.pdf}}%
-	\subfloat[\lr{TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_zs.pdf}}%
-	
-	\caption{
-		مقایسه مسیر طی شده در دو الگوریتم تک‌عاملی و چندعاملی \lr{TD3}.
-		مسیرهای تولیدشده توسط نسخه بازی مجموع‌صفر نشان‌دهنده کاهش انحراف از مسیر بهینه و همگرایی سریع‌تر به هدف است.
-	}
+	\subfloat[\lr{MA-TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_zs.pdf}}%
+	\caption{مسیر طی‌شده فضاپیما با \lr{TD3} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-TD3}.}
 \end{figure}
 
-
+\subsection{مسیر و فرمان پیشران}
+این بخش مسیر و پروفایل فرمان پیشران در طول زمان را برای هر دو نسخه \lr{TD3} ارائه می‌کند.
 \begin{figure}[H]
 	\centering
-	
-	% سطر اول
 	\subfloat[\lr{TD3} استاندارد]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_force.pdf}}%
-	\subfloat[\lr{TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_force_zs.pdf}}%
-	
-	\caption{
-		مقایسه مسیر و فرمان پیشران دو الگوریتم تک‌عاملی و چندعاملی \lr{TD3}.
-		فرمان‌های پیشران در نسخه بازی مجموع‌صفر از توزیع یکنواخت‌تری برخوردار است که نشان‌دهنده استفاده بهینه‌تر از منابع پیشرانش می‌باشد.
-	}
+	\subfloat[\lr{MA-TD3} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/td3/trajectory_force/plot_trajectory_force_zs.pdf}}%
+	\caption{مسیر و فرمان پیشران فضاپیما در \lr{TD3} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-TD3}.}
 \end{figure}
 
-الگوریتم \lr{TD3} در هر دو حالت عملکرد قابل توجهی دارد، اما نسخه بازی مجموع‌صفر آن بهبودهای معناداری در کیفیت مسیر و مصرف سوخت نشان می‌دهد. ثبات بیشتر این الگوریتم در مقایسه با \lr{DDPG} در هر دو نسخه قابل مشاهده است.
+\subsection{توزیع پاداش تجمعی}
+این بخش نمودارهای ویولن توزیع پاداش تجمعی را در سناریوهای مختلف برای \lr{TD3} و \lr{MA-TD3} نمایش می‌دهد.
+\begin{figure}[H]
+	\centering
+	% سطر اول
+	\subfloat[شرایط اولیه تصادفی]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/initial_condition_shift.pdf}}%
+	\subfloat[اغتشاش در عملگرها]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/actuator_disturbance.pdf}}%
+	\subfloat[عدم تطابق مدل]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/model_mismatch.pdf}}\\[1ex]
+	% سطر دوم
+	\subfloat[مشاهده ناقص]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/partial_observation.pdf}}%
+	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/sensor_noise.pdf}}%
+	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/td3/violin_plot/time_delay.pdf}}
+	\caption{مقایسه توزیع پاداش تجمعی در سناریوهای مختلف برای \lr{TD3} و \lr{MA-TD3}.}
+	\label{fig:td3_robustness_violin}
+\end{figure}
 
-
+\subsection{مقایسه عددی}
+این بخش شاخص‌های عددی را گزارش می‌کند؛ نتایج بر اساس 100 اجرای مستقل شبیه‌سازی برای هر سناریو به‌دست آمده‌اند.
 \begin{table}[H]
 	\centering
 	\setlength{\tabcolsep}{3pt}
@@ -70,3 +77,5 @@
 	\caption{مقایسه عملکرد \lr{TD3} و \lr{MA-TD3} در سناریوهای مختلف مقاومت}
 	\label{tab:td3_comparison}
 \end{table}
+
+الگوریتم \lr{TD3} در هر دو حالت عملکرد قابل توجهی دارد، اما نسخه بازی مجموع‌صفر آن بهبودهای معناداری در کیفیت مسیر و مصرف سوخت نشان می‌دهد. ثبات بیشتر این الگوریتم در مقایسه با \lr{DDPG} در هر دو نسخه قابل مشاهده است.

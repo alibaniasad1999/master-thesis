@@ -1,40 +1,37 @@
-\subsection{الگوریتم \lr{DDPG}}
+\section{الگوریتم \lr{DDPG}}
+\label{sec:ddpg_results}
 
 الگوریتم \lr{DDPG}  از جمله روش‌های یادگیری خارج از سیاست است که از دو شبکه عصبی برای بازیگر و منتقد استفاده می‌کند. در اینجا، عملکرد نسخه استاندارد و نسخه مبتنی بر بازی مجموع‌صفر این الگوریتم در کنترل فضاپیما مقایسه شده است.
 
+\subsection{مسیر طی‌شده}
+این بخش مسیر طی‌شده فضاپیما را برای نسخه استاندارد و نسخه بازی مجموع‌صفر \lr{DDPG} نشان می‌دهد.
 \begin{figure}[H]
 	\centering
 	
 	% سطر اول
 	\subfloat[\lr{DDPG} استاندارد]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory.pdf}}%
-	\subfloat[\lr{DDPG} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory_zs.pdf}}%
+	\subfloat[\lr{MA-DDPG} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر طی شده در دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG}.
-		مشاهده می‌شود که نسخه بازی مجموع‌صفر مسیر مستقیم‌تری را با انحراف کمتر از مسیر بهینه طی می‌کند.
-	}
+	\caption{مسیر طی‌شده فضاپیما با \lr{DDPG} استاندارد و نسخه بازی مجموع‌صفر
+		\lr{MA-DDPG}.}
 \end{figure}
 
-
+\subsection{مسیر و فرمان پیشران}
+این بخش مسیر و پروفایل فرمان پیشران در طول زمان را برای هر دو نسخه \lr{DDPG} ارائه می‌کند.
 \begin{figure}[H]
 	\centering
 	
 	% سطر اول
 	\subfloat[\lr{DDPG} استاندارد]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory_force.pdf}}%
-	\subfloat[\lr{DDPG} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory_force_zs.pdf}}%
+	\subfloat[\lr{MA-DDPG} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ddpg/trajectory_force/plot_trajectory_force_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر و فرمان پیشران دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG}.
-		نمودارهای پایین نشان‌دهنده فرمان پیشران در طول زمان است که در نسخه بازی مجموع‌صفر، الگوی منظم‌تری را نشان می‌دهد و اوج‌های پیشران کمتری دارد.
-	}
+	\caption{مسیر و فرمان پیشران فضاپیما در \lr{DDPG} استاندارد و نسخه بازی مجموع‌صفر
+		\lr{MA-DDPG}.}
 \end{figure}
 
-همانطور که در شکل‌ها مشاهده می‌شود، الگوریتم \lr{DDPG} مبتنی بر بازی مجموع‌صفر مسیر مستقیم‌تری را طی می‌کند و از نظر مصرف سوخت نیز بهینه‌تر عمل می‌کند. این بهبود عملکرد را می‌توان به ماهیت رقابتی بازی مجموع‌صفر و قابلیت آن در مقابله با عدم قطعیت‌های محیطی نسبت داد.
 
-
-
-\subsection{مقایسه الگوریتم‌های تک‌عاملی و چندعاملی \lr{DDPG}}
-
+\subsection{توزیع پاداش تجمعی}
+این بخش نمودارهای ویولن توزیع پاداش تجمعی را در سناریوهای مختلف برای \lr{DDPG} و \lr{MA-DDPG} نمایش می‌دهد.
 \begin{figure}[H]
 	\centering
 	
@@ -48,15 +45,12 @@
 	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/sensor_noise.pdf}}%
 	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/ddpg/violin_plot/time_delay.pdf}}
 	
-	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{DDPG} در سناریوهای مختلف. 
-		نسخه بازی مجموع‌صفر در اکثر سناریوها، به خصوص در شرایط اغتشاش در عملگرها و عدم تطابق مدل، عملکرد بهتری را نشان می‌دهد.
-	}
+	\caption{مقایسه توزیع پاداش تجمعی در سناریوهای مختلف برای \lr{DDPG} و \lr{MA-DDPG}.}
 	\label{fig:ddpg_robustness_violin}
 \end{figure}
 
-نتایج نشان می‌دهد که الگوریتم \lr{DDPG} مبتنی بر بازی مجموع‌صفر در اکثر سناریوهای چالش‌برانگیز، عملکرد بهتری نسبت به نسخه استاندارد دارد. این برتری به خصوص در شرایط نویز حسگر و شرایط اولیه تصادفی مدل قابل توجه است، که نشان می‌دهد رویکرد چندعاملی توانایی بیشتری در مقابله با عدم قطعیت‌های سیستم دارد.
-
-
+\subsection{مقایسه عددی}
+این بخش شاخص‌های عددی را گزارش می‌کند؛ نتایج بر اساس 100 اجرای مستقل شبیه‌سازی برای هر سناریو به‌دست آمده‌اند.
 \begin{table}[H]
 	\centering
 	\setlength{\tabcolsep}{3pt}
@@ -92,3 +86,5 @@
 	\caption{مقایسه عملکرد \lr{DDPG} و \lr{MA-DDPG} در سناریوهای مختلف مقاومت}
 	\label{tab:ddpg_comparison}
 \end{table}
+
+در جمع‌بندی بر اساس داده‌های جدول، \lr{MA-DDPG} در پنج سناریو پاداش تجمعی بهتری از \lr{DDPG} دارد و تنها در اغتشاش در عملگرها \lr{DDPG} اندکی بهتر است. از نظر مجموع خطای مسیر، \lr{DDPG} در همه سناریوها مقدار کمتری ثبت کرده است. تلاش کنترلی در همه موارد تقریباً برابر است. در احتمال شکست، \lr{MA-DDPG} در اغتشاش در عملگرها بهتر است (0/30 در برابر 0/90)، \lr{DDPG} در مشاهده ناقص بهتر است (0/60 در برابر 0/80) و در سایر سناریوها دو روش برابر هستند.

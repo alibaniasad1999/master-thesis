@@ -1,37 +1,31 @@
-\subsection{الگوریتم \lr{PPO}}
+\section{الگوریتم \lr{PPO}}
+\label{sec:ppo_results}
 
 الگوریتم \lr{PPO}  از روش‌های نوین سیاست گرادیان است که با محدودسازی میزان تغییرات در هر بروزرسانی، پایداری بیشتری در فرآیند یادگیری ایجاد می‌کند. در ادامه، عملکرد این الگوریتم در دو حالت مورد بررسی قرار گرفته است.
 
+\subsection{مسیر طی‌شده}
 \begin{figure}[H]
 	\centering
 	
 	% سطر اول
 	\subfloat[\lr{PPO} استاندارد]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory.pdf}}%
-	\subfloat[\lr{PPO} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory_zs.pdf}}%
+	\subfloat[\lr{MA-PPO} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر طی شده در دو الگوریتم تک‌عاملی و چندعاملی \lr{PPO}.
-		نسخه بازی مجموع‌صفر همگرایی بهتری به مسیر هدف را نشان می‌دهد، به خصوص در مراحل نزدیک شدن به هدف.
-	}
+	\caption{مسیر طی‌شده فضاپیما با \lr{PPO} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-PPO}.}
 \end{figure}
 
-
+\subsection{مسیر و فرمان پیشران}
 \begin{figure}[H]
 	\centering
 	
 	% سطر اول
 	\subfloat[\lr{PPO} استاندارد]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory_force.pdf}}%
-	\subfloat[\lr{PPO} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory_force_zs.pdf}}%
+	\subfloat[\lr{MA-PPO} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/ppo/trajectory_force/plot_trajectory_force_zs.pdf}}%
 	
-	\caption{
-		مقایسه مسیر و فرمان پیشران دو الگوریتم تک‌عاملی و چندعاملی \lr{PPO}.
-		فرمان‌های پیشران در نسخه بازی مجموع‌صفر از نظر توزیع انرژی متوازن‌تر است و نوسانات کمتری را نشان می‌دهد.
-	}
+	\caption{مسیر و فرمان پیشران فضاپیما در \lr{PPO} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-PPO}.}
 \end{figure}
 
-نتایج نشان می‌دهد که الگوریتم \lr{PPO} در حالت بازی مجموع‌صفر عملکرد قابل توجهی دارد، اما تفاوت آن با نسخه استاندارد کمتر از \lr{DDPG} است. این می‌تواند به دلیل ماهیت ذاتی \lr{PPO} در ایجاد تعادل بین اکتشاف و بهره‌برداری باشد که آن را در حالت استاندارد نیز نسبتاً مقاوم می‌سازد.
-
-
+\subsection{توزیع پاداش تجمعی}
 \begin{figure}[H]
 	\centering
 	
@@ -45,12 +39,11 @@
 	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/ppo/violin_plot/sensor_noise.pdf}}%
 	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/ppo/violin_plot/time_delay.pdf}}
 	
-	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{PPO} در سناریوهای مختلف. 
-		نسخه بازی مجموع‌صفر در اکثر سناریوها، به خصوص در شرایط اغتشاش در عملگرها و عدم تطابق مدل، عملکرد بهتری را نشان می‌دهد.
-	}
+	\caption{مقایسه توزیع پاداش تجمعی برای \lr{PPO} و \lr{MA-PPO} در سناریوهای مختلف.}
 	\label{fig:ppo_robustness_violin}
 \end{figure}
 
+\subsection{مقایسه عددی}
 \begin{table}[H]
 	\centering
 	\setlength{\tabcolsep}{3pt}
@@ -89,3 +82,5 @@
 	\caption{مقایسه عملکرد \lr{PPO} و \lr{MA-PPO} در سناریوهای مختلف مقاومت}
 	\label{tab:ppo_comparison}
 \end{table}
+
+نتایج نشان می‌دهد که الگوریتم \lr{PPO} در حالت بازی مجموع‌صفر عملکرد قابل توجهی دارد، اما تفاوت آن با نسخه استاندارد کمتر از \lr{DDPG} است. این می‌تواند به دلیل ماهیت ذاتی \lr{PPO} در ایجاد تعادل بین اکتشاف و بهره‌برداری باشد که آن را در حالت استاندارد نیز نسبتاً مقاوم می‌سازد.

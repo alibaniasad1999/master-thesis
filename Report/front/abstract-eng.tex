@@ -15,18 +15,14 @@
 	\noindent
 	
 %	In this study, a quadcopter stand with three degrees of freedom was controlled using game theory-based control. The first player tracks a desired input, and the second player creates a disturbance in the tracking of the first player to cause an error in the tracking. The move is chosen using the Nash equilibrium, which presupposes that the other player made the worst move.. In addition to being resistant to input interruptions, this method may also be resilient to modeling system uncertainty. This method evaluated the performance through simulation in the Simulink environment and implementation on a three-degree-of-freedom stand.
-\noindent This thesis proposes a robust guidance framework for low‑thrust spacecraft operating in multi‑body dynamical environments modeled by the Earth–Moon circular restricted three‑body problem (CRTBP). The guidance task is cast as a zero‑sum differential game between a controller agent (spacecraft) and an adversary agent (environmental disturbances), implemented under a centralized‑training/ decentralized‑execution paradigm. Four continuous‑control reinforcement‑learning algorithms—DDPG, TD3, SAC, and PPO—are extended to their multi‑agent zero‑sum counterparts (MA‑DDPG, MATD3, MASAC, MAPPO); their actor–critic network structures and training pipelines are detailed.
-
-The policies are trained and evaluated on transfers to the Earth–Moon  lyapunov orbit under five uncertainty scenarios: random initial states, actuator perturbations, sensor noise, communication delays, and model mismatch. Zero‑sum variants consistently outperform their single‑agent baselines, with MATD3 delivering the best trade‑off between trajectory accuracy and propellant consumption while maintaining stability in the harshest conditions.
-
-%For real‑time deployment, the learned networks are quantized to INT8 and exported to ONNX for execution on a ROS 2 hardware‑in‑the‑loop platform. Inference latency is reduced to 5.8 ms and memory footprint to 9.2 MB—improvements of 47 \% and 53 \% over the FP32 models—while sustaining a 100 Hz control loop with no deadline misses.
-
-The results demonstrate that the proposed multi‑agent, game‑theoretic reinforcement‑learning framework enables adaptive and robust low‑thrust guidance in unstable three‑body regions without reliance on precise dynamics models, and is ready for hardware‑in‑the‑loop implementation.
+\noindent In this study, a robust guidance framework is presented for low-thrust spacecraft operating in multi-body dynamical environments (the Earth–Moon three-body system). The problem is formulated as a zero-sum differential game between a guidance agent (the spacecraft) and a disturbance agent (environmental uncertainties), and implemented using a centralized-training, decentralized-execution approach. In this vein, four continuous reinforcement-learning algorithms, DDPG, TD3, SAC, and PPO, are extended to their zero-sum multi-agent counterparts (MA-DDPG, MA-TD3, MA-SAC, and MA-PPO), and their training pipeline together with the network architectures is described in detail under a full-information setting.
+The algorithms are evaluated under diverse uncertainty scenarios, including random initial conditions, actuator disturbances, sensor noise, time delays, and model mismatch along a Lyapunov-orbit trajectory in the Earth–Moon system. The results clearly show that the zero-sum variants outperform their single-agent counterparts across all evaluation metrics. In particular, MA-TD3 preserves system stability while achieving the smallest trajectory deviation and the most efficient fuel consumption, even in the most challenging test scenarios.
+Ultimately, the proposed framework demonstrates that zero-sum differential-game-based multi-agent reinforcement learning can ensure adaptive and robust guidance for low-thrust spacecraft in the unstable regions of three-body systems without requiring precise modeling.
 
 	
 	\bigskip\noindent\textbf{Keywords}:
 %	Quadcopter, Differential Game, Game Theory, Nash Equilibrium, Three Degree of Freedom Stand, Model Base Design, Linear Quadratic Regulator
-	Deep Reinforcement Learning; Differential Game; Multi‑Agent; Low‑Thrust Guidance; Three‑Body Problem; Robustness.
+	Deep Reinforcement Learning, Differential Games, Multi-Agent Systems, Low-Thrust Guidance, Zero-Sum Games, Restricted Three-Body Problem, Robust Control.
 \end{latin}
 
 \newpage

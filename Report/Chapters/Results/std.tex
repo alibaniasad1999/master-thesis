@@ -1,5 +1,8 @@
+\section{نتایج نسخه استاندارد}
+\label{sec:std_results}
+در این بخش، نتایج نسخه‌های تک‌عاملی الگوریتم‌ها در سناریوهای مقاومت مختلف ارائه و تحلیل می‌شود.
 
-
+\subsection{توزیع پاداش تجمعی}
 \begin{figure}[H]
 	\centering
 	
@@ -13,15 +16,12 @@
 	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/sensor_noise.pdf}}%
 	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/standard/violin_plot/time_delay.pdf}}
 	
-	\caption{مقایسه مجموع پاداش دو الگوریتم تک‌عاملی و چندعاملی \lr{standard} در سناریوهای مختلف. 
-		نسخه بازی مجموع‌صفر در اکثر سناریوها، به خصوص در شرایط اغتشاش در عملگرها و عدم تطابق مدل، عملکرد بهتری را نشان می‌دهد.
-	}
+	\caption{مقایسه توزیع پاداش تجمعی برای نسخه‌های تک‌عاملی  در سناریوهای مختلف.}
 	\label{fig:std_robustness_violin}
 \end{figure}
 
-
-
-\begin{table}[!t]
+\subsection{مقایسه عددی}
+\begin{table}[H]
 	\centering
 	\setlength{\tabcolsep}{6pt}
 	\renewcommand{\arraystretch}{1.5}
@@ -109,3 +109,7 @@
 	
 	\caption{مقایسه الگوریتم‌های تک‌عاملی در سناریوهای مختلف مقاومت}
 \end{table}
+
+%\subsection{تحلیل و بحث}
+بر اساس داده‌ها، \lr{TD3} به‌طور پایدار بالاترین پاداش و کمترین خطای مسیر را ثبت می‌کند، درحالی‌که \lr{PPO} کمترین تلاش کنترلی را دارد. \lr{SAC} در برخی سناریوهای دشوار (عدم تطابق مدل، مشاهده ناقص، نویز حسگر، تأخیر زمانی) نرخ شکست بالاتری نشان می‌دهد و \lr{DDPG} عموماً از نظر پاداش و خطا ضعیف‌تر از \lr{PPO} و \lr{TD3} است.
+
