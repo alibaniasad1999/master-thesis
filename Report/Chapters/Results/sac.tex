@@ -2,7 +2,7 @@
 \label{sec:sac_results}
 
 الگوریتم \lr{SAC}  از روش‌های نوین یادگیری تقویتی است که با استفاده از مفهوم آنتروپی، تعادل بهتری بین اکتشاف و بهره‌برداری ایجاد می‌کند. این الگوریتم در شرایط فضاهای پیوسته عملکرد قابل توجهی دارد.
-
+\subsection{مسیر طی‌شده}
 \begin{figure}[H]
 	\centering
 	
@@ -13,10 +13,9 @@
 	\caption{مسیر طی‌شده فضاپیما با \lr{SAC} استاندارد و نسخه بازی مجموع‌صفر \lr{MA-SAC}.}
 \end{figure}
 
-
+\subsection{مسیر و فرمان پیشران}
 \begin{figure}[H]
 	\centering
-	
 	% سطر اول
 	\subfloat[\lr{SAC} استاندارد]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory_force.pdf}}%
 	\subfloat[\lr{SAC} بازی مجموع‌صفر]{\includegraphics[width=.45\textwidth]{plots/sac/trajectory_force/plot_trajectory_force_zs.pdf}}%
@@ -27,9 +26,25 @@
 الگوریتم \lr{SAC} در هر دو حالت عملکرد قابل قبولی ارائه می‌دهد. ویژگی خاص این الگوریتم در تنظیم خودکار پارامتر آنتروپی باعث می‌شود که بتواند تعادل مناسبی بین اکتشاف و بهره‌برداری ایجاد کند، اما نسخه بازی مجموع‌صفر آن در شرایط سخت‌تر مقاومت بیشتری نشان می‌دهد.
 
 
+\subsection{توزیع پاداش تجمعی}
+این بخش نمودارهای ویولن توزیع پاداش تجمعی را در سناریوهای مختلف برای \lr{SAC} و \lr{MA-SAC} نمایش می‌دهد.
+\begin{figure}[H]
+	\centering
+	% سطر اول
+	\subfloat[شرایط اولیه تصادفی]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/initial_condition_shift.pdf}}%
+	\subfloat[اغتشاش در عملگرها]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/actuator_disturbance.pdf}}%
+	\subfloat[عدم تطابق مدل]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/model_mismatch.pdf}}\\[1ex]
+	% سطر دوم
+	\subfloat[مشاهده ناقص]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/partial_observation.pdf}}%
+	\subfloat[نویز حسگر]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/sensor_noise.pdf}}%
+	\subfloat[تأخیر زمانی]{\includegraphics[width=.33\textwidth]{plots/sac/violin_plot/time_delay.pdf}}
+	\caption{مقایسه توزیع پاداش تجمعی در سناریوهای مختلف برای \lr{TD3} و \lr{MA-TD3}.}
+	\label{fig:sac_robustness_violin}
+\end{figure}
 
 
-
+\subsection{مقایسه عددی}
+این بخش شاخص‌های عددی را گزارش می‌کند؛ نتایج بر اساس 100 اجرای مستقل شبیه‌سازی برای هر سناریو به‌دست آمده‌اند.
 \begin{table}[H]
 	\centering
 	\setlength{\tabcolsep}{3pt}

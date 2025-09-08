@@ -473,44 +473,7 @@
 \end{frame}
 
 %------------------------------------------------
-\section{Hardware Implementation}
 
-%------------------------------------------------
-\begin{frame}
-	\frametitle{Real-Time Deployment}
-	
-	\begin{columns}[t]
-		\begin{column}{0.5\textwidth}
-			\textbf{Optimization Techniques:}
-			\begin{itemize}
-				\item INT8 quantization
-				\item ONNX format export
-				\item ROS 2 integration
-				\item Hardware-in-the-loop testing
-			\end{itemize}
-			
-			\vspace{0.3cm}
-			\textbf{Performance Metrics:}
-			\begin{itemize}
-				\item Inference time: 5.8 ms
-				\item Memory usage: 9.2 MB
-				\item Control frequency: 100 Hz
-				\item Zero deadline misses
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{deployment_architecture.png}
-				\caption{ROS 2 Deployment Architecture}
-			\end{figure}
-		\end{column}
-	\end{columns}
-	
-	\begin{block}{Optimization Results}
-		47\% improvement in latency and 53\% reduction in memory footprint compared to FP32 models
-	\end{block}
-\end{frame}
 
 %------------------------------------------------
 \section{Contributions \& Conclusions}
