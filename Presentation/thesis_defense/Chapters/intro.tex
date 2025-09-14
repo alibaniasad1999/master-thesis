@@ -1,0 +1,66 @@
+\section{Introduction \& Motivation}
+
+% %------------------------------------------------
+\begin{frame}
+    \frametitle{Research Motivation}
+
+    % \begin{exampleblock}{Key Motivation Drivers}
+    \begin{itemize}
+        \item \textbf{Space missions} increasingly require autonomous guidance systems
+        \item \textbf{Low-thrust spacecraft} operate in complex gravitational environments
+        \item \textbf{Three-body dynamics} (Earth-Moon CRTBP) present inherent instabilities
+        \item \textbf{Classical control methods} struggle with:
+        \begin{itemize}
+            \item Model uncertainties
+            \item Environmental disturbances
+            \item Fuel efficiency requirements
+        \end{itemize}
+        \item \textbf{Need for robust, adaptive guidance} without precise dynamic models
+    \end{itemize}
+    % \end{exampleblock}
+
+    
+    \begin{minipage}
+        {0.93\textwidth}
+            \begin{alertblock}{Central Question}
+    \centering How can we achieve robust spacecraft guidance in uncertain environments?
+    \end{alertblock}
+    \end{minipage}
+\end{frame}
+
+% %------------------------------------------------
+\begin{frame}
+	\frametitle{Problem Statement}
+    \vspace{-0.35cm}
+	\begin{block}{Research Objective}
+		Design a robust guidance framework for low-thrust spacecraft operating in Earth-Moon three-body dynamics under uncertainties.
+	\end{block}
+	
+	\begin{columns}[t]
+		\begin{column}{0.5\textwidth}
+			\textbf{System Characteristics:}
+			\begin{itemize}
+				\item State: $\mathbf{x} = [x, y, \dot{x}, \dot{y}]^T$
+				\item Control: $\mathbf{u} \leq u_{\max}$
+				\item Dynamics: $\dot{\mathbf{x}} = f(\mathbf{x}, \mathbf{u})$
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\textbf{Mission Environment:}
+			\begin{itemize}
+				\item Earth-Moon CRTBP
+				\item Lyapunov orbit transfer
+				\item Low-thrust propulsion
+				% \item Real-time constraints
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	% \vspace{-0.}
+    \begin{minipage}
+        {0.93\textwidth}
+            \begin{exampleblock}{Mathematical Formulation}
+		Optimal control problem with state-dependent uncertainties and adversarial disturbances
+	\end{exampleblock}
+    \end{minipage}
+\end{frame}
