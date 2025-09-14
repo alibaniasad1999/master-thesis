@@ -19,7 +19,7 @@
 
 % If you want to tweak the shading of colors, tweak the below 2 lines:
 \definecolor{myBlue}{RGB}{20, 20, 255}
-\definecolor{myTeal}{RGB}{102, 51, 153}
+\definecolor{myTeal}{RGB}{150, 0, 0}
 
 % Bottom right hand color
 \setbeamercolor*{structure}{bg=myBlue!20,fg=myBlue!90}
@@ -81,6 +81,40 @@
 % Added math + TikZ
 \usepackage{amsmath}
 \usepackage{tikz}
+
+\tikzset{>=latex} % for LaTeX arrow head
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{mydarkred}{myred!40!black}
+\colorlet{mydarkblue}{myblue!40!black}
+\colorlet{mydarkgreen}{mygreen!40!black}
+\colorlet{myorange}{orange!80!black}
+\colorlet{myviolet}{blue!50!red!60}
+\tikzstyle{node}=[very thick,circle,draw=myblue,minimum size=22,inner sep=0.5,outer sep=0.6]
+\tikzstyle{connect}=[->,thick,mydarkblue,shorten >=1]
+\tikzset{ % node styles, numbered for easy mapping with \nstyle
+  node 1/.style={node,mydarkgreen,draw=mygreen,fill=mygreen!25},
+  node 2/.style={node,mydarkblue,draw=myblue,fill=myblue!20},
+  node 3/.style={node,mydarkred,draw=myred,fill=myred!20},
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+
+\usetikzlibrary{arrows.meta,shadows,positioning}
+\usepackage{listofitems} 
+\usetikzlibrary{calc}
+\usetikzlibrary{fit, positioning, shapes.geometric}
+\tikzset{
+	frame/.style={
+		rectangle, draw,
+		text width=6em, text centered,
+		minimum height=4em,drop shadow,fill=white,
+		rounded corners,
+	},
+	line/.style={
+		draw, -{Latex},rounded corners=3mm,
+	}
+}
 \usetikzlibrary{arrows.meta,positioning,calc,decorations.pathmorphing}
 \usepackage{subcaption} % added for side-by-side subfigures
 \pgfmathsetmacro{\r}{0.8}
@@ -151,6 +185,7 @@
 % add chapters
 \input{Chapters/intro}
 \input{Chapters/model}
+\input{Chapters/RL}
 %---------------------------------------------------------
 %	PRESENTATION BODY SLIDES
 %---------------------------------------------------------

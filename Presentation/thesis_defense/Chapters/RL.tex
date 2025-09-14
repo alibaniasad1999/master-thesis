@@ -1,0 +1,348 @@
+\section{Reinforcement Learning}
+\begin{frame}
+    \frametitle{Reinforcement Learning Overview}
+    \setlength{\itemsep}{6pt}
+    \begin{itemize}
+        \item \textbf{Definition:} A type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize cumulative reward.
+    \end{itemize}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item \textbf{Key Components:}
+                \begin{itemize}
+                    \item \textbf{Agent:} The learner or decision maker.
+                    \item \textbf{Environment:} The external system with which the agent interacts.
+                    \item \textbf{Actions:} Choices made by the agent to influence the environment.
+                    \item \textbf{Rewards:} Feedback from the environment based on the agent's actions.
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        \hspace{-1cm}
+        \begin{column}{0.5\textwidth}
+            % \hspace{-1.9cm}
+            \begin{figure}
+                \centering
+                \resizebox{.85\textwidth}{!}{%
+                \begin{tikzpicture}[very thick, node distance=4cm]
+                            % Colored nodes
+                            \node [frame, fill=myblue!15, text=mydarkblue] (agent) {Agent};
+                            \node [frame, below=1.2cm of agent, fill=mygreen!15, text=mydarkgreen] (environment) {Environment};
+                            % Action (blue)
+                            \draw[line, myblue] (agent) -- ++ (3.5,0) |- (environment)
+                            node[right, pos=0.25, align=left, text=myblue] {Action\\ $a_t$};
+                            % Separator
+                            \coordinate[left=15mm of environment] (P);
+                            \draw[thin, dashed, gray] (P|-environment.north) -- (P|-environment.south);
+                            % State (green)
+                            \draw[line, mygreen] (environment.200) -- (P |- environment.200)
+                            node[midway, above, text=mydarkgreen] {$s_{t+1}$};
+                            \draw[line, mygreen] (P |- environment.200) -- ++ (-1.6,0) |- (agent.160)
+                            node[left, pos=0.25, align=right, text=mydarkgreen] {State\\ $s_t$};
+                            % Reward (red)
+                            \draw[line, thick, myred] (environment.160) -- (P |- environment.160)
+                            node[midway, above, text=myred] {$r_{t+1}$};
+                            \draw[line, thick, myred] (P |- environment.160) -- ++ (-1,0) |- (agent.200)
+                            node[right, pos=0.25, align=left, text=myred] {Reward\\ $r_t$};
+                \end{tikzpicture}%
+                }
+                \caption{\footnotesize Agent-Environment Interaction Loop}
+                \label{fig:agent_env_en}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{State and Observations}
+    \setlength{\itemsep}{6pt}
+    \setlength{\parskip}{3pt}
+    \begin{itemize}
+        \item \textbf{State ($s$):} Complete description of the environment's condition
+        \item \textbf{Observation ($o$):} Partial description of the state
+        \begin{itemize}
+            \item May not contain all information
+            \item In fully observable environments: $s = o$
+        \end{itemize}
+        \item \textbf{Action Space ($a$):} Set of all possible actions an agent can take
+        \begin{itemize}
+            \item Can be discrete (finite set) or continuous (bounded range)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Policy}
+    \begin{itemize}
+        \item \textbf{Policy:} Rules that an agent uses to decide which actions to take
+    \end{itemize}
+    \vspace{5pt}
+    \setlength{\itemsep}{6pt}
+    \setlength{\parskip}{3pt}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \begin{itemize}
+                \item \textbf{Types:}
+                \begin{itemize}
+                    \item \textbf{Deterministic:} $a_t = \mu(s_t)$
+                    \item \textbf{Stochastic:} $a_t \sim \pi(\cdot | s_t)$
+                \end{itemize}
+                \item \textbf{Parameterized Policy:} Output is a function of policy parameters (neural network weights)
+                \begin{itemize}
+                    \item $a_t = \mu_{\theta}(s_t)$ or $a_t \sim \pi_{\theta}(\cdot | s_t)$
+                    \item Parameters $\theta$ are optimized during learning
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.35\textwidth}
+            \vspace{-8pt}
+            \begin{figure}
+                \centering
+                \resizebox{.95\textwidth}{!}{%
+                \begin{tikzpicture}[x=2.4cm,y=1.2cm]
+		\readlist\Nnod{4,5,5,2} % array of number of nodes per layer
+		\readlist\Nstr{n,32,k} % array of string number of nodes per layer
+		\readlist\Cstr{x,h^{(\prev)},u} % array of coefficient symbol per layer
+		\def\yshift{0.55} % shift last node for dots
+		% LOOP over LAYERS
+		\foreachitem \N \in \Nnod{
+			\def\lay{\Ncnt} % alias of index of current layer
+			\pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+			\foreach \i [evaluate={\c=int(\i==\N);
+				\layercheck=\ifnum\Ncnt=1 0 \else \ifnum\Ncnt=\Nnodlen 0 \else \yshift \fi \fi;
+				\y=\N/2-\i*1.2-\c*\layercheck;
+				\x=\lay; \n=\nstyle;
+				\index=(\i<\N?int(\i):"\Nstr[\n]");}] in {1,...,\N}{ % loop over nodes
+				% NODES
+				\ifnum \lay=1
+				\ifnum \i=1
+				\node[node \n] (N\lay-\i) at (\x,\y) {$\delta x$};
+				\fi
+				\ifnum \i=2
+				\node[node \n] (N\lay-\i) at (\x,\y) {$\delta y$};
+				\fi
+				\ifnum \i=3
+				\node[node \n] (N\lay-\i) at (\x,\y) {$\delta {\dot{x}}$};
+				\fi
+				\ifnum \i=4
+				\node[node \n] (N\lay-\i) at (\x,\y) {$\delta {\dot{y}}$};
+				\fi
+				\else \ifnum \lay=\Nnodlen
+				\ifnum \i=1
+				\node[node \n] (N\lay-\i) at (\x,\y) {$u_x$};
+				\fi
+				\ifnum \i=2
+				\node[node \n] (N\lay-\i) at (\x,\y) {$u_y$};
+				\fi
+				\else
+				\node[node \n] (N\lay-\i) at (\x,\y) {$\strut\Cstr[\n]_{\index}$};
+				\fi \fi
+				% CONNECTIONS
+				\ifnumcomp{\lay}{>}{1}{ % connect to previous layer
+					\foreach \j in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+						\draw[white,line width=1.2,shorten >=1] (N\prev-\j) -- (N\lay-\i);
+						\draw[connect] (N\prev-\j) -- (N\lay-\i);
+					}
+				}{}
+			}
+			% Dots (skip first and last layers)
+			\ifnum \lay>1 \ifnum \lay<\Nnodlen
+			\path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.6] {$\vdots$}; % dots
+			\fi \fi
+		}
+		% LABELS
+		\node[above=.1,align=center,mydarkgreen] at (N1-1.90) {Input\\[-0.2em]Layer};
+		\node[above=.1,align=center,mydarkblue] at (N2-1.90) {Hidden\\[-0.2em]Layer};
+		\node[above=.1,align=center,mydarkblue] at (N3-1.90) {Hidden\\[-0.2em]Layer};
+		\node[above=.1,align=center,mydarkred] at (N\Nnodlen-1.90) {Output\\[-0.2em]Layer};
+	\end{tikzpicture}%
+                }
+                \caption{\scriptsize Policy Neural Network Structure}
+                \label{fig:actor_nn_en}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Trajectory and Reward}
+    \setlength{\itemsep}{6pt}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Trajectory:}
+            \begin{itemize}
+                \item Sequence of states and actions: $\tau = (s_0, a_0, s_1, a_1, \ldots)$
+                \item State transition: $s_{t+1} = f(s_t, a_t)$
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Reward:}
+            \begin{itemize}
+                \item $r_t = R(s_t, a_t, s_{t+1})$ or $r_t = R(s_t, a_t)$
+                \item \textbf{Return:} Total accumulated reward
+                \item Finite horizon: $R(\tau) = \sum_{t = 0}^T r_t$
+                \item Discounted: $R(\tau) = \sum_{t = 0}^{\infty} \gamma^t r_t$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Value and Action-Value Functions}
+    \begin{itemize}
+        \item \textbf{Value Function:} Expected return when following a policy
+    \end{itemize}
+    \vspace{5pt}
+    \setlength{\itemsep}{6pt}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \textbf{State Value Function:}
+            \begin{align*}
+                V^{\pi}(s) &= \underset{\tau \sim \pi}{\mathbb{E}}\left[R(\tau)|s_0 = s\right]
+            \end{align*}
+            \vspace{0.3cm}
+            \textbf{Action-Value Function:}
+            \begin{align*}
+                Q^{\pi}(s,a) &= \underset{\tau \sim \pi}{\mathbb{E}}\left[R(\tau)|s_0 = s, a_0 = a\right]
+            \end{align*}
+            \vspace{0.3cm}
+            \textbf{Advantage Function:}
+            \begin{align*}
+                A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s)
+            \end{align*}
+        \end{column}
+        
+        \begin{column}{0.35\textwidth}
+            \vspace{-24pt}
+            \begin{figure}
+                \centering
+                \resizebox{.95\textwidth}{!}{%
+                \begin{tikzpicture}[x=2.8cm,y=1.5cm]
+                    \readlist\Nnod{6,7,7,1} % array of number of nodes per layer
+                    \readlist\Nstr{n,32,k} % array of string number of nodes per layer
+                    \readlist\Cstr{x,h^{(\prev)},u} % array of coefficient symbol per layer
+                    \def\yshift{0.55} % shift last node for dots
+                    
+                    % LOOP over LAYERS
+                    \foreachitem \N \in \Nnod{
+                        \def\lay{\Ncnt} % alias of index of current layer
+                        \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+                        \foreach \i [evaluate={\c=int(\i==\N); 
+                            \layercheck=\ifnum\Ncnt=1 0 \else \ifnum\Ncnt=\Nnodlen 0 \else \yshift \fi \fi;
+                            \y=\N/2-\i-\c*\layercheck;
+                            \x=\lay; \n=\nstyle;
+                            \index=(\i<\N?int(\i):"\Nstr[\n]");}] in {1,...,\N}{ % loop over nodes
+                            % NODES
+                            \ifnum \lay=1
+                            \ifnum \i=1
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$\delta x$};
+                            \fi
+                            \ifnum \i=2
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$\delta y$};
+                            \fi
+                            \ifnum \i=3
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$\delta {\dot{x}}$};
+                            \fi
+                            \ifnum \i=4
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$\delta {\dot{y}}$};
+                            \fi
+                            \ifnum \i=5
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$u_x$};
+                            \fi
+                            \ifnum \i=6
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$u_y$};
+                            \fi
+                            \else \ifnum \lay=\Nnodlen
+                            \ifnum \i=1
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$Q$};
+                            \fi
+                            \ifnum \i=2
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$u_y$};
+                            \fi
+                            \else
+                            \node[node \n] (N\lay-\i) at (\x,\y) {$\strut\Cstr[\n]_{\index}$};
+                            \fi \fi
+                            % CONNECTIONS
+                            \ifnumcomp{\lay}{>}{1}{ % connect to previous layer
+                                \foreach \j in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+                                    \draw[white,line width=1.2,shorten >=1] (N\prev-\j) -- (N\lay-\i);
+                                    \draw[connect] (N\prev-\j) -- (N\lay-\i);
+                                }
+                            }{}
+                        }
+                        
+                        % Dots (skip first and last layers)
+                        \ifnum \lay>1 \ifnum \lay<\Nnodlen
+                        \path (N\lay-\N) --++ (0,1+\yshift) node[midway,scale=1.6] {$\vdots$}; % dots
+                        \fi \fi
+                    }
+                    
+                    % LABELS
+                    \node[above=.1,align=center,mydarkgreen] at (N1-1.90) {Input\\[-0.2em]Layer};
+                    \node[above=.1,align=center,mydarkblue] at (N2-1.90) {Hidden\\[-0.2em]Layer};
+                    \node[above=.1,align=center,mydarkblue] at (N3-1.90) {Hidden\\[-0.2em]Layer};
+                    \node[above=.1,align=center,mydarkred] at (N\Nnodlen-1.25) {Output\\[-0.2em]Layer};
+                \end{tikzpicture}
+                }
+                \caption{\scriptsize Value Function Neural Network}
+                \label{fig:critic_nn_en}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimal Value Functions}
+    
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Optimal State Value Function:}
+            \begin{align*}
+                V^{*}(s) &= \underset{\pi}{\max} V^{\pi}(s)
+            \end{align*}
+            \vspace{0.1cm}
+            \textbf{Optimal Value Bellman Equation:}
+            \begin{align*}
+                V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right]
+            \end{align*}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Optimal Action-Value Function:}
+            \begin{align*}
+                Q^{*}(s,a) &= \underset{\pi}{\max} Q^{\pi}(s,a)
+            \end{align*}
+            \vspace{0.1cm}
+            \textbf{Optimal Q Bellman Equation:}
+            \begin{align*}
+                Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
+            \end{align*}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.4cm}
+    \textbf{Key insight:} The optimal policy $\pi^*$ is greedy with respect to $Q^*$:
+    \begin{align*}
+        \pi^*(s) = \arg\max_a Q^*(s,a)
+    \end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bellman Equations}
+    
+    \textbf{For Policy Value Functions:}
+    \begin{align*}
+        V^{\pi}(s) &= \underset{\substack{a \sim \pi \\ s'\sim P}}{\mathrm{E}} 
+        \left[ r(s,a) + \gamma V^{\pi}(s') \right] \\
+        Q^{\pi}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} 
+        \left[ \underset{a'\sim \pi}{\mathrm{E}} \left[ Q^{\pi}(s',a') \right] \right]
+    \end{align*}
+    
+    \vspace{0.3cm}
+    \textbf{For Optimal Value Functions:}
+    \begin{align*}
+        V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right] \\
+        Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
+    \end{align*}
+\end{frame}

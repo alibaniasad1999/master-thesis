@@ -53,7 +53,7 @@
               
               % add satellite with shift
               \coordinate (satellite) at ($(center)!0.5!(MOON)+(0,2)$);
-              \node (satellite) at (satellite) {\faSatellite};
+              \node (satellite) at (satellite) {\faSpaceShuttle};
               
               % connect earth to satellite r1
               \draw[-stealth] (earth) -- (satellite) node[pos=0.3, above] {$\vb{r}_1$};   
@@ -62,7 +62,7 @@
               % connect center of mass to satellite r
               \draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
               % add line to show satellite is in between
-              \node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
+              \node (c) at ($(satellite)+(1.5,0.5)$) {Spacecraft};
               \draw[-stealth] (c) to[bend left=30] (satellite);
             \end{tikzpicture}
           }
