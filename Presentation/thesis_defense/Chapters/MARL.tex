@@ -1,0 +1,140 @@
+\section{Multi-Agent Reinforcement Learning (MARL)}
+\begin{frame}
+    \frametitle{Key Components \& Definitions}
+    \textbf{Agents:} Independent decision makers sharing an environment. \\
+            \textbf{Policy }$\pi_i(a_i|s)$: Action distribution of agent $i$. \\
+            \textbf{Utility / Return:} $V_i^{\pi}(s)=\mathbb{E}_\pi\!\left[\sum_t \gamma^t r_i\right]$.
+    \begin{columns}[T]
+        \begin{column}{0.52\textwidth}
+            \small
+            % \vspace{4pt}
+            \begin{itemize}\setlength{\itemsep}{3pt}
+                \item Single-agent RL is a special case ($n=1$)
+                \item Interaction types: cooperative, competitive, mixed
+                \item Game-theoretic view clarifies stability / equilibria
+                \item Shared state, distinct rewards and policies
+                \item Centralized training, decentralized execution (CTDE)
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{figure}
+            	\centering
+                \resizebox{.7\linewidth}{!}{%
+                	\begin{tikzpicture}[very thick, node distance=4cm]
+                		% Define nodes with colors
+                		\node [frame, minimum height=2em, fill=myblue!15, text=mydarkblue] (agent1) {Agent I};
+                		\node [frame, below=1.2cm of agent1, minimum height=6em, fill=mygreen!15, text=mydarkgreen] (environment) {Environment};
+                		\node [frame, below=1.2cm of environment, minimum height=2em, fill=myviolet!15, text=myviolet] (agent2) {Agent II}; 		
+                		% Define coordinate for state/reward lines
+                		\coordinate[left=18mm of environment] (P);
+                		% Dashed line separator
+                		\draw[thick, dashed] ($(P|-environment.north)+(0,-3mm)$) -- ($(P|-environment.south)+(0,3.8mm)$);
+                		% Agent I connections - colorized
+                		\draw[line, myblue] (agent1) -- ++(3.5,0) |- (environment.10) 
+                		node[right, pos=0.25, align=left, text=myblue] {action I\\ $a_1(t)$};
+                		\draw[line, mygreen] (environment.180) -- (P |- environment.180)
+                		node[midway, above, text=mydarkgreen] {$s(t+1)$};
+                		\draw[line, thick, myred] (environment.155) -- (P |- environment.155)
+                		node[midway, above, text=myred] {$r_1(t+1)$};
+                		\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent1.170)
+                		node[left, pos=0.25, align=right, text=mydarkgreen] {state\\ $s(t)$};
+                		\draw[line, thick, myred] (P |- environment.155) -- ++(-1,0) |- (agent1.190)
+                		node[right, pos=0.25, align=left, text=myred] {reward I\\ $r_1(t)$};
+                		% Agent II connections - colorized
+                		\draw[line, myviolet] (agent2) -- ++(3.5,0) |- (environment.350) 
+                		node[right, pos=0.25, align=left, text=myviolet] {action II\\ $a_2(t)$};
+                		\draw[line, thick, myorange] (environment.205) -- (P |- environment.205)
+                		node[midway, above, text=myorange] {$r_2(t+1)$};
+                		\draw[line, mygreen] (P |- environment.180) -- ++(-1.6,0) |- (agent2.190)
+                		node[left, pos=0.25, align=right, text=mydarkgreen] {state\\ $s(t)$};
+                		\draw[line, thick, myorange] (P |- environment.205) -- ++(-1,0) |- (agent2.170)
+                		node[right, pos=0.25, align=left, text=myorange] {reward II\\ $r_2(t)$};
+                	\end{tikzpicture}}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Nash Equilibrium}
+    \small
+    A policy profile $\pi^*=(\pi_1^*,\dots,\pi_n^*)$ is Nash if:
+    \[
+      V_i^{(\pi_i^*,\pi_{-i}^*)}(s)\;\ge\;V_i^{(\pi_i,\pi_{-i}^*)}(s)\quad \forall \pi_i,\ \forall i
+    \]
+    \textbf{Implications:}
+    \begin{itemize}\setlength{\itemsep}{2pt}
+        \item No unilateral profitable deviation
+        \item In zero-sum 2-player games value is unique
+        \item Solution concepts guide stable MARL training
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Zero-Sum Games}
+    \small
+    Two-player zero-sum: 
+    \[
+      V_1^{(\pi_1,\pi_2)}(s) = -V_2^{(\pi_1,\pi_2)}(s),\quad
+      Q_1 = -Q_2
+    \]
+    Minimax optimality:
+    \[
+      V_1^*(s)=\max_{\pi_1}\min_{\pi_2} V_1^{(\pi_1,\pi_2)}(s)
+      = \min_{\pi_2}\max_{\pi_1} V_1^{(\pi_1,\pi_2)}(s)
+    \]
+    \textbf{Training Goal:} Find saddle point (stable policies).
+    \begin{itemize}\setlength{\itemsep}{2pt}
+        \item Stabilizes adversarial robustness
+        \item Supports disturbance modeling
+        \item Aligns with minimax control intuition
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}
+%     \frametitle{Zero-Sum Reward Design}
+%     \small
+%     Base single-agent reward decomposed:
+%     \[
+%       r(s,a)=r_{\text{thrust}}+r_{\text{reference}}+r_{\text{terminal}}
+%     \]
+%     For agent 1 (controller):
+%     \[
+%       r_1 = r_{\text{thrust},1}(a_1)+ r_{\text{reference},1}(s)+ r_{\text{terminal},1}(s)
+%     \]
+%     Adversary (agent 2) enforces zero-sum:
+%     \[
+%       r_2 = -\,r_1
+%     \]
+%     Components (example):
+%     \[
+%       r_{\text{thrust},1} = -k_1 |a_1|,\quad
+%       r_{\text{reference},1} = -k_2 d(s,s_{\text{ref}})
+%     \]
+%     Terminal:
+%     % \[
+%     %   r_{\text{terminal},1} =
+%     %   \begin{cases}
+%     %     +R_{\text{goal}}, & s\in S_{\text{goal}}\\
+%     %     -R_{\text{fail}}, & d(s,s_{\text{ref}})>\epsilon\\
+%     %     0,& \text{else}
+%     %   \end{cases}
+%     % \]
+%     \textbf{Effect:} Adversary maximizes deviation & energy; controller minimizes.
+% \end{frame}
+
+\begin{frame}
+    \frametitle{From Single-Agent to Zero-Sum Robustness}
+    \small
+    \begin{itemize}\setlength{\itemsep}{3pt}
+        \item Lift environment: $(s,a)\rightarrow (s,a_1,a_2)$
+        \item Critic learns $Q_1(s,a_1,a_2)$; $Q_2=-Q_1$
+        \item Policy updates:
+        \[
+          \max_{\theta_1} \mathbb{E}[Q_1],\quad
+          \max_{\theta_2} \mathbb{E}[-Q_1]
+        \]
+        \item Stabilization: target networks, entropy (SAC), delay (TD3), clipping (PPO)
+        \item Outcome: robust guidance via adversarial curriculum
+    \end{itemize}
+\end{frame}

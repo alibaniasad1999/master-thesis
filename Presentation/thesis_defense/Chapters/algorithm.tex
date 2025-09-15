@@ -1,0 +1,86 @@
+\section{RL Algorithms}
+\begin{frame}
+    \frametitle{DDPG Algorithm}
+    % \small\begin{algorithm}[H]
+        \begin{algorithmic}[1]
+    \STATE Initialize: policy $\theta$, Q-function $\phi$, targets $\theta_{\text{targ}}$, $\phi_{\text{targ}}$, replay buffer $\mathcal{D}$
+    \REPEAT
+        \STATE Collect experience: $a = \text{clip}(\mu_{\theta}(s) + \text{noise})$, observe $(s',r,d)$, store in $\mathcal{D}$
+        \STATE Sample batch $B$ from $\mathcal{D}$
+        \STATE Compute targets: $y = r + \gamma (1-d) Q_{\phi_{\text{targ}}}(s', \mu_{\theta_{\text{targ}}}(s'))$
+        \STATE Update critic: minimize $(Q_{\phi}(s,a) - y)^2$
+        \STATE Update actor: maximize $Q_{\phi}(s, \mu_{\theta}(s))$
+        \STATE Update targets: $\phi_{\text{targ}} \leftarrow \rho \phi_{\text{targ}} + (1-\rho) \phi$, same for $\theta$
+    \UNTIL{convergence}
+    \end{algorithmic}
+% \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Twin Delayed DDPG (TD3) Algorithm}
+    \vspace{-0.25cm}
+    % \footnotesize\begin{algorithm}[H]
+        \begin{algorithmic}[1]
+    \STATE Initialize: policy $\theta$, Q-functions $\phi_1$, $\phi_2$, targets $\theta_{\text{targ}}$, $\phi_{\text{targ},1}$, $\phi_{\text{targ},2}$, buffer $\mathcal{D}$
+    \REPEAT
+        \STATE Collect experience: $a = \text{clip}(\mu_{\theta}(s) + \text{noise}, a_{Low}, a_{High})$
+        \STATE Store transition $(s,a,r,s',d)$ in $\mathcal{D}$
+        \IF{time to update}
+            \STATE Sample batch $B$ from $\mathcal{D}$
+            \STATE Compute target actions with noise: $a'(s') = \text{clip}(\mu_{\theta_{\text{targ}}}(s') + \text{noise}, a_{Low}, a_{High})$
+            \STATE Compute targets: $y = r + \gamma (1-d) \min_{i=1,2} Q_{\phi_{\text{targ},i}}(s', a'(s'))$
+            \STATE Update Q-functions: minimize $(Q_{\phi_i}(s,a) - y)^2$ for $i=1,2$
+            % \IF{delay counter $\mod$ \texttt{policy\_delay} $ = 0$}
+                \STATE Update policy: maximize $Q_{\phi_1}(s, \mu_{\theta}(s))$
+                \STATE Update targets: $\phi_{\text{targ},i} \leftarrow \rho \phi_{\text{targ},i} + (1-\rho) \phi_i$ for $i=1,2$
+                \STATE Update target policy: $\theta_{\text{targ}} \leftarrow \rho \theta_{\text{targ}} + (1-\rho) \theta$
+            % \ENDIF
+        \ENDIF
+    \UNTIL{convergence}
+    \end{algorithmic}
+% \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Soft Actor-Critic (SAC) Algorithm}
+    \vspace{-0.25cm}
+    \begin{algorithmic}[1]
+    \STATE Initialize: policy $\theta$, Q-functions $\phi_1$, $\phi_2$, targets $\phi_{\text{targ},1}$, $\phi_{\text{targ},2}$, buffer $\mathcal{D}$
+    \REPEAT
+        \STATE Collect experience: $a \sim \pi_{\theta}(\cdot|s)$, observe $(s',r,d)$, store in $\mathcal{D}$
+        \IF{time to update}
+            \STATE Sample batch $B$ from $\mathcal{D}$
+            \STATE Sample actions from policy: $\tilde{a}' \sim \pi_{\theta}(\cdot|s')$
+            \STATE Compute targets: $y = r + \gamma (1-d) \left(\min_{i=1,2} Q_{\phi_{\text{targ}, i}} (s', \tilde{a}') - \alpha \log \pi_{\theta}(\tilde{a}'|s')\right)$
+            \STATE Update Q-functions: minimize $(Q_{\phi_i}(s,a) - y)^2$ for $i=1,2$
+            \STATE Sample actions using reparameterization trick: $\tilde{a}_{\theta}(s) \sim \pi_{\theta}(\cdot|s)$
+            \STATE Update policy: maximize $\min_{i=1,2} Q_{\phi_i}(s, \tilde{a}_{\theta}(s)) - \alpha \log \pi_{\theta}(\tilde{a}_{\theta}(s)|s)$
+            \STATE Update targets: $\phi_{\text{targ},i} \leftarrow \rho \phi_{\text{targ},i} + (1-\rho) \phi_i$ for $i=1,2$
+        \ENDIF
+    \UNTIL{convergence}
+    \end{algorithmic}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proximal Policy Optimization (PPO) Algorithm}
+    \vspace{-0.25cm}
+    \begin{algorithmic}[1]
+    \STATE Initialize: policy $\theta_0$, value function $\phi_0$
+    \FOR{$k = 0,1,2,...$}
+        \STATE Collect trajectories ${\mathcal D}_k = \{\tau_i\}$ by running policy $\pi_k = \pi(\theta_k)$ in environment
+        \STATE Compute rewards-to-go $\hat{R}_t$
+        \STATE Compute advantage estimates $\hat{A}_t$ based on current value function $V_{\phi_k}$
+        \STATE Update policy by maximizing the PPO-Clip objective:
+        \begin{align*}
+            \theta_{k+1} = \arg \max_{\theta} \frac{1}{|{\mathcal D}_k|} \sum_{\tau, t} \min\left(
+                r_t(\theta) \hat{A}_t, \; \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) \hat{A}_t
+            \right)
+        \end{align*}
+        where $r_t(\theta) = \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ is the probability ratio
+        \STATE Fit value function by minimizing:
+        \begin{align*}
+            \phi_{k+1} = \arg \min_{\phi} \frac{1}{|{\mathcal D}_k|} \sum_{\tau, t}\left( V_{\phi}(s_t) - \hat{R}_t \right)^2
+        \end{align*}
+    \ENDFOR
+    \end{algorithmic}
+\end{frame}
