@@ -124,6 +124,7 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{physics}
+\usepackage{algorithm, algorithmic}
 \usetikzlibrary{arrows.meta,positioning,calc,decorations.pathmorphing}
 
 \useinnertheme{circles}
@@ -178,20 +179,21 @@
 
 \begin{frame}
 	\frametitle{Outline}
-
 	\tableofcontents
 \end{frame}
 
-% add chapters
-\input{Chapters/intro}
-\input{Chapters/model}
-\input{Chapters/RL}
-%---------------------------------------------------------
-%	PRESENTATION BODY SLIDES
-%---------------------------------------------------------
+% --- Chapters added from report ---
+% \input{Chapters/RL}
+% \input{Chapters/MARL}
+\input{Chapters/results}
+% \input{Chapters/model}
 
-% \section{Introduction \& Motivation}
+% --- Appendix (keeps parameter + RL/MARL theoretical extras if any later) ---
+\appendix
 
+% (optional future) \input{Chapters/appendix/rl_parameters}
+
+\end{document}
 % %------------------------------------------------
 % \begin{frame}
 % 	\frametitle{Research Motivation}
@@ -824,4 +826,5 @@
 %         \hyperlink{Test Stat}{\beamerreturnbutton{Return to presentation}}
 % \end{frame}
 
+\end{document}
 \end{document}

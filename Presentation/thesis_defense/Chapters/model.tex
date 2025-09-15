@@ -1,8 +1,8 @@
-\section{Dynamical Model}
+\section{Environment}
 
 \begin{frame}
-  \frametitle{Planar CRTBP Model}
-  \vspace{-.4cm}
+  \frametitle{CRTBP Model and Lagrangian Points}
+%   \vspace{-.4cm}
   \begin{figure}[H]
     \centering
         \hspace{-1.5cm}
@@ -70,7 +70,7 @@
         \end{subfigure}%
         % \hfill
         % \hspace{-3.5cm}
-        \begin{subfigure}{0.4\linewidth}
+        \begin{subfigure}{0.35\linewidth}
         %   \raggedleft
           \resizebox{\linewidth}{!}{%
         \begin{tikzpicture}
@@ -120,10 +120,10 @@
         \end{tikzpicture}
           }
         %   \raggedright
-          \caption{Lagrangian points in the Earth-Moon system}
+          \tiny{\caption{\tiny Lagrangian points in the Earth-Moon system}}
         \end{subfigure}
         \vspace{-0.2cm}
-        \caption{CRTBP Model and Lagrangian Points}
+        % \caption{}
   \end{figure}
 \end{frame}
 %           \draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
@@ -137,3 +137,71 @@
 %     \caption{Duplicated CRTBP geometric schematic (side-by-side).}
 %   \end{figure}
 % \end{frame}
+
+\begin{frame}
+  \frametitle{Agent Simulation in CRTBP Model}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{State Representation:}
+      \begin{itemize}
+        \setlength{\itemsep}{-1pt}
+        \item Position and velocity: $\boldsymbol{s}_t = (\delta x, \delta y, \delta \dot{x}, \delta \dot{y})$
+        \item Relative to target orbit/Lagrangian point
+      \end{itemize}
+      
+      \textbf{Action Space:}
+      \begin{itemize}
+        \setlength{\itemsep}{-1pt}
+        \item Continuous control: $\boldsymbol{a}_t = (u_x, u_y)$
+        \item Bounded thrust: $u_x, u_y \in [a_{Low}, a_{High}]$
+      \end{itemize}
+
+      \textbf{Reward Function:}
+      \small
+      \begin{align*}
+        r(s, a) &= r_{\text{thrust}}(a) + r_{\text{reference}}(s) + r_{\text{terminal}}(s) \\[-1ex]
+        r_{\text{thrust}}(a) &= -k_1 \cdot |a| \\[-1ex]
+        r_{\text{reference}}(s) &= -k_2 \cdot d(s, s_{\text{reference}})
+      \end{align*}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \vspace{-0.5cm}
+      \begin{table}[h!]
+        \scriptsize
+        \centering
+        \caption{\footnotesize Nondimensionalized spacecraft thrust capabilities}
+        \label{tab:camparison}
+    
+        \setlength{\tabcolsep}{4pt}
+        \renewcommand{\arraystretch}{1.1}
+        \resizebox{.95\linewidth}{!}{%
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Abbrv.} & \textbf{Spacecraft} & \textbf{$f_{\text{max}}$} & \textbf{$F_{\text{max}}$} \\ \hline
+        DS1 & Deep Space 1 & $6.94 \cdot 10^{-2}$ & 92.0 mN \\ \hline
+        Psyche & Psyche & $4.16 \cdot 10^{-2}$ & 279.3 mN \\ \hline
+        Dawn & Dawn  & $2.74 \cdot 10^{-2}$ & 91.0 mN \\ \hline
+        LIC & Lunar IceCube & $3.28 \cdot 10^{-2}$ & 1.25 mN \\ \hline
+        H1 & Hayabusa 1 & $1.64 \cdot 10^{-2}$ & 22.8 mN \\ \hline
+        H2 & Hayabusa 2 & $1.63 \cdot 10^{-2}$ & 27.0 mN \\ \hline
+        s/c & Sample spacecraft & $4 \cdot 10^{-2}$ & n/a \\ \hline
+        \end{tabular}
+        }
+      \end{table}
+      \vspace{-.5cm}
+      % Shift terminal reward equation 4cm to the left (over column boundary)
+      \hspace*{-5cm}%
+      \begin{minipage}{\dimexpr\linewidth+4cm\relax}
+      \begin{align*}
+        r_{\text{terminal}}(s) &= 
+        \begin{cases}
+          +R_{\text{goal}} & \text{if} ~ s \in S_{\text{goal}} \\[-0.5ex]
+          -R_{\text{fail}} & \text{if} ~ d(s, s_{\text{ref}}) > \epsilon \\[-0.5ex]
+          0 & \text{otherwise}
+        \end{cases}
+      \end{align*}
+      \end{minipage}
+    \end{column}
+  \end{columns}
+\end{frame}

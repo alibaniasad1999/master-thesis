@@ -135,6 +135,7 @@
 \end{frame}
 
 \begin{frame}
+    % \subsection{Ablations}
   \frametitle{Ablation Insights}
   \small
   \begin{itemize}\setlength{\itemsep}{4pt}
@@ -159,4 +160,35 @@
   \end{itemize}
   \vspace{4pt}
   \textbf{Conclusion:} Adversarial co-training yields resilient guidance without explicit disturbance models.
+\end{frame}
+% \subsection{Robustness Scenarios}
+\begin{frame}
+    \frametitle{Robustness Scenario Definitions}
+    \scriptsize
+    \vspace{-0.25cm}
+    \begin{columns}[T]
+      \begin{column}{0.5\textwidth}
+        \textbf{1. Random Init:} $x_0 \leftarrow x_0 + \mathcal{N}(0,0.1^2)$ \\
+        \textbf{2. Actuator Disturb.:} $u_t \leftarrow u_t + \mathcal{N}(0,0.05^2)$ \\
+        \textbf{(sensor add.)} $y_t \leftarrow y_t + \mathcal{N}(0,0.02^2)$ \\
+        \textbf{3. Model Mismatch:} $\theta \leftarrow \theta + \mathcal{N}(0,0.05^2)$ \\
+        \textbf{4. Partial Obs.:} mask 50\% → $m_t^{(i)}\sim \mathrm{Bern}(0.5)$, $y_t \leftarrow y_t \circ m_t$
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \textbf{5. Sensor Noise (mult.):} $y_t \leftarrow y_t \circ (1+\mathcal{N}(0,0.05^2))$ \\
+        \textbf{6. Time Delay:} buffer length 10 \\
+        $u_t^{\text{applied}} \leftarrow u_{t-10} + \mathcal{N}(0,0.05^2)$ \\
+        \vspace{2pt}
+        \textbf{Notes:}
+        \begin{itemize}\setlength{\itemsep}{1pt}
+          \item All scenarios evaluated independently.
+          \item Zero-sum agents trained jointly once.
+          \item Metrics: success \%, deviation, fuel proxy, return variance.
+        \end{itemize}
+      \end{column}
+    \end{columns}
+    \vspace{-2pt}
+    \begin{center}
+      \color{mydarkblue}\tiny Delay + noise combo causes largest degradation; adversarial training preserves stability margin.
+    \end{center}
 \end{frame}
