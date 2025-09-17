@@ -1,11 +1,24 @@
 \section{Results}
+% Add required packages for tables
+
 \begin{frame}
-  \frametitle{Trajectory Tracking (Nominal vs. Robust)}
+  \frametitle{Trajectory Tracking}
   \vspace{-0.3cm}
+  \begin{minipage}
+        {\textwidth}
+  \begin{alertblock}{Objective}
+    Low-thrust transfer in the planar CRTBP between Lyapunov orbits about $L_1 \rightarrow L_2$ (or vice versa).
+    %  Minimize
+    % $J=\sum_t \|u_t\|_1 + \lambda \|\delta s_T\|_2^2$
+    % subject to terminal constraint $s_T \in \mathcal{O}_{\text{target}}$ (position/velocity tolerances of target Lyapunov orbit) and dynamics feasibility. Focus: accurate orbit insertion and fuel efficiency under modest disturbances (IC dispersion, model / actuation noise).
+  \end{alertblock}
+  \end{minipage}
+  \vspace{0.3cm}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \textbf{Objective:} Transfer / maintenance in CRTBP under low thrust. \\
-      \vspace{2pt}
+      %  \\
+
+      % \vspace{2pt}
       \textbf{Comparison:}
       \begin{itemize}\setlength{\itemsep}{3pt}
         \item Single-Agent vs. Zero-Sum (Adversarial)
@@ -19,16 +32,20 @@
         \item Fewer large corrective burns
       \end{itemize}
     \end{column}
-    <EUGPSCoordinates>
     \begin{column}{0.48\textwidth}
+      \vspace{0.2cm}
       \begin{figure}
-        \centering
-        \includegraphics[width=.95\linewidth]{../../Report/plots/td3/trajectory_force/plot_trajectory}
-        \caption{\scriptsize Trajectory: Single vs. MATD3}
+        \hspace{-.8cm}
+        \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny,skip=0pt}
+        \captionsetup[figure]{labelfont={color=blue,tiny},textfont=tiny,skip=0pt}
+        \subfloat[Zero-Sum MARL]{\includegraphics[width=0.49\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_zs}}\hspace{0pt}%
+        \subfloat[Single-Agent RL]{\includegraphics[width=0.49\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory}}
+        \captionsetup{labelfont={color=blue,scriptsize},textfont=scriptsize,skip=0pt}
+        \caption{Comparison of planar CRTBP $L_1 \rightarrow L_2$}
       \end{figure}
-    \end{column}
-  \end{columns}
-\end{frame}
+        \end{column}
+      \end{columns}
+    \end{frame}
 
 \begin{frame}
   \frametitle{Thrust Profile Efficiency}
@@ -50,46 +67,203 @@
     \begin{column}{0.48\textwidth}
       \begin{figure}
         \centering
-        \includegraphics[width=.95\linewidth]{../../Report/plots/td3/trajectory_force/plot_trajectory_zs}
+        % \captionsetup{skip=-30pt}
+        \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny,skip=0pt}
+        \subfloat[Zero-Sum MARL]{\includegraphics[width=0.48\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hfill
+        \subfloat[Single-Agent RL]{\includegraphics[width=0.48\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force}}
+        % \\[-6pt]
+        % \subfloat[3]{\includegraphics[width=0.48\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hfill
+        % \subfloat[4]{\includegraphics[width=0.48\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}
+        \captionsetup{labelfont={color=blue,scriptsize},textfont=scriptsize,skip=0pt}
         \caption{\scriptsize Thrust Commands}
       \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
 
+
+
 \begin{frame}
-  \frametitle{Robustness Across Uncertainty Scenarios}
-  \vspace{-0.25cm}
-  \begin{figure}
-    \centering
-    \includegraphics[width=.8\linewidth]{robustness_comparison_all.png}
-    \caption{\scriptsize Performance under initial dispersion, sensor noise, actuation noise, dynamics mismatch, delays}
-  \end{figure}
-  \vspace{-0.3cm}
-  \small
-  \textbf{Key Trend:} Zero-sum variants (especially MATD3) retain stability margin under compounded noise + delay where single-agent policies diverge or saturate.
+  \frametitle{Thrust Profile Efficiency}
+  \vspace{-0.2cm}
+ % move image to left
+\begin{figure}[t]
+  
+  \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny,skip=0pt}
+%  \hspace*{-.95cm}% shift block further left
+  % Row 1 (tighter: no \hfill, small fixed gaps)
+  \subfloat[1]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  \subfloat[2]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  % \subfloat[3]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  \subfloat[4]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\\[-4pt]
+
+  % Row 2
+  % \hspace*{-0.95cm}% keep second row aligned after line break
+  \subfloat[5]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  \subfloat[6]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  % \subfloat[7]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}\hspace{2pt}%
+  \subfloat[8]{\includegraphics[width=0.24\linewidth]{../../Report/plots/ppo/trajectory_force/plot_trajectory_force_zs}}
+\end{figure}
 \end{frame}
+
+
+% \begin{frame}
+%   \frametitle{Robustness Across Uncertainty Scenarios}
+%   \vspace{-0.25cm}
+%   \begin{figure}
+%     \centering
+%     \includegraphics[width=.8\linewidth]{robustness_comparison_all.png}
+%     \caption{\scriptsize Performance under initial dispersion, sensor noise, actuation noise, dynamics mismatch, delays}
+%   \end{figure}
+%   \vspace{-0.3cm}
+%   \small
+%   \textbf{Key Trend:} Zero-sum variants (especially MATD3) retain stability margin under compounded noise + delay where single-agent policies diverge or saturate.
+% \end{frame}
+
+\begin{frame}
+  \frametitle{Return Distribution Across Robustness Scenarios MARL}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/time_delay}}
+        \label{fig:zs_robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{2.2pt}
+      \renewcommand{\arraystretch}{1.05}
+
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{%
+        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+          \toprule
+          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
+          \cmidrule(lr){2-5}\cmidrule(l){6-9}
+           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+          \midrule
+          Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
+          Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
+          Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
+          Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
+          Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
+          Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
+          \bottomrule
+        \end{tabular}
+      }
+
+      \vspace{4pt}
+
+      % --- Merged Table 2 (highlight best: lower effort, lower failure) ---
+      \scalebox{0.75}{%
+        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+          \toprule
+          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
+          \cmidrule(lr){2-5}\cmidrule(l){6-9}
+           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+          \midrule
+          Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+          Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+          Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          \bottomrule
+        \end{tabular}
+      }
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
 
 \begin{frame}
   \frametitle{Return Distribution Across Robustness Scenarios}
-  \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
-  \begin{figure}
-    \centering
-    % Row 1
-    \subfloat[\tiny Random Initial Conditions]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/initial_condition_shift}}%
-    \subfloat[\tiny Actuator Disturbance]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/actuator_disturbance}}%
-    \subfloat[\tiny Model Mismatch]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/model_mismatch}}\\
-    % Row 2
-    \subfloat[\tiny Partial Observation]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/partial_observation}}%
-    \subfloat[\tiny Sensor Noise]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/sensor_noise}}%
-    \subfloat[\tiny Time Delay]{\includegraphics[width=.2\textwidth]{../../Report/plots/ZeroSum/violin_plot/time_delay}}
-    % \caption{\scriptsize Violin plots of cumulative return distributions for multi-agent zero-sum algorithms across uncertainty scenarios.}
-    \label{fig:zs_robustness_violin}
-  \end{figure}
-  \vspace{-0.25cm}
-  \small
-\end{frame}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/standard/violin_plot/time_delay}}
+        \label{fig:robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{2.2pt}
+      \renewcommand{\arraystretch}{1.05}
 
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{%
+      % TODO: use single data
+        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+          \toprule
+          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
+          \cmidrule(lr){2-5}\cmidrule(l){6-9}
+           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+          \midrule
+          Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
+          Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
+          Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
+          Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
+          Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
+          Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
+          \bottomrule
+        \end{tabular}
+      }
+
+      \vspace{4pt}
+
+      % --- Merged Table 2 (highlight best: lower effort, lower failure) ---
+      \scalebox{0.750}{%
+        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+          \toprule
+          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
+          \cmidrule(lr){2-5}\cmidrule(l){6-9}
+           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+          \midrule
+          Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+          Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+          Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
+          \bottomrule
+        \end{tabular}
+      }
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
 % \begin{frame}
 %   \frametitle{Learning Performance (Convergence Curves)}
 %   \vspace{-0.35cm}
@@ -113,26 +287,6 @@
 %   \small
 %   \textbf{Observation:} Zero-sum adds early variance (adversarial pressure) but yields higher asymptotic robustness score.
 % \end{frame}
-
-\begin{frame}
-  \frametitle{Quantitative Summary (Representative)}
-  \small
-  \begin{tabular}{|l|c|c|c|c|}
-    \hline
-    Method & Deviation (km) & Fuel Proxy & Robust Score* & Success \% \\
-    \hline
-    TD3 & 1.00 & 1.00 & 1.00 & 82 \\
-    MATD3 & \textbf{0.74} & 0.92 & \textbf{1.32} & 94 \\
-    SAC & 0.93 & 1.07 & 1.05 & 85 \\
-    MASAC & 0.78 & 0.95 & 1.24 & 92 \\
-    PPO & 1.12 & 0.89 & 0.91 & 76 \\
-    MAPPO & 0.86 & \textbf{0.88} & 1.18 & 88 \\
-    \hline
-  \end{tabular}
-  \vspace{4pt}\\
-  \footnotesize
-  Normalized (TD3 baseline = 1.00). Fuel Proxy: $\int \|u\| dt$ normalized. Robust Score*: composite (noise + delay survival, bounded deviation).
-\end{frame}
 
 \begin{frame}
     % \subsection{Ablations}
@@ -162,33 +316,34 @@
   \textbf{Conclusion:} Adversarial co-training yields resilient guidance without explicit disturbance models.
 \end{frame}
 % \subsection{Robustness Scenarios}
+
+
+
 \begin{frame}
-    \frametitle{Robustness Scenario Definitions}
-    \scriptsize
-    \vspace{-0.25cm}
-    \begin{columns}[T]
-      \begin{column}{0.5\textwidth}
-        \textbf{1. Random Init:} $x_0 \leftarrow x_0 + \mathcal{N}(0,0.1^2)$ \\
-        \textbf{2. Actuator Disturb.:} $u_t \leftarrow u_t + \mathcal{N}(0,0.05^2)$ \\
-        \textbf{(sensor add.)} $y_t \leftarrow y_t + \mathcal{N}(0,0.02^2)$ \\
-        \textbf{3. Model Mismatch:} $\theta \leftarrow \theta + \mathcal{N}(0,0.05^2)$ \\
-        \textbf{4. Partial Obs.:} mask 50\% → $m_t^{(i)}\sim \mathrm{Bern}(0.5)$, $y_t \leftarrow y_t \circ m_t$
-      \end{column}
-      \begin{column}{0.5\textwidth}
-        \textbf{5. Sensor Noise (mult.):} $y_t \leftarrow y_t \circ (1+\mathcal{N}(0,0.05^2))$ \\
-        \textbf{6. Time Delay:} buffer length 10 \\
-        $u_t^{\text{applied}} \leftarrow u_{t-10} + \mathcal{N}(0,0.05^2)$ \\
-        \vspace{2pt}
-        \textbf{Notes:}
-        \begin{itemize}\setlength{\itemsep}{1pt}
-          \item All scenarios evaluated independently.
-          \item Zero-sum agents trained jointly once.
-          \item Metrics: success \%, deviation, fuel proxy, return variance.
-        \end{itemize}
-      \end{column}
-    \end{columns}
-    \vspace{-2pt}
-    \begin{center}
-      \color{mydarkblue}\tiny Delay + noise combo causes largest degradation; adversarial training preserves stability margin.
-    \end{center}
+  \frametitle{Robustness Scenario Definitions}
+  \small
+  % \vspace{-0.25cm}
+  \begin{itemize}
+    % \setlength{\itemsep}{3pt}
+    \item \textbf{Random Init:} $x_0 \leftarrow x_0 + \mathcal{N}(0,0.1^2)$
+    \item \textbf{Actuator Disturbance:} $u_t \leftarrow u_t + \mathcal{N}(0,0.05^2)$; (sensor additive) $y_t \leftarrow y_t + \mathcal{N}(0,0.02^2)$
+    \item \textbf{Model Mismatch:} $\theta \leftarrow \theta + \mathcal{N}(0,0.05^2)$
+    \item \textbf{Partial Observability:} mask 50\% $\to m_t^{(i)}\sim \mathrm{Bern}(0.5)$, $y_t \leftarrow y_t \circ m_t$
+    \item \textbf{Sensor Noise (multiplicative):} $y_t \leftarrow y_t \circ \bigl(1 + \mathcal{N}(0,0.05^2)\bigr)$
+    \item \textbf{Time Delay:} buffer length 10, z
+      $u_t^{\mathrm{applied}} \leftarrow u_{t-10} + \mathcal{N}(0,0.05^2)$
+    \item \textbf{Notes:}
+      \begin{itemize}
+        \small
+        \setlength{\itemsep}{1pt}
+        \item All scenarios evaluated independently.
+        \item Zero-sum agents trained jointly once.
+        \item Metrics: success \%, deviation, fuel proxy, return variance.
+      \end{itemize}
+  \end{itemize}
+  \vspace{2pt}
+  \begin{center}
+    \color{mydarkblue}\tiny
+    Delay + noise combo causes the largest degradation; adversarial training preserves stability margin.
+  \end{center}
 \end{frame}

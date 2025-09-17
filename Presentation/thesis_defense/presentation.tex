@@ -81,7 +81,9 @@
 % Added math + TikZ
 \usepackage{amsmath}
 \usepackage{tikz}
-
+\usepackage{relsize}
+\usepackage{array}     % For advanced column formatting like >{\centering\arraybackslash}
+\usepackage{multirow}  % For multirow cells in tables
 \tikzset{>=latex} % for LaTeX arrow head
 \colorlet{myred}{red!80!black}
 \colorlet{myblue}{blue!80!black}
@@ -157,7 +159,7 @@
 \institute[]{Department of Aerospace Engineering \\ \smallskip Sharif University of Technology}
 \date[\today]
 
-\logo{\includegraphics[width=1.cm]{sharif_logo.png}}
+\logo{\includegraphics[width=.75cm]{sharif_logo.png}}
 
 %---------------------------------------------------------
 %---------------------------------------------------------
