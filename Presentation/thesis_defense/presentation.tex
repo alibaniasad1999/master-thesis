@@ -18,18 +18,18 @@
 % ! WARNING ! : Many colors are linked to multiple attributes, so changing one color can have unexpected changes!
 
 % If you want to tweak the shading of colors, tweak the below 2 lines:
-\definecolor{myBlue}{RGB}{20, 20, 255}
-\definecolor{myTeal}{RGB}{150, 0, 0}
+\definecolor{myBlue}{RGB}{50, 148, 109}
+\definecolor{myTeal}{RGB}{229, 61, 0}
 
 % Bottom right hand color
-\setbeamercolor*{structure}{bg=myBlue!20,fg=myBlue!90}
+\setbeamercolor*{structure}{bg=myBlue,fg=myBlue}
 
 \setbeamercolor*{palette primary}{use=structure,fg=white,bg=structure.fg} %?
 \setbeamercolor*{palette secondary}{use=structure,fg=myBlue,bg=white}
     %bottom left of footer & bar between title & top bubbles
 \setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=myBlue}
 
-\setbeamercolor{frametitle}{bg=myBlue!85,fg=white} %title of each slide
+\setbeamercolor{frametitle}{bg=myBlue,fg=white} %title of each slide
 
 \setbeamercolor*{titlelike}{parent=palette primary} %?
 %\setbeamercolor{titlelike}{parent=palette primary,fg=structure.fg!50!myBlue}
@@ -185,10 +185,10 @@
 \end{frame}
 
 % --- Chapters added from report ---
-% \input{Chapters/RL}
-% \input{Chapters/MARL}
+\input{Chapters/RL}
+\input{Chapters/MARL}
 \input{Chapters/results}
-% \input{Chapters/model}
+\input{Chapters/model}
 
 % --- Appendix (keeps parameter + RL/MARL theoretical extras if any later) ---
 \appendix
