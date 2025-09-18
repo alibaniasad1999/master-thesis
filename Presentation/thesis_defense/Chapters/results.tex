@@ -63,6 +63,11 @@
         \text{Eff.} = \frac{\int \| \Delta s(t)\| dt}{\int \|u(t)\| dt}
       \]
       Reduced by 12--18\% (MATD3 / MASAC vs. TD3 / SAC).
+      % TODO:
+      % add z-score standardization formula
+      \[
+        z = \frac{x - \mu}{\sigma}
+      \]
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{figure}
@@ -121,7 +126,313 @@
 % \end{frame}
 
 \begin{frame}
-  \frametitle{Return Distribution Across Robustness Scenarios MARL}
+  \frametitle{DDPG}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/ddpg/violin_plot/time_delay}}
+        \label{fig:ddpg_robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{4.2pt}
+      \renewcommand{\arraystretch}{1.05}
+
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{%
+        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+    \toprule
+    \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Cumulative Reward} & \multicolumn{2}{c}{Path Error Sum} \\
+    \cmidrule(lr){2-3}\cmidrule(l){4-5}
+     & DDPG & MA-DDPG & DDPG & MA-DDPG \\
+    \midrule
+    Random Initial Conditions & -4.17 & -3.63 & 0.40 & 0.63 \\
+    Actuator Disturbance      & -1.93 & -1.96 & 7.56 & 7.94 \\
+    Model Mismatch            & -3.24 & -2.70 & 0.70 & 0.76 \\
+    Partial Observation       & -3.28 & -2.89 & 0.68 & 0.75 \\
+    Sensor Noise              & -1.07 & -0.47 & 0.10 & 0.15 \\
+    Time Delay                & -3.20 & -1.91 & 1.74 & 2.43 \\
+    \bottomrule
+  \end{tabular}
+  }
+
+\vspace{4pt}
+
+  % --- Table 2: Control Effort and Failure Probability ---
+  \scalebox{0.750}{%
+  \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+    \toprule
+    \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Control Effort Sum} & \multicolumn{2}{c}{Failure Probability} \\
+    \cmidrule(lr){2-3}\cmidrule(l){4-5}
+     & DDPG & MA-DDPG & DDPG & MA-DDPG \\
+    \midrule
+    Random Initial Conditions & 5.60 & 5.60 & 1.00 & 1.00 \\
+    Actuator Disturbance      & 5.60 & 5.59 & 0.90 & 0.30 \\
+    Model Mismatch            & 5.57 & 5.57 & 1.00 & 1.00 \\
+    Partial Observation       & 5.57 & 5.57 & 0.60 & 0.80 \\
+    Sensor Noise              & 5.54 & 5.54 & 0.00 & 0.00 \\
+    Time Delay                & 5.61 & 5.61 & 0.70 & 0.70 \\
+    \bottomrule
+  \end{tabular}
+      }
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{TD3}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/td3/violin_plot/time_delay}}
+        \label{fig:td3_robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{4.2pt}
+      \renewcommand{\arraystretch}{1.05}
+
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{ 
+    
+        % --- Table 1: Cumulative Reward and Path Error ---
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Cumulative Reward} & \multicolumn{2}{c}{Path Error Sum} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+  \midrule
+  Random Initial Conditions & -2.95 & -0.26 & 0.39 & 0.14 \\
+  Actuator Disturbance      &  0.56 &  0.73 & 0.02 & 0.00 \\
+  Model Mismatch            & -4.73 & -3.30 & 0.47 & 0.73 \\
+  Partial Observation       &  0.21 &  0.71 & 0.02 & 0.01 \\
+  Sensor Noise              & -0.08 & -2.93 & 0.11 & 3.19 \\
+  Time Delay                &  0.55 &  0.67 & 0.01 & 0.01 \\
+  \bottomrule
+\end{tabular}
+      }
+
+\vspace{4pt}
+
+% --- Table 2: Control Effort and Failure Probability ---
+\scalebox{0.750}{%
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Control Effort Sum} & \multicolumn{2}{c}{Failure Probability} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+  \midrule
+  Random Initial Conditions & 4.57 & 4.57 & 1.00 & 0.30 \\
+  Actuator Disturbance      & 2.66 & 2.66 & 0.00 & 0.00 \\
+  Model Mismatch            & 5.41 & 5.41 & 1.00 & 1.00 \\
+  Partial Observation       & 3.18 & 3.18 & 0.00 & 0.00 \\
+  Sensor Noise              & 5.50 & 5.50 & 0.00 & 1.00 \\
+  Time Delay                & 4.57 & 4.57 & 0.00 & 0.00 \\
+  \bottomrule
+\end{tabular}
+}
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{PPO}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/ppo/violin_plot/time_delay}}
+        \label{fig:ppo_robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{4.2pt}
+      \renewcommand{\arraystretch}{1.05}
+
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{ 
+    
+        % --- Table 1: Cumulative Reward and Path Error ---
+% --- Table 1: Cumulative Reward and Path Error ---
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Cumulative Reward} & \multicolumn{2}{c}{Path Error Sum} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & PPO & MA-PPO & PPO & MA-PPO \\
+  \midrule
+  Random Initial Conditions & -1.85 &  0.46 & 0.22 & 0.14 \\
+  Actuator Disturbance      & -1.97 & -1.91 & 8.33 & 7.50 \\
+  Model Mismatch            &  0.46 &  0.30 & 0.07 & 0.08 \\
+  Partial Observation       & -3.60 & -1.81 & 2.34 & 2.06 \\
+  Sensor Noise              &  0.52 &  0.48 & 0.13 & 0.15 \\
+  Time Delay                &  0.58 & -2.44 & 0.03 & 2.49 \\
+  \bottomrule
+\end{tabular}
+      }
+
+\vspace{4pt}
+
+% --- Table 2: Control Effort and Failure Probability ---
+\scalebox{0.750}{%
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Control Effort Sum} & \multicolumn{2}{c}{Failure Probability} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & PPO & MA-PPO & PPO & MA-PPO \\
+  \midrule
+  Random Initial Conditions & 1.98 & 1.98 & 0.70 & 0.00 \\
+  Actuator Disturbance      & 3.42 & 3.42 & 1.00 & 1.00 \\
+  Model Mismatch            & 1.13 & 1.13 & 0.00 & 0.00 \\
+  Partial Observation       & 2.15 & 2.15 & 1.00 & 1.00 \\
+  Sensor Noise              & 2.08 & 2.08 & 0.00 & 0.00 \\
+  Time Delay                & 2.56 & 2.56 & 0.00 & 1.00 \\
+  \bottomrule
+\end{tabular}
+}
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{SAC}
+  \vspace{-0.2cm}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=tiny}%
+      \begin{figure}
+        \centering
+        \subfloat[\relscale{0.9} Random Initial Conditions]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/initial_condition_shift}}%
+        \subfloat[\relscale{0.9} Actuator Disturbance]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/actuator_disturbance}}%
+        \subfloat[\relscale{0.9} Model Mismatch]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/model_mismatch}}\\[-2pt]
+        \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/partial_observation}}%
+        \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/sensor_noise}}%
+        \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/sac/violin_plot/time_delay}}
+        \label{fig:sac_robustness_violin}
+      \end{figure}
+      \vspace{-0.35cm}
+      % \tiny Violin plots: return dispersion across robustness scenarios.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \centering
+      \begingroup
+      \setlength{\tabcolsep}{4.2pt}
+      \renewcommand{\arraystretch}{1.05}
+
+      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+      \scalebox{0.750}{ 
+    
+        % --- Table 1: Cumulative Reward and Path Error ---
+% --- Table 1: Cumulative Reward and Path Error ---
+% \% --- Table 1: Cumulative Reward and Path Error ---
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Cumulative Reward} & \multicolumn{2}{c}{Path Error Sum} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+  \midrule
+  Random Initial Conditions & -2.95 & -0.26 & 0.39 & 0.14 \\
+  Actuator Disturbance      &  0.56 &  0.73 & 0.02 & 0.00 \\
+  Model Mismatch            & -4.73 & -3.30 & 0.47 & 0.73 \\
+  Partial Observation       &  0.21 &  0.71 & 0.02 & 0.01 \\
+  Sensor Noise              & -0.08 & -2.93 & 0.11 & 3.19 \\
+  Time Delay                &  0.55 &  0.67 & 0.01 & 0.01 \\
+  \bottomrule
+\end{tabular}
+      }
+
+\vspace{4pt}
+
+% --- Table 2: Control Effort and Failure Probability ---
+\scalebox{0.750}{%
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Control Effort Sum} & \multicolumn{2}{c}{Failure Probability} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+  \midrule
+  Random Initial Conditions & 4.57 & 4.57 & 1.00 & 0.30 \\
+  Actuator Disturbance      & 2.66 & 2.66 & 0.00 & 0.00 \\
+  Model Mismatch            & 5.41 & 5.41 & 1.00 & 1.00 \\
+  Partial Observation       & 3.18 & 3.18 & 0.00 & 0.00 \\
+  Sensor Noise              & 5.50 & 5.50 & 0.00 & 1.00 \\
+  Time Delay                & 4.57 & 4.57 & 0.00 & 0.00 \\
+  \bottomrule
+\end{tabular}
+}
+      \par
+      \vspace{2pt}
+      % (Optional note removed for compactness)
+      \endgroup
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \frametitle{Return Distribution Across Robustness Scenarios Zero-Sum}
   \vspace{-0.2cm}
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
@@ -134,7 +445,7 @@
         \subfloat[\relscale{0.9} Partial Observation]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/partial_observation}}%
         \subfloat[\relscale{0.9} Sensor Noise]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/sensor_noise}}%
         \subfloat[\relscale{0.9} Time Delay]{\includegraphics[width=.32\textwidth]{../../Report/plots/ZeroSum/violin_plot/time_delay}}
-        \label{fig:zs_robustness_violin}
+        \label{fig:robustness_violin}
       \end{figure}
       \vspace{-0.35cm}
       % \tiny Violin plots: return dispersion across robustness scenarios.
@@ -148,41 +459,43 @@
 
       % --- Merged Table 1 (highlight best: higher return, lower path error) ---
       \scalebox{0.750}{%
-        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
-          \toprule
-          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
-          \cmidrule(lr){2-5}\cmidrule(l){6-9}
-           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
-          \midrule
-          Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
-          Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
-          Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
-          Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
-          Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
-          Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
-          \bottomrule
-        \end{tabular}
+        % --- Merged Table 1 (highlight best: higher return, lower error) ---
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
+  \cmidrule(lr){2-5}\cmidrule(l){6-9}
+   & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+  \midrule
+  Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
+  Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
+  Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
+  Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
+  Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
+  Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
+  \bottomrule
+\end{tabular}
       }
 
-      \vspace{4pt}
+\vspace{4pt}
 
-      % --- Merged Table 2 (highlight best: lower effort, lower failure) ---
-      \scalebox{0.75}{%
-        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
-          \toprule
-          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
-          \cmidrule(lr){2-5}\cmidrule(l){6-9}
-           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
-          \midrule
-          Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
-          Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
-          Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          \bottomrule
-        \end{tabular}
-      }
+% --- Merged Table 2 (highlight best: lower effort, lower failure) ---
+\scalebox{0.750}{%
+  \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+    \toprule
+    \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
+    \cmidrule(lr){2-5}\cmidrule(l){6-9}
+     & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+    \midrule
+    Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+    Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+    Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    \bottomrule
+  \end{tabular}
+}
+      
       \par
       \vspace{2pt}
       % (Optional note removed for compactness)
@@ -190,8 +503,6 @@
     \end{column}
   \end{columns}
 \end{frame}
-
-
 
 \begin{frame}
   \frametitle{Return Distribution Across Robustness Scenarios}
@@ -221,42 +532,43 @@
 
       % --- Merged Table 1 (highlight best: higher return, lower path error) ---
       \scalebox{0.750}{%
-      % TODO: use single data
-        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
-          \toprule
-          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
-          \cmidrule(lr){2-5}\cmidrule(l){6-9}
-           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
-          \midrule
-          Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
-          Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
-          Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
-          Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
-          Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
-          Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
-          \bottomrule
-        \end{tabular}
+        % --- Merged Table 1 (highlight best: higher return, lower error) ---
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+  \toprule
+  \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
+  \cmidrule(lr){2-5}\cmidrule(l){6-9}
+   & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+  \midrule
+  Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
+  Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
+  Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
+  Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
+  Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
+  Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
+  \bottomrule
+\end{tabular}
       }
 
-      \vspace{4pt}
+\vspace{4pt}
 
-      % --- Merged Table 2 (highlight best: lower effort, lower failure) ---
-      \scalebox{0.750}{%
-        \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
-          \toprule
-          \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
-          \cmidrule(lr){2-5}\cmidrule(l){6-9}
-           & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
-          \midrule
-          Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
-          Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
-          Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 0.20 & \textbf{0.00} \\
-          \bottomrule
-        \end{tabular}
-      }
+% --- Merged Table 2 (highlight best: lower effort, lower failure) ---
+\scalebox{0.750}{%
+  \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
+    \toprule
+    \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Control Effort Sum} & \multicolumn{4}{c}{Failure Probability} \\
+    \cmidrule(lr){2-5}\cmidrule(l){6-9}
+     & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
+    \midrule
+    Random Initial Conditions & 5.11 & \textbf{0.77} & 1.76 & 3.31 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+    Actuator Disturbance      & 4.89 & \textbf{0.77} & 1.71 & 3.07 & \textbf{0.00} & \textbf{0.00} & 0.00 & \textbf{0.00} \\
+    Model Mismatch            & 5.48 & \textbf{0.86} & 2.37 & 4.32 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Partial Observation       & 5.37 & \textbf{1.03} & 2.33 & 4.10 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Sensor Noise              & 5.48 & \textbf{0.86} & 2.37 & 4.30 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    Time Delay                & 5.51 & \textbf{0.76} & 2.11 & 5.12 & \textbf{0.00} & \textbf{0.00} & 1.00 & \textbf{0.00} \\
+    \bottomrule
+  \end{tabular}
+}
+      
       \par
       \vspace{2pt}
       % (Optional note removed for compactness)
