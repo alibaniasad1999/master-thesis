@@ -213,11 +213,11 @@
     \cmidrule(lr){2-3}\cmidrule(l){4-5}
      & DDPG & MA-DDPG & DDPG & MA-DDPG \\
     \midrule
-    Random Initial Conditions & 5.60 & 5.60 & 1.00 & 1.00 \\
+    Random Initial Conditions & 5.52 & 5.60 & 1.00 & 1.00 \\
     Actuator Disturbance      & 5.60 & 5.59 & 0.90 & 0.30 \\
-    Model Mismatch            & 5.57 & 5.57 & 1.00 & 1.00 \\
+    Model Mismatch            & 5.29 & 5.57 & 1.00 & 1.00 \\
     Partial Observation       & 5.57 & 5.57 & 0.60 & 0.80 \\
-    Sensor Noise              & 5.54 & 5.54 & 0.00 & 0.00 \\
+    Sensor Noise              & 5.51 & 5.54 & 0.00 & 0.00 \\
     Time Delay                & 5.61 & 5.61 & 0.70 & 0.70 \\
     \bottomrule
   \end{tabular}
@@ -288,11 +288,11 @@
   \cmidrule(lr){2-3}\cmidrule(l){4-5}
    & TD3 & MA-TD3 & TD3 & MA-TD3 \\
   \midrule
-  Random Initial Conditions & 4.57 & 4.57 & 1.00 & 0.30 \\
-  Actuator Disturbance      & 2.66 & 2.66 & 0.00 & 0.00 \\
-  Model Mismatch            & 5.41 & 5.41 & 1.00 & 1.00 \\
-  Partial Observation       & 3.18 & 3.18 & 0.00 & 0.00 \\
-  Sensor Noise              & 5.50 & 5.50 & 0.00 & 1.00 \\
+  Random Initial Conditions & 5.05 & 4.57 & 1.00 & 0.30 \\
+  Actuator Disturbance      & 3.06 & 2.66 & 0.00 & 0.00 \\
+  Model Mismatch            & 5.53 & 5.41 & 1.00 & 1.00 \\
+  Partial Observation       & 4.09 & 3.18 & 0.00 & 0.00 \\
+  Sensor Noise              & 5.46 & 5.50 & 0.00 & 1.00 \\
   Time Delay                & 4.57 & 4.57 & 0.00 & 0.00 \\
   \bottomrule
 \end{tabular}
@@ -362,12 +362,12 @@
   \cmidrule(lr){2-3}\cmidrule(l){4-5}
    & PPO & MA-PPO & PPO & MA-PPO \\
   \midrule
-  Random Initial Conditions & 1.98 & 1.98 & 0.70 & 0.00 \\
-  Actuator Disturbance      & 3.42 & 3.42 & 1.00 & 1.00 \\
-  Model Mismatch            & 1.13 & 1.13 & 0.00 & 0.00 \\
-  Partial Observation       & 2.15 & 2.15 & 1.00 & 1.00 \\
-  Sensor Noise              & 2.08 & 2.08 & 0.00 & 0.00 \\
-  Time Delay                & 2.56 & 2.56 & 0.00 & 1.00 \\
+  Random Initial Conditions & 1.55 & 1.98 & 0.70 & 0.00 \\
+  Actuator Disturbance      & 2.59 & 3.42 & 1.00 & 1.00 \\
+  Model Mismatch            & 0.90 & 1.13 & 0.00 & 0.00 \\
+  Partial Observation       & 1.06 & 2.15 & 1.00 & 1.00 \\
+  Sensor Noise              & 1.22 & 2.08 & 0.00 & 0.00 \\
+  Time Delay                & 2.43 & 2.56 & 0.00 & 1.00 \\
   \bottomrule
 \end{tabular}
 }
@@ -398,34 +398,30 @@
       \vspace{-0.35cm}
       % \tiny Violin plots: return dispersion across robustness scenarios.
     \end{column}
-    \begin{column}{0.50\textwidth}
-      \scriptsize
-      \centering
-      \begingroup
-      \setlength{\tabcolsep}{4.2pt}
-      \renewcommand{\arraystretch}{1.05}
+  \begin{column}{0.50\textwidth}
+  \scriptsize
+  \centering
+  \begingroup
+  \setlength{\tabcolsep}{4.2pt}
+  \renewcommand{\arraystretch}{1.05}
 
-      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
-      \scalebox{0.750}{ 
-    
-        % --- Table 1: Cumulative Reward and Path Error ---
-% --- Table 1: Cumulative Reward and Path Error ---
-% \% --- Table 1: Cumulative Reward and Path Error ---
+  % --- Table 1: Cumulative Reward and Path Error ---
+  \scalebox{0.750}{ 
 \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{4}{c} @{}}
   \toprule
   \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Cumulative Reward} & \multicolumn{2}{c}{Path Error Sum} \\
   \cmidrule(lr){2-3}\cmidrule(l){4-5}
-   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+   & SAC & MA-SAC & SAC & MA-SAC \\
   \midrule
-  Random Initial Conditions & -2.95 & -0.26 & 0.39 & 0.14 \\
-  Actuator Disturbance      &  0.56 &  0.73 & 0.02 & 0.00 \\
-  Model Mismatch            & -4.73 & -3.30 & 0.47 & 0.73 \\
-  Partial Observation       &  0.21 &  0.71 & 0.02 & 0.01 \\
-  Sensor Noise              & -0.08 & -2.93 & 0.11 & 3.19 \\
-  Time Delay                &  0.55 &  0.67 & 0.01 & 0.01 \\
+  Random Initial Conditions & -4.69 & -2.98 & 0.29 & 0.26 \\
+  Actuator Disturbance      & -1.95 & -1.93 & 8.02 & 7.72 \\
+  Model Mismatch            & -4.89 & -4.35 & 0.38 & 0.26 \\
+  Partial Observation       & -3.63 & -0.44 & 1.95 & 0.07 \\
+  Sensor Noise              & -0.89 &  0.12 & 0.12 & 0.12 \\
+  Time Delay                & -4.14 & -0.05 & 1.87 & 0.01 \\
   \bottomrule
 \end{tabular}
-      }
+  }
 
 \vspace{4pt}
 
@@ -435,22 +431,23 @@
   \toprule
   \multirow{2}{*}{Scenario} & \multicolumn{2}{c}{Control Effort Sum} & \multicolumn{2}{c}{Failure Probability} \\
   \cmidrule(lr){2-3}\cmidrule(l){4-5}
-   & TD3 & MA-TD3 & TD3 & MA-TD3 \\
+   & SAC & MA-SAC & SAC & MA-SAC \\
   \midrule
-  Random Initial Conditions & 4.57 & 4.57 & 1.00 & 0.30 \\
-  Actuator Disturbance      & 2.66 & 2.66 & 0.00 & 0.00 \\
-  Model Mismatch            & 5.41 & 5.41 & 1.00 & 1.00 \\
-  Partial Observation       & 3.18 & 3.18 & 0.00 & 0.00 \\
-  Sensor Noise              & 5.50 & 5.50 & 0.00 & 1.00 \\
-  Time Delay                & 4.57 & 4.57 & 0.00 & 0.00 \\
+  Random Initial Conditions & 2.15 & 1.37 & 1.00 & 1.00 \\
+  Actuator Disturbance      & 3.26 & 3.09 & 1.00 & 1.00 \\
+  Model Mismatch            & 1.99 & 1.16 & 1.00 & 1.00 \\
+  Partial Observation       & 2.32 & 1.99 & 1.00 & 0.00 \\
+  Sensor Noise              & 2.10 & 1.86 & 0.00 & 0.00 \\
+  Time Delay                & 2.22 & 1.25 & 1.00 & 0.00 \\
   \bottomrule
 \end{tabular}
 }
-      \par
-      \vspace{2pt}
-      % (Optional note removed for compactness)
-      \endgroup
-    \end{column}
+  \par
+  \vspace{2pt}
+  % (Optional note removed for compactness)
+  \endgroup
+\end{column}
+
   \end{columns}
 \end{frame}
 
