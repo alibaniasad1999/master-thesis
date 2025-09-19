@@ -71,13 +71,18 @@
         \STATE Compute rewards-to-go $\hat{R}_t$
         \STATE Compute advantage estimates $\hat{A}_t$ based on current value function $V_{\phi_k}$
         \STATE Update policy by maximizing the PPO-Clip objective:
+        \vspace{-1.5mm}
         \begin{align*}
+            \vspace{-2mm}
             \theta_{k+1} = \arg \max_{\theta} \frac{1}{|{\mathcal D}_k|} \sum_{\tau, t} \min\left(
                 r_t(\theta) \hat{A}_t, \; \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) \hat{A}_t
             \right)
+        \vspace*{-2cm}
         \end{align*}
+        \vspace{.5mm}
         where $r_t(\theta) = \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ is the probability ratio
         \STATE Fit value function by minimizing:
+        \vspace{-2.5mm}
         \begin{align*}
             \phi_{k+1} = \arg \min_{\phi} \frac{1}{|{\mathcal D}_k|} \sum_{\tau, t}\left( V_{\phi}(s_t) - \hat{R}_t \right)^2
         \end{align*}

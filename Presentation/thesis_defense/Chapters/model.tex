@@ -5,6 +5,7 @@
 %   \vspace{-.4cm}
   \begin{figure}[H]
     \centering
+    \captionsetup[subfloat]{labelfont={color=myBlue,footnotesize},textfont=footnotesize,skip=8pt}
         \hspace{-1.5cm}
         \begin{subfigure}{0.45\linewidth}
           \centering
@@ -120,7 +121,7 @@
         \end{tikzpicture}
           }
         %   \raggedright
-          \tiny{\caption{\tiny Lagrangian points in the Earth-Moon system}}
+          {\caption{Lagrangian points}}
         \end{subfigure}
         \vspace{-0.2cm}
         % \caption{}
@@ -142,26 +143,39 @@
   \frametitle{Agent Simulation in CRTBP Model}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
+      \small
       \textbf{State Representation:}
+      \vspace{-0.2cm}
       \begin{itemize}
         \setlength{\itemsep}{-1pt}
         \item Position and velocity: $\boldsymbol{s}_t = (\delta x, \delta y, \delta \dot{x}, \delta \dot{y})$
         \item Relative to target orbit/Lagrangian point
       \end{itemize}
-      
+      \vspace{-0.2cm}
       \textbf{Action Space:}
+      \vspace{-0.2cm}
       \begin{itemize}
         \setlength{\itemsep}{-1pt}
         \item Continuous control: $\boldsymbol{a}_t = (u_x, u_y)$
         \item Bounded thrust: $u_x, u_y \in [a_{Low}, a_{High}]$
       \end{itemize}
+      \vspace{-0.2cm}
 
       \textbf{Reward Function:}
+      \vspace{-0.2cm}
       \small
       \begin{align*}
-        r(s, a) &= r_{\text{thrust}}(a) + r_{\text{reference}}(s) + r_{\text{terminal}}(s) \\[-1ex]
-        r_{\text{thrust}}(a) &= -k_1 \cdot |a| \\[-1ex]
-        r_{\text{reference}}(s) &= -k_2 \cdot d(s, s_{\text{reference}})
+        r(s, a) &= r_{\text{thrust}}(a) + r_{\text{reference}}(s) + r_{\text{terminal}}(s) \\[-0ex]
+        r_{\text{thrust}}(a) &= -k_1 \cdot |a| \\[-0ex]
+        r_{\text{reference}}(s) &= -k_2 \cdot d(s, s_{\text{reference}})\\[-0ex]
+      % \end{align*}
+      % \begin{align*}
+        r_{\text{terminal}}(s) &= 
+        \begin{cases}
+          +R_{\text{goal}} & \text{if} ~ s \in S_{\text{goal}} \\[-0.5ex]
+          -R_{\text{fail}} & \text{if} ~ d(s, s_{\text{ref}}) > \epsilon \\[-0.5ex]
+          0 & \text{otherwise}
+        \end{cases}
       \end{align*}
     \end{column}
     
@@ -174,11 +188,11 @@
         \label{tab:camparison}
     
         \setlength{\tabcolsep}{4pt}
-        \renewcommand{\arraystretch}{1.1}
+        \renewcommand{\arraystretch}{1.6}
         \resizebox{.95\linewidth}{!}{%
         \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Abbrv.} & \textbf{Spacecraft} & \textbf{$f_{\text{max}}$} & \textbf{$F_{\text{max}}$} \\ \hline
+        \textbf{Abbrv.} & \textbf{Spacecraft} & \textbf{$f_{\text{max}}$}, nondim & \textbf{$F_{\text{max}}$} \\ \hline
         DS1 & Deep Space 1 & $6.94 \cdot 10^{-2}$ & 92.0 mN \\ \hline
         Psyche & Psyche & $4.16 \cdot 10^{-2}$ & 279.3 mN \\ \hline
         Dawn & Dawn  & $2.74 \cdot 10^{-2}$ & 91.0 mN \\ \hline
@@ -189,19 +203,12 @@
         \end{tabular}
         }
       \end{table}
-      \vspace{-.5cm}
+      % \vspace{-.5cm}
       % Shift terminal reward equation 4cm to the left (over column boundary)
-      \hspace*{-5cm}%
-      \begin{minipage}{\dimexpr\linewidth+4cm\relax}
-      \begin{align*}
-        r_{\text{terminal}}(s) &= 
-        \begin{cases}
-          +R_{\text{goal}} & \text{if} ~ s \in S_{\text{goal}} \\[-0.5ex]
-          -R_{\text{fail}} & \text{if} ~ d(s, s_{\text{ref}}) > \epsilon \\[-0.5ex]
-          0 & \text{otherwise}
-        \end{cases}
-      \end{align*}
-      \end{minipage}
+      % \hspace*{-5cm}%
+      % \begin{minipage}{\dimexpr\linewidth+4cm\relax}
+      
+      % \end{minipage}
     \end{column}
   \end{columns}
 \end{frame}

@@ -53,22 +53,60 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{State and Observations}
-    \setlength{\itemsep}{6pt}
-    \setlength{\parskip}{3pt}
+    \frametitle{State, Observations, and Actions}
     \begin{itemize}
-        \item \textbf{State ($s$):} Complete description of the environment's condition
-        \item \textbf{Observation ($o$):} Partial description of the state
-        \begin{itemize}
-            \item May not contain all information
-            \item In fully observable environments: $s = o$
+        \item \textbf{State ($\boldsymbol{s}$):} Complete description of the environment at a given time
+        \begin{itemize}\setlength{\itemsep}{4pt}
+            \item Encodes all variables needed to predict future dynamics
+            \item Typically hidden from the agent in real-world problems
         \end{itemize}
-        \item \textbf{Action Space ($a$):} Set of all possible actions an agent can take
-        \begin{itemize}
-            \item Can be discrete (finite set) or continuous (bounded range)
+        
+        \item \textbf{Observation ($\boldsymbol{o}$):} Information perceived by the agent
+        \begin{itemize}\setlength{\itemsep}{4pt}
+            \item May be noisy or incomplete (partial observability)
+            \item In fully observable environments: $s = o$
+            \item In partially observable settings: agent must infer hidden aspects of $s$
+        \end{itemize}
+        
+        \item \textbf{Action Space ($\mathcal{A}$):} Set of all possible actions an agent can take
+        \begin{itemize}\setlength{\itemsep}{4pt}
+            \item \textbf{Discrete:} Finite set of actions (e.g., \texttt{up, down, left, right})
+            \item \textbf{Continuous:} Actions represented by real values (e.g., steering angle, force applied)
+            \item Can be multi-dimensional, combining discrete and continuous aspects
         \end{itemize}
     \end{itemize}
 \end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Trajectory and Reward}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Definitions:}
+            \begin{itemize}\setlength{\itemsep}{6pt}
+                \item Trajectory: sequence of states and actions the agent experiences over time.
+                \item Reward: scalar feedback provided by the environment after taking an action.
+                \item Return: accumulated reward over a trajectory (finite or discounted horizon).
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Equations:}
+            \begin{align*}
+                \tau &= (s_0, a_0, s_1, a_1, \ldots) \\
+                r_t &= R(s_t, a_t, s_{t+1}) \quad \text{or} \quad r_t = R(s_t, a_t) \\
+                R(\tau) &= r_1 + r_2 + \cdots + r_T =
+                \sum_{t = 0}^{T} r_t ~ \text{\footnotesize(finite horizon)} \\
+                R(\tau) &= r_1 + \gamma r_2 + \gamma^2 r_3 + \cdots =
+                \sum_{t = 0}^{\infty} \gamma^t r_t ~ \text{\footnotesize (discounted)}
+            \end{align*}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
 
 \begin{frame}
     \frametitle{Policy}
@@ -76,18 +114,18 @@
         \item \textbf{Policy:} Rules that an agent uses to decide which actions to take
     \end{itemize}
     \vspace{5pt}
-    \setlength{\itemsep}{6pt}
-    \setlength{\parskip}{3pt}
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
             \begin{itemize}
                 \item \textbf{Types:}
-                \begin{itemize}
-                    \item \textbf{Deterministic:} $a_t = \mu(s_t)$
-                    \item \textbf{Stochastic:} $a_t \sim \pi(\cdot | s_t)$
+                \begin{itemize}\itemsep=2pt 
+                    \item \textbf{Deterministic:} $a_t = \mu(s_t)\to \text{DDPG, TD3}
+                    $
+                    \item \textbf{Stochastic:} $a_t \sim \pi(\cdot | s_t)\to \text{PPO, SAC}
+                    $
                 \end{itemize}
                 \item \textbf{Parameterized Policy:} Output is a function of policy parameters (neural network weights)
-                \begin{itemize}
+                \begin{itemize}\itemsep=2pt 
                     \item $a_t = \mu_{\theta}(s_t)$ or $a_t \sim \pi_{\theta}(\cdot | s_t)$
                     \item Parameters $\theta$ are optimized during learning
                 \end{itemize}
@@ -95,10 +133,11 @@
         \end{column}
         
         \begin{column}{0.35\textwidth}
-            \vspace{-8pt}
+            \vspace{-1cm}
             \begin{figure}
+                \captionsetup[subfloat]{labelfont={color=blue,tiny},textfont=footnotesize,skip=20pt}
                 \centering
-                \resizebox{.95\textwidth}{!}{%
+                \resizebox{.9\textwidth}{!}{%
                 \begin{tikzpicture}[x=2.4cm,y=1.2cm]
 		\readlist\Nnod{4,5,5,2} % array of number of nodes per layer
 		\readlist\Nstr{n,32,k} % array of string number of nodes per layer
@@ -157,36 +196,15 @@
 		\node[above=.1,align=center,mydarkred] at (N\Nnodlen-1.90) {Output\\[-0.2em]Layer};
 	\end{tikzpicture}%
                 }
-                \caption{\scriptsize Policy Neural Network Structure}
+                \captionsetup{labelfont={color=myBlue,scriptsize},textfont=scriptsize,skip=8pt}
+                \caption{Policy Neural Network Structure}
                 \label{fig:actor_nn_en}
             \end{figure}
         \end{column}
     \end{columns}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Trajectory and Reward}
-    \setlength{\itemsep}{6pt}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{Trajectory:}
-            \begin{itemize}
-                \item Sequence of states and actions: $\tau = (s_0, a_0, s_1, a_1, \ldots)$
-                \item State transition: $s_{t+1} = f(s_t, a_t)$
-            \end{itemize}
-        \end{column}
-        
-        \begin{column}{0.5\textwidth}
-            \textbf{Reward:}
-            \begin{itemize}
-                \item $r_t = R(s_t, a_t, s_{t+1})$ or $r_t = R(s_t, a_t)$
-                \item \textbf{Return:} Total accumulated reward
-                \item Finite horizon: $R(\tau) = \sum_{t = 0}^T r_t$
-                \item Discounted: $R(\tau) = \sum_{t = 0}^{\infty} \gamma^t r_t$
-            \end{itemize}
-        \end{column}
-    \end{columns}
-\end{frame}
+
 
 \begin{frame}
     \frametitle{Value and Action-Value Functions}
@@ -214,10 +232,11 @@
         \end{column}
         
         \begin{column}{0.35\textwidth}
-            \vspace{-24pt}
+            \vspace{-1.1cm}
+            % \hspace{.9cm}
             \begin{figure}
-                \centering
-                \resizebox{.95\textwidth}{!}{%
+                % \centering
+                \resizebox{.90\textwidth}{!}{%
                 \begin{tikzpicture}[x=2.8cm,y=1.5cm]
                     \readlist\Nnod{6,7,7,1} % array of number of nodes per layer
                     \readlist\Nstr{n,32,k} % array of string number of nodes per layer
@@ -285,7 +304,8 @@
                     \node[above=.1,align=center,mydarkred] at (N\Nnodlen-1.25) {Output\\[-0.2em]Layer};
                 \end{tikzpicture}
                 }
-                \caption{\scriptsize Value Function Neural Network}
+                \captionsetup{labelfont={color=myBlue,scriptsize},textfont=scriptsize,skip=4pt}
+                \caption{Value Function Neural Network}
                 \label{fig:critic_nn_en}
             \end{figure}
         \end{column}
@@ -321,11 +341,14 @@
         \end{column}
     \end{columns}
     
-    \vspace{0.4cm}
-    \textbf{Key insight:} The optimal policy $\pi^*$ is greedy with respect to $Q^*$:
-    \begin{align*}
-        \pi^*(s) = \arg\max_a Q^*(s,a)
-    \end{align*}
+    % \vspace{0.4cm}
+    \begin{minipage}{0.83\textwidth}
+    \begin{block}{Value Computation}
+        How can we calculate the value of a state $V(s)$ 
+        and a state-action pair $Q(s,a)$?
+    \end{block}
+\end{minipage}
+
 \end{frame}
 
 \begin{frame}

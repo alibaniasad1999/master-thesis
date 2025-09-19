@@ -3,6 +3,7 @@
 % %------------------------------------------------
 \begin{frame}
     \frametitle{Research Motivation}
+    \vspace{-0.5cm}
 
     % \begin{exampleblock}{Key Motivation Drivers}
     \begin{itemize}
@@ -18,13 +19,14 @@
         \item \textbf{Need for robust, adaptive guidance} without precise dynamic models
     \end{itemize}
     % \end{exampleblock}
-
+    \vspace{-0.1cm}
     
     \begin{minipage}
-        {0.93\textwidth}
-            \begin{alertblock}{Central Question}
-    \centering How can we achieve robust spacecraft guidance in uncertain environments?
-    \end{alertblock}
+        {0.83\textwidth}
+            \begin{block}{Central Question}
+    % \centering
+     How can we achieve robust spacecraft guidance in uncertain environments?
+    \end{block}
     \end{minipage}
 \end{frame}
 
@@ -35,13 +37,13 @@
 	\begin{block}{Research Objective}
 		Design a robust guidance framework for low-thrust spacecraft operating in Earth-Moon three-body dynamics under uncertainties.
 	\end{block}
-	
+	\vspace{.5cm}
 	\begin{columns}[t]
 		\begin{column}{0.5\textwidth}
 			\textbf{System Characteristics:}
 			\begin{itemize}
 				\item State: $\mathbf{x} = [x, y, \dot{x}, \dot{y}]^T$
-				\item Control: $\mathbf{u} \leq u_{\max}$
+				\item Control: $|\mathbf{u}| \preceq u_{\max}$
 				\item Dynamics: $\dot{\mathbf{x}} = f(\mathbf{x}, \mathbf{u})$
 			\end{itemize}
 		\end{column}
@@ -57,10 +59,10 @@
 	\end{columns}
 	
 	% \vspace{-0.}
-    \begin{minipage}
-        {0.93\textwidth}
-            \begin{exampleblock}{Mathematical Formulation}
-		Optimal control problem with state-dependent uncertainties and adversarial disturbances
-	\end{exampleblock}
-    \end{minipage}
+    % \begin{minipage}
+    %     {0.93\textwidth}
+    %         \begin{exampleblock}{Objective}
+	% 	Design a robust, fuel-efficient guidance policy for low-thrust spacecraft in the Earth-Moon CRTBP.
+	% \end{exampleblock}
+    % \end{minipage}
 \end{frame}
