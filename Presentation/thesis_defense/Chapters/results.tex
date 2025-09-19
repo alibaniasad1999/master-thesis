@@ -543,31 +543,30 @@
       \vspace{-0.35cm}
       % \tiny Violin plots: return dispersion across robustness scenarios.
     \end{column}
-    \begin{column}{0.50\textwidth}
-      \scriptsize
-      \centering
-      \begingroup
-      \setlength{\tabcolsep}{2.2pt}
-      \renewcommand{\arraystretch}{1.05}
+\begin{column}{0.50\textwidth}
+  \scriptsize
+  \centering
+  \begingroup
+  \setlength{\tabcolsep}{2.2pt}
+  \renewcommand{\arraystretch}{1.05}
 
-      % --- Merged Table 1 (highlight best: higher return, lower path error) ---
-      \scalebox{0.750}{%
-        % --- Merged Table 1 (highlight best: higher return, lower error) ---
+  % --- Merged Table 1 (highlight best: higher return, lower path error) ---
+  \scalebox{0.750}{%
 \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.05cm} *{8}{c} @{}}
   \toprule
   \multirow{2}{*}{Scenario} & \multicolumn{4}{c}{Cumulative Return} & \multicolumn{4}{c}{Path Error Sum} \\
   \cmidrule(lr){2-5}\cmidrule(l){6-9}
    & DDPG & PPO & SAC & TD3 & DDPG & PPO & SAC & TD3 \\
   \midrule
-  Random Initial Conditions & -0.41 & 0.34 & -0.02 & \textbf{0.74} & 4.42 & 4.30 & 4.02 & \textbf{1.22} \\
-  Actuator Disturbance      & -0.44 & 0.35 & -0.02 & \textbf{0.73} & 4.39 & 4.38 & 4.01 & \textbf{1.26} \\
-  Model Mismatch            & -0.63 & 0.38 & -0.13 & \textbf{0.75} & 8.85 & 3.57 & 4.78 & \textbf{1.25} \\
-  Partial Observation       & -1.52 & 0.40 & -0.44 & \textbf{0.71} & 9.65 & 2.44 & 5.17 & \textbf{1.09} \\
-  Sensor Noise              & -0.60 & 0.37 & -0.12 & \textbf{0.75} & 9.12 & 3.58 & 4.66 & \textbf{1.25} \\
-  Time Delay                & -1.19 & 0.17 & -0.05 & \textbf{0.67} & 6.73 & 4.53 & 4.12 & \textbf{1.21} \\
+  Random Initial Conditions & -0.27 & \textbf{0.61} & -0.76 & 0.56 & 3.30 & 2.56 & 8.06 & \textbf{0.72} \\
+  Actuator Disturbance      & -0.38 & \textbf{0.61} & -0.72 & 0.55 & 3.74 & 2.58 & 7.91 & \textbf{0.77} \\
+  Model Mismatch            & -0.84 & \textbf{0.58} & -2.98 & 0.51 & 10.87 & 3.06 & 17.12 & \textbf{1.09} \\
+  Partial Observation       & -0.88 & \textbf{0.36} & -3.65 & 0.23 & 8.18 & 3.34 & 15.47 & \textbf{1.77} \\
+  Sensor Noise              & -0.85 & \textbf{0.58} & -2.90 & 0.52 & 11.04 & 3.08 & 16.81 & \textbf{1.02} \\
+  Time Delay                & -0.76 & \textbf{0.61} & -2.98 & 0.48 & 8.95 & 2.27 & 15.70 & \textbf{0.81} \\
   \bottomrule
 \end{tabular}
-      }
+  }
 
 \vspace{4pt}
 
@@ -589,11 +588,11 @@
   \end{tabular}
 }
       
-      \par
-      \vspace{2pt}
-      % (Optional note removed for compactness)
-      \endgroup
-    \end{column}
+  \par
+  \vspace{2pt}
+  \endgroup
+\end{column}
+
   \end{columns}
 \end{frame}
 % \begin{frame}
