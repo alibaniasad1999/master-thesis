@@ -56,41 +56,88 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Nash Equilibrium}
-    \small
-    A policy profile $\pi^*=(\pi_1^*,\dots,\pi_n^*)$ is Nash if:
-    \[
-      V_i^{(\pi_i^*,\pi_{-i}^*)}(s)\;\ge\;V_i^{(\pi_i,\pi_{-i}^*)}(s)\quad \forall \pi_i,\ \forall i
-    \]
-    \textbf{Implications:}
-    \begin{itemize}\setlength{\itemsep}{2pt}
-        \item No unilateral profitable deviation
-        \item In zero-sum 2-player games value is unique
-        \item Solution concepts guide stable MARL training
-    \end{itemize}
-\end{frame}
+
+
+% \begin{frame}
+%     \frametitle{Zero-Sum Games}
+%     \small
+%     \begin{align*}
+% 		r_{\text{thrust},1}(a_1) &= -k_1 \cdot |a_1| \\
+% 		r_{\text{thrust},1}(a_2) &= -k_2 \cdot |a_2| \\
+% 		r_{\text{reference},1}(s) &= -k_3 \cdot d_1\!\big(s, s_{\text{ref},1}\big) \\
+% 		r_{\text{terminal},1}(s) &=
+% 		\begin{cases}
+% 			+R_{\text{goal},1} & \text{if}~ s \in S_{\text{goal},1} \\
+% 			-R_{\text{fail},1} & \text{if}~ d_1\!\big(s, s_{\text{ref},1}\big) > \epsilon_1 \\
+% 			0 & \text{otherwise}
+% 		\end{cases}
+%       \end{align*}
+%       	\[
+% 	r_2(s, a_1, a_2) = -\,r_1(s, a_1, a_2),
+% 	\]
+%     Two-player zero-sum: 
+%     \[
+%       V_1^{(\pi_1,\pi_2)}(s) = -V_2^{(\pi_1,\pi_2)}(s),\quad
+%       Q_1 = -Q_2
+%     \]
+%     Minimax optimality:
+%     \[
+%       V_1^*(s)=\max_{\pi_1}\min_{\pi_2} V_1^{(\pi_1,\pi_2)}(s)
+%       = \min_{\pi_2}\max_{\pi_1} V_1^{(\pi_1,\pi_2)}(s)
+%     \]
+%     % \textbf{Training Goal:} Find saddle point (stable policies).
+%     % \begin{itemize}\setlength{\itemsep}{2pt}
+%     %     \item Stabilizes adversarial robustness
+%     %     \item Supports disturbance modeling
+%     %     \item Aligns with minimax control intuition
+%     % \end{itemize}
+% \end{frame}
 
 \begin{frame}
-    \frametitle{Zero-Sum Games}
-    \small
-    Two-player zero-sum: 
-    \[
-      V_1^{(\pi_1,\pi_2)}(s) = -V_2^{(\pi_1,\pi_2)}(s),\quad
-      Q_1 = -Q_2
-    \]
-    Minimax optimality:
-    \[
-      V_1^*(s)=\max_{\pi_1}\min_{\pi_2} V_1^{(\pi_1,\pi_2)}(s)
-      = \min_{\pi_2}\max_{\pi_1} V_1^{(\pi_1,\pi_2)}(s)
-    \]
-    \textbf{Training Goal:} Find saddle point (stable policies).
-    \begin{itemize}\setlength{\itemsep}{2pt}
-        \item Stabilizes adversarial robustness
-        \item Supports disturbance modeling
-        \item Aligns with minimax control intuition
-    \end{itemize}
+  \frametitle{Zero-Sum Games}
+  \normalsize
+  % \vspace{-0.2cm}
+
+  \textbf{Player 1 reward:}
+  \[
+    r_1(s,a_1,a_2) = 
+      -k_1|a_1| - k_2|a_2|
+      -k_3\, d_1(s,s_{\text{ref},1})
+      + r_{\text{terminal},1}(s)
+  \]
+\vspace{-0.2cm}
+  \[
+  r_{\text{terminal},1}(s) =
+  \begin{cases}
+    +R_{\text{goal},1}, & s \in S_{\text{goal},1} \\[2pt]
+    -R_{\text{fail},1}, & d_1(s,s_{\text{ref},1}) > \epsilon_1 \\[2pt]
+    0, & \text{otherwise}
+  \end{cases}
+  \]
+
+  % \vspace{0.2cm}
+
+  \textbf{Zero-sum property:}
+  \[
+    r_2(s,a_1,a_2) = -r_1(s,a_1,a_2), \qquad
+    V_1^{(\pi_1,\pi_2)} = -V_2^{(\pi_1,\pi_2)}, \quad
+    Q_1 = -Q_2
+  \]
+
+  \vspace{0.2cm}
+
+  \textbf{Minimax optimality:}
+  \[
+    V_1^*(s) =
+    \max_{\pi_1}\min_{\pi_2} V_1^{(\pi_1,\pi_2)}(s)
+    = \min_{\pi_2}\max_{\pi_1} V_1^{(\pi_1,\pi_2)}(s)
+  \]
 \end{frame}
+
+
+
+
+
 
 % \begin{frame}
 %     \frametitle{Zero-Sum Reward Design}

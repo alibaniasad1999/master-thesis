@@ -2,64 +2,96 @@
 
 \begin{frame}
   \frametitle{DDPG Parameters}
-  \scriptsize
-  \begin{tabular}{|l|c||l|c|}
-  \hline
-  Steps / epoch & 30k & Epochs & 100 \\ \hline
-  Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
-  Polyak $\tau$ & 0.995 & Actor LR & $1\!\times\!10^{-3}$ \\ \hline
-  Critic LR & $1\!\times\!10^{-3}$ & Batch size & 1024 \\ \hline
-  Start policy steps & 5k & Update start & 1k \\ \hline
-  Update interval & 2k & Action noise & 0.1 \\ \hline
-  Max episode len & 6k & Device & Cuda \\ \hline
-  Net (A/C) & (32,32) & Act fn & ReLU \\ \hline
-  \end{tabular}
+  \footnotesize
+  \begin{table}
+    \centering
+    {\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.3}%
+      \begin{tabular}{|l|c||l|c|}
+      \hline
+      Steps / epoch & 30k & Epochs & 100 \\ \hline
+      Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
+      Polyak $\tau$ & 0.995 & Actor LR & $1\!\times\!10^{-3}$ \\ \hline
+      Critic LR & $1\!\times\!10^{-3}$ & Batch size & 1024 \\ \hline
+      Start policy steps & 5k & Update start & 1k \\ \hline
+      Update interval & 2k & Action noise & 0.1 \\ \hline
+      Max episode len & 6k & Device & CUDA \\ \hline
+      Nets (A/C) & (32,32) & Activation & ReLU \\ \hline
+      \end{tabular}
+    }
+    \caption{DDPG hyperparameters}
+    \label{tab:ddpg}
+  \end{table}
+  {\tiny A/C = Actor/Critic; LR = learning rate; len = length.}
 \end{frame}
 
 \begin{frame}
   \frametitle{TD3 Parameters}
-  \scriptsize
-  \begin{tabular}{|l|c||l|c|}
-  \hline
-  Steps / epoch & 30k & Epochs & 100 \\ \hline
-  Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
-  Polyak $\tau$ & 0.995 & Actor LR & $1\!\times\!10^{-3}$ \\ \hline
-  Critic LR & $1\!\times\!10^{-3}$ & Batch size & 1024 \\ \hline
-  Start policy steps & 5k & Update start & 1k \\ \hline
-  Update interval & 2k & Target noise & 0.2 \\ \hline
-  Noise clip & 0.5 & Policy delay & 2 \\ \hline
-  Max episode len & 30k & Nets (A/C) & (32,32) \\ \hline
-  \end{tabular}
+  \footnotesize
+  \begin{table}
+    \centering
+    {\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.3}%
+      \begin{tabular}{|l|c||l|c|}
+      \hline
+      Steps / epoch & 30k & Epochs & 100 \\ \hline
+      Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
+      Polyak $\tau$ & 0.995 & Actor LR & $1\!\times\!10^{-3}$ \\ \hline
+      Critic LR & $1\!\times\!10^{-3}$ & Batch size & 1024 \\ \hline
+      Start policy steps & 5k & Update start & 1k \\ \hline
+      Update interval & 2k & Target noise & 0.2 \\ \hline
+      Noise clip & 0.5 & Policy delay & 2 \\ \hline
+      Max episode len & 30k & Nets (A/C) & (32,32) \\ \hline
+      \end{tabular}
+    }
+    \caption{TD3 hyperparameters}
+    \label{tab:td3}
+  \end{table}
+  {\tiny A/C = Actor/Critic; LR = learning rate; len = length.}
 \end{frame}
 
 \begin{frame}
   \frametitle{SAC Parameters}
-  \scriptsize
-  \begin{tabular}{|l|c||l|c|}
-  \hline
-  Steps / epoch & 30k & Epochs & 100 \\ \hline
-  Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
-  Polyak $\tau$ & 0.995 & LR (all) & $1\!\times\!10^{-3}$ \\ \hline
-  Alpha init & 0.2 & Batch size & 1024 \\ \hline
-  Start steps & 5k & Update start & 1k \\ \hline
-  Updates / step & 10 & Update interval & 2k \\ \hline
-  Test episodes & 10 & Max len & 30k \\ \hline
-  Nets (A/C) & (32,32) & Activation & ReLU \\ \hline
-  \end{tabular}
+  \footnotesize
+  \begin{table}
+    \centering
+    {\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.3}%
+      \begin{tabular}{|l|c||l|c|}
+      \hline
+      Steps / epoch & 30k & Epochs & 100 \\ \hline
+      Buffer size & $10^{6}$ & Discount $\gamma$ & 0.99 \\ \hline
+      Polyak $\tau$ & 0.995 & LR (all) & $1\!\times\!10^{-3}$ \\ \hline
+      Alpha init & 0.2 & Batch size & 1024 \\ \hline
+      Start policy steps & 5k & Update start & 1k \\ \hline
+      Updates / step & 10 & Update interval & 2k \\ \hline
+      Test episodes & 10 & Max episode len & 30k \\ \hline
+      Nets (A/C) & (32,32) & Activation & ReLU \\ \hline
+      \end{tabular}
+    }
+    \caption{SAC hyperparameters}
+    \label{tab:sac}
+  \end{table}
+  {\tiny A/C = Actor/Critic; LR = learning rate; len = length.}
 \end{frame}
 
 \begin{frame}
   \frametitle{PPO Parameters}
-  \scriptsize
-  \begin{tabular}{|l|c||l|c|}
-  \hline
-  Steps / epoch & 30k & Epochs & 100 \\ \hline
-  Discount $\gamma$ & 0.99 & Clip ratio & 0.2 \\ \hline
-  Policy LR & $3\!\times\!10^{-4}$ & Value LR & $1\!\times\!10^{-3}$ \\ \hline
-  Policy iters & 80 & Value iters & 80 \\ \hline
-  Nets (Actor) & (32,32) & Nets (Critic) & (32,32) \\ \hline
-  Activation & ReLU & Batch (mini) & (derived) \\ \hline
-  \end{tabular}
+  \footnotesize
+  \begin{table}
+    \centering
+    {\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.3}%
+      \begin{tabular}{|l|c||l|c|}
+      \hline
+      Steps / epoch & 30k & Epochs & 100 \\ \hline
+      Discount $\gamma$ & 0.99 & Clip ratio & 0.2 \\ \hline
+      Policy LR & $3\!\times\!10^{-4}$ & Value LR & $1\!\times\!10^{-3}$ \\ \hline
+      Policy iters & 80 & Value iters & 80 \\ \hline
+      Nets (Actor) & (32,32) & Nets (Critic) & (32,32) \\ \hline
+      Activation & ReLU & Batch (mini) & (derived) \\ \hline
+      \end{tabular}
+    }
+    \caption{PPO hyperparameters}
+    \label{tab:ppo}
+  \end{table}
+  {\tiny A/C = Actor/Critic; LR = learning rate; len = length.}
 \end{frame}
 
 \begin{frame}
@@ -76,3 +108,17 @@
   \end{enumerate}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Nash Equilibrium}
+    \small
+    A policy profile $\pi^*=(\pi_1^*,\dots,\pi_n^*)$ is Nash if:
+    \[
+      V_i^{(\pi_i^*,\pi_{-i}^*)}(s)\;\ge\;V_i^{(\pi_i,\pi_{-i}^*)}(s)\quad \forall \pi_i,\ \forall i
+    \]
+    \textbf{Implications:}
+    \begin{itemize}\setlength{\itemsep}{2pt}
+        \item No unilateral profitable deviation
+        \item In zero-sum 2-player games value is unique
+        \item Solution concepts guide stable MARL training
+    \end{itemize}
+\end{frame}

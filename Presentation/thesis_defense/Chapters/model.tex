@@ -2,14 +2,16 @@
 
 \begin{frame}
   \frametitle{CRTBP Model and Lagrangian Points}
-%   \vspace{-.4cm}
-  \begin{figure}[H]
-    \centering
-    \captionsetup[subfloat]{labelfont={color=myBlue,footnotesize},textfont=footnotesize,skip=8pt}
-        \hspace{-1.5cm}
-        \begin{subfigure}{0.45\linewidth}
-          \centering
-          \resizebox{\linewidth}{!}{%
+
+  \begin{columns}[T,onlytextwidth]
+    % ===== Left column: equations + first image =====
+    \column{0.52\textwidth}
+    \small
+
+    \begin{figure}
+      \centering
+      % \begin{tikzpicture}
+        \resizebox{\linewidth}{!}{%
             \begin{tikzpicture}
               % Coordinates
               \coordinate (earth) at (1,2);
@@ -67,13 +69,26 @@
               \draw[-stealth] (c) to[bend left=30] (satellite);
             \end{tikzpicture}
           }
-          \caption{CRTBP Configuration}
-        \end{subfigure}%
-        % \hfill
-        % \hspace{-3.5cm}
-        \begin{subfigure}{0.35\linewidth}
-        %   \raggedleft
-          \resizebox{\linewidth}{!}{%
+      % \end{tikzpicture}
+      \captionsetup{labelfont={color=myBlue,tiny},textfont=tiny,skip=-29pt}
+      \caption{CRTBP configuration}
+    \end{figure}
+    \vspace{-.2cm}
+    \footnotesize
+      \begin{align*}
+      \ddot x-2\dot y &=
+      x-\frac{1-\mu}{r_{1}^{3}}(x+\mu)-\frac{\mu}{r_{2}^{3}}\bigl(x-1+\mu\bigr),\\[2pt]
+      \ddot y+2\dot x &=
+      y-\frac{1-\mu}{r_{1}^{3}}\,y-\frac{\mu}{r_{2}^{3}}\,y.
+    \end{align*}
+
+    % ===== Right column: Lagrange points image =====
+    \column{0.48\textwidth}
+    \vspace{-.8cm}
+    \begin{figure}
+      \centering
+      % \begin{tikzpicture}
+        \resizebox{.9\linewidth}{!}{%
         \begin{tikzpicture}
             % Define radius of the orbit
             \def\orbitRadius{4cm}
@@ -120,13 +135,13 @@
             \node at ($(L5) + (0.5,-0.3)$) {$L_5$};
         \end{tikzpicture}
           }
-        %   \raggedright
-          {\caption{Lagrangian points}}
-        \end{subfigure}
-        \vspace{-0.2cm}
-        % \caption{}
-  \end{figure}
+      % \end{tikzpicture}
+      \captionsetup{labelfont={color=myBlue,tiny},textfont=tiny,skip=8pt}
+      \caption{Lagrangian points}
+    \end{figure}
+  \end{columns}
 \end{frame}
+
 %           \draw[-stealth] (center) -- (satellite) node[pos=0.5, above] {$\vb{r}$};
 %           % add line to show satellite is in between
 %           \node (c) at ($(satellite)+(1.5,0.5)$) {Satellite};
@@ -212,3 +227,4 @@
     \end{column}
   \end{columns}
 \end{frame}
+

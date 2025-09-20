@@ -72,7 +72,7 @@
         \begin{itemize}\setlength{\itemsep}{4pt}
             \item \textbf{Discrete:} Finite set of actions (e.g., \texttt{up, down, left, right})
             \item \textbf{Continuous:} Actions represented by real values (e.g., steering angle, force applied)
-            \item Can be multi-dimensional, combining discrete and continuous aspects
+            % \item Can be multi-dimensional, combining discrete and continuous aspects
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -215,7 +215,7 @@
     \setlength{\itemsep}{6pt}
     \begin{columns}[T]
         \begin{column}{0.55\textwidth}
-            \textbf{State Value Function:}
+            \textbf{Value Function:}
             \begin{align*}
                 V^{\pi}(s) &= \underset{\tau \sim \pi}{\mathbb{E}}\left[R(\tau)|s_0 = s\right]
             \end{align*}
@@ -305,68 +305,99 @@
                 \end{tikzpicture}
                 }
                 \captionsetup{labelfont={color=myBlue,scriptsize},textfont=scriptsize,skip=4pt}
-                \caption{Value Function Neural Network}
+                \caption{Action-Value Function Neural Network}
                 \label{fig:critic_nn_en}
             \end{figure}
         \end{column}
     \end{columns}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Optimal Value Functions}
+% \begin{frame}
+%     \frametitle{Optimal Value Functions}
     
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{Optimal State Value Function:}
-            \begin{align*}
-                V^{*}(s) &= \underset{\pi}{\max} V^{\pi}(s)
-            \end{align*}
-            \vspace{0.1cm}
-            \textbf{Optimal Value Bellman Equation:}
-            \begin{align*}
-                V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right]
-            \end{align*}
-        \end{column}
+%     \begin{columns}[T]
+%         \begin{column}{0.5\textwidth}
+%             \textbf{Optimal State Value Function:}
+%             \begin{align*}
+%                 V^{*}(s) &= \underset{\pi}{\max} V^{\pi}(s)
+%             \end{align*}
+%             \vspace{0.1cm}
+%             \textbf{Optimal Value Bellman Equation:}
+%             \begin{align*}
+%                 V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right]
+%             \end{align*}
+%         \end{column}
         
-        \begin{column}{0.5\textwidth}
-            \textbf{Optimal Action-Value Function:}
-            \begin{align*}
-                Q^{*}(s,a) &= \underset{\pi}{\max} Q^{\pi}(s,a)
-            \end{align*}
-            \vspace{0.1cm}
-            \textbf{Optimal Q Bellman Equation:}
-            \begin{align*}
-                Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
-            \end{align*}
-        \end{column}
-    \end{columns}
+%         \begin{column}{0.5\textwidth}
+%             \textbf{Optimal Action-Value Function:}
+%             \begin{align*}
+%                 Q^{*}(s,a) &= \underset{\pi}{\max} Q^{\pi}(s,a)
+%             \end{align*}
+%             \vspace{0.1cm}
+%             \textbf{Optimal Q Bellman Equation:}
+%             \begin{align*}
+%                 Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
+%             \end{align*}
+%         \end{column}
+%     \end{columns}
     
-    % \vspace{0.4cm}
-    \begin{minipage}{0.83\textwidth}
-    \begin{block}{Value Computation}
-        How can we calculate the value of a state $V(s)$ 
-        and a state-action pair $Q(s,a)$?
-    \end{block}
-\end{minipage}
+%     % \vspace{0.4cm}
+%     \begin{minipage}{0.83\textwidth}
+%     \begin{block}{Value Computation}
+%         How can we calculate the value of a state $V(s)$ 
+%         and a state-action pair $Q(s,a)$?
+%     \end{block}
+% \end{minipage}
 
-\end{frame}
+% \end{frame}
+
+% \begin{frame}
+%     \frametitle{Bellman Equations}
+    
+%     \textbf{For Policy Value Functions:}
+%     \begin{align*}
+%         V^{\pi}(s) &= \underset{\substack{a \sim \pi \\ s'\sim P}}{\mathrm{E}} 
+%         \left[ r(s,a) + \gamma V^{\pi}(s') \right] \\
+%         Q^{\pi}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} 
+%         \left[ \underset{a'\sim \pi}{\mathrm{E}} \left[ Q^{\pi}(s',a') \right] \right]
+%     \end{align*}
+    
+%     \vspace{0.3cm}
+%     \textbf{For Optimal Value Functions:}
+%     \begin{align*}
+%         V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right] \\
+%         Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
+%     \end{align*}
+% \end{frame}
+
+
 
 \begin{frame}
-    \frametitle{Bellman Equations}
-    
-    \textbf{For Policy Value Functions:}
-    \begin{align*}
-        V^{\pi}(s) &= \underset{\substack{a \sim \pi \\ s'\sim P}}{\mathrm{E}} 
-        \left[ r(s,a) + \gamma V^{\pi}(s') \right] \\
-        Q^{\pi}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} 
-        \left[ \underset{a'\sim \pi}{\mathrm{E}} \left[ Q^{\pi}(s',a') \right] \right]
-    \end{align*}
-    
-    \vspace{0.3cm}
-    \textbf{For Optimal Value Functions:}
-    \begin{align*}
-        V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right] \\
-        Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
-    \end{align*}
-\end{frame}
+  \frametitle{Value Computation and Bellman Equations}
 
+  \begin{block}{Value Computation}
+    How can we calculate the value of a state $V(s)$ 
+    and a state-action pair $Q(s,a)$?
+  \end{block}
+
+%   \vspace{0.3cm}
+
+  \textbf{For Policy Value Functions:}
+  \begin{align*}
+      V^{\pi}(s) &= \underset{\substack{a \sim \pi \\ s'\sim P}}{\mathrm{E}} 
+      \left[ r(s,a) + \gamma V^{\pi}(s') \right] \\[-.5em]
+      Q^{\pi}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} 
+      \left[ \underset{a'\sim \pi}{\mathrm{E}} \left[ Q^{\pi}(s',a') \right] \right]
+  \end{align*}
+
+%   \vspace{0.3cm}
+
+  \textbf{For Optimal Value Functions:}
+  \begin{align*}
+    V^{*}(s) = \underset{\pi}{\max} V^{\pi}(s) \to
+      V^{*}(s) &= \max_a \underset{s'\sim P}{\mathrm{E}} \left[ r(s,a) + \gamma V^{*}(s') \right] \\[-.5em]
+      Q^{*}(s,a) = \underset{\pi}{\max} Q^{\pi}(s,a) \to
+      Q^{*}(s,a) &= r(s,a) + \gamma \underset{s'\sim P}{\mathrm{E}} \left[ \max_{a'} Q^{*}(s',a') \right]
+  \end{align*}
+
+\end{frame}
