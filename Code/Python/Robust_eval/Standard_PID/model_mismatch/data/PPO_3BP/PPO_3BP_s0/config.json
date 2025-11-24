@@ -61,14 +61,14 @@
     "lam":	0.97,
     "logger_kwargs":	{
         "exp_name":	"PPO_3BP",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/model_mismatch/data/PPO_3BP/PPO_3BP_s0"
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/model_mismatch/data/PPO_3BP/PPO_3BP_s0"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
     "seed":	0,
     "self":	{
-        "<PPO.PPO object at 0x15e81b850>":	{
+        "<PPO.PPO object at 0x1590be190>":	{
             "ac_kwargs":	{
                 "hidden_sizes":	[
                     32,
@@ -130,15 +130,15 @@
             "gamma":	0.99,
             "lam":	0.97,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x15e817450>":	{
+                "<utils.logx.EpochLogger object at 0x15f67c810>":	{
                     "epoch_dict":	{},
                     "exp_name":	"PPO_3BP",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/model_mismatch/data/PPO_3BP/PPO_3BP_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/model_mismatch/data/PPO_3BP/PPO_3BP_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/model_mismatch/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/model_mismatch/data/PPO_3BP/PPO_3BP_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -146,7 +146,7 @@
             },
             "logger_kwargs":	{
                 "exp_name":	"PPO_3BP",
-                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/model_mismatch/data/PPO_3BP/PPO_3BP_s0"
+                "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/model_mismatch/data/PPO_3BP/PPO_3BP_s0"
             },
             "max_ep_len":	1000,
             "pi_lr":	0.0003,

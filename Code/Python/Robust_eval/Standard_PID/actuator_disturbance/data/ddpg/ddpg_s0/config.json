@@ -16,7 +16,7 @@
     "gamma_":	0.99,
     "logger_kwargs_":	{
         "exp_name":	"ddpg",
-        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/actuator_disturbance/data/ddpg/ddpg_s0"
+        "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/actuator_disturbance/data/ddpg/ddpg_s0"
     },
     "max_ep_len":	6000,
     "num_test_episodes":	10,
@@ -31,7 +31,7 @@
     "save_freq":	1,
     "seed_":	0,
     "self":	{
-        "<DDPG.DDPG object at 0x11a227a50>":	{
+        "<DDPG.DDPG object at 0x160503290>":	{
             "ac":	{
                 "MLPActorCritic(\n  (pi): MLPActor(\n    (pi): Sequential(\n      (0): Linear(in_features=4, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=2, bias=True)\n      (5): Tanh()\n    )\n  )\n  (q): MLPQFunction(\n    (q): Sequential(\n      (0): Linear(in_features=6, out_features=32, bias=True)\n      (1): Tanh()\n      (2): Linear(in_features=32, out_features=32, bias=True)\n      (3): Tanh()\n      (4): Linear(in_features=32, out_features=1, bias=True)\n      (5): Identity()\n    )\n  )\n)":	{
                     "_backward_hooks":	{},
@@ -874,15 +874,15 @@
             "epochs":	50,
             "gamma":	0.99,
             "logger":	{
-                "<utils.logx.EpochLogger object at 0x161e49590>":	{
+                "<utils.logx.EpochLogger object at 0x164cb17d0>":	{
                     "epoch_dict":	{},
                     "exp_name":	"ddpg",
                     "first_row":	true,
                     "log_current_row":	{},
                     "log_headers":	[],
-                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/actuator_disturbance/data/ddpg/ddpg_s0",
+                    "output_dir":	"/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/actuator_disturbance/data/ddpg/ddpg_s0",
                     "output_file":	{
-                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard/actuator_disturbance/data/ddpg/ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                        "<_io.TextIOWrapper name='/Users/Ali/Documents/BAI/Master/master-thesis/Code/Python/Robust_eval/Standard_PID/actuator_disturbance/data/ddpg/ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                             "mode":	"w"
                         }
                     }
@@ -998,7 +998,7 @@
                 }
             },
             "replay_buffer":	{
-                "<DDPG.ReplayBuffer object at 0x1560b2c90>":	{
+                "<DDPG.ReplayBuffer object at 0x163fa4dd0>":	{
                     "act_buf":	"[[0. 0.]\n [0. 0.]\n [0. 0.]\n ...\n [0. 0.]\n [0. 0.]\n [0. 0.]]",
                     "device":	"cpu",
                     "done_buf":	"[0. 0. 0. ... 0. 0. 0.]",
