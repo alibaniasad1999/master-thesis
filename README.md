@@ -10,7 +10,6 @@ Department of Aerospace Engineering
 Sharif University of Technology
 
 Supervised by: **Dr. Hadi Nobahari**  
-Advised by: **Dr. Seyed Ali Emami Khooansari**
 
 *September 2025*
 
