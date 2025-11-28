@@ -9,6 +9,7 @@ On Windows: Download poppler from http://blog.alivate.com.au/poppler-windows/
 import os
 from pathlib import Path
 from pdf2image import convert_from_path
+from PIL import Image
 
 def convert_pdfs_to_png(root_dir='Report/plots', dpi=300):
     """
@@ -42,7 +43,20 @@ def convert_pdfs_to_png(root_dir='Report/plots', dpi=300):
             
             # Save as PNG (take first page only for plots)
             png_path = pdf_path.with_suffix('.png')
-            images[0].save(png_path, 'PNG')
+
+            # Ensure output has white background (composite RGBA onto white)
+            img = images[0]
+            if img.mode in ('RGBA', 'LA') or (hasattr(img, 'getchannel') and img.mode == 'P'):
+                # Create white background
+                bg = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode != 'RGBA':
+                    img = img.convert('RGBA')
+                bg.paste(img, mask=img.split()[3])
+                bg.save(png_path, 'PNG')
+            else:
+                # No alpha channel — save directly as RGB PNG to ensure consistent mode
+                rgb = img.convert('RGB')
+                rgb.save(png_path, 'PNG')
             
             print(f"  ✓ Saved: {png_path.name}")
             
