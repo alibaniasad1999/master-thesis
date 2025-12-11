@@ -1,0 +1,218 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float}
+
+\title{Robust Reinforcement Learning Differential Game Guidance\\[0.3em]
+       \large Summary and Key Results}
+\author{Ali Bani Asad}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Research Summary}
+
+This work develops a zero-sum multi-agent reinforcement learning (MARL) framework
+for robust low-thrust spacecraft guidance in the Earth--Moon Circular Restricted
+Three-Body Problem (CR3BP). The guidance problem is posed as a differential
+game between a spacecraft controller (guidance agent) and an adversarial
+disturbance agent that injects worst-case uncertainties such as sensor noise,
+actuator disturbances, time delays, model mismatch, and initial-state errors.
+
+Four state-of-the-art continuous-control algorithms (DDPG, TD3, SAC, PPO) are
+extended to two-player zero-sum variants and trained in a centralized-training,
+decentralized-execution (CTDE) setting. Extensive Monte Carlo evaluations across
+multiple uncertainty scenarios show that the zero-sum policies significantly
+improve trajectory tracking, fuel efficiency, and robustness compared with both
+classical control baselines and standard single-agent RL. In combined
+uncertainty tests over 1000 episodes, the best method (MA--TD3) reduces
+trajectory error by roughly 30\% and improves the success rate from
+88.2\% (TD3) to 95.3\%, while remaining suitable for real-time on-board
+deployment via a C\texttt{++} inference stack and ROS~2 integration.
+
+\section{Performance Summary}
+
+Table~\ref{tab:performance} summarizes the main quantitative results used in the
+thesis, comparing classical PID guidance, single-agent RL, and the proposed
+zero-sum MARL methods under combined uncertainty scenarios.
+
+\begin{table}[H]
+  \centering
+  \caption{Performance comparison under combined uncertainty scenarios. Values
+  are mean $\pm$ standard deviation over 1000 test episodes.}
+  \label{tab:performance}
+  \begin{tabular}{lcccc}
+    \toprule
+    Algorithm & Trajectory error (m) & Fuel (m/s) & Success rate (\%) &
+    Robustness score (1--5) \\
+    \midrule
+    PID Control & $8432 \pm 2156$ & $45.2 \pm 8.3$ & 72.4 & 2 \\
+    DDPG        & $1234 \pm 892$  & $28.7 \pm 5.2$ & 84.6 & 3 \\
+    TD3         & $967 \pm 654$   & $26.4 \pm 4.1$ & 88.2 & 4 \\
+    SAC         & $1045 \pm 721$  & $27.8 \pm 4.8$ & 86.9 & 4 \\
+    PPO         & $1398 \pm 978$  & $31.2 \pm 6.3$ & 81.5 & 3 \\
+    MA--DDPG    & $892 \pm 423$   & $25.1 \pm 3.2$ & 91.7 & 4 \\
+    MA--TD3     & $687 \pm 312$   & $23.4 \pm 2.8$ & 95.3 & 5 \\
+    MA--SAC     & $734 \pm 367$   & $24.2 \pm 3.1$ & 93.8 & 5 \\
+    MA--PPO     & $856 \pm 445$   & $26.7 \pm 3.9$ & 90.4 & 4 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Representative Trajectory Tracking Results}
+
+Figure~\ref{fig:td3-trajectory} compares the nominal TD3 controller with the
+zero-sum MA--TD3 variant on a representative Earth--Moon CR3BP transfer. The
+top row shows the tracked trajectories, while the bottom row overlays the
+applied low-thrust control vectors.
+
+\begin{figure}[H]
+  \centering
+  % Trajectories
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//td3/trajectory_force/plot_trajectory}
+    \caption{Standard TD3 trajectory.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//td3/trajectory_force/plot_trajectory_zs}
+    \caption{Zero-sum MA--TD3 trajectory.}
+  \end{subfigure}
+
+  \medskip
+
+  % Trajectories with forces
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//td3/trajectory_force/plot_trajectory_force}
+    \caption{Standard TD3 with control vectors.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//td3/trajectory_force/plot_trajectory_force_zs}
+    \caption{Zero-sum MA--TD3 with control vectors.}
+  \end{subfigure}
+
+  \caption{Trajectory tracking performance of standard TD3 vs.\ zero-sum
+  MA--TD3 in the Earth--Moon CR3BP. The zero-sum controller achieves tighter
+  tracking with smoother and more fuel-efficient thrust profiles.}
+  \label{fig:td3-trajectory}
+\end{figure}
+
+\section{Robustness Analysis Under Uncertainty}
+
+\subsection{Zero-Sum Multi-Agent RL (All Algorithms Combined)}
+
+Figure~\ref{fig:zs-violin} shows the distribution of normalized cumulative
+rewards for the four algorithms (DDPG, TD3, SAC, PPO) under six different
+uncertainty scenarios when trained in the proposed zero-sum two-player setting.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/actuator_disturbance}
+    \caption{Actuator disturbance.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/sensor_noise}
+    \caption{Sensor noise.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/initial_condition_shift}
+    \caption{Initial condition shift.}
+  \end{subfigure}
+
+  \medskip
+
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/time_delay}
+    \caption{Time delay.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/model_mismatch}
+    \caption{Model mismatch.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//ZeroSum/violin_plot/partial_observation}
+    \caption{Partial observation.}
+  \end{subfigure}
+
+  \caption{Zero-sum multi-agent RL performance across six uncertainty
+  scenarios. Each violin shows the distribution of normalized cumulative reward
+  over multiple test trajectories.}
+  \label{fig:zs-violin}
+\end{figure}
+
+\subsection{Standard Single-Agent RL (All Algorithms Combined)}
+
+For comparison, Figure~\ref{fig:std-violin} reports the same evaluation for
+standard single-agent RL training of DDPG, TD3, SAC, and PPO.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/actuator_disturbance}
+    \caption{Actuator disturbance.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/sensor_noise}
+    \caption{Sensor noise.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/initial_condition_shift}
+    \caption{Initial condition shift.}
+  \end{subfigure}
+
+  \medskip
+
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/time_delay}
+    \caption{Time delay.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/model_mismatch}
+    \caption{Model mismatch.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.32\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Report/plots//standard/violin_plot/partial_observation}
+    \caption{Partial observation.}
+  \end{subfigure}
+
+  \caption{Standard single-agent RL performance under the same uncertainty
+  scenarios as Figure~\ref{fig:zs-violin}. The zero-sum formulation leads to
+  higher median performance and tighter distributions.}
+  \label{fig:std-violin}
+\end{figure}
+
+
+\end{document}
